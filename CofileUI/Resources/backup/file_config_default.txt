@@ -1,0 +1,36 @@
+{
+  "type": "file",
+  "comm_option": {
+	"sid": "API",
+	"item": "AES256",
+	"encode_type": "0",
+	"log_console_yn": true,
+	"header_file_save_yn": false,
+	"file_reserver_yn": true,
+	"dir_monitoring_yn": false,
+	"dir_monitoring_term": 1,
+	"verify_yn": false,
+	"#schedule_time": "12:00",
+	"result_log_yn": false,
+	"#thread_count": 8
+  },
+  "enc_option": {
+	"#input_filter": "[.]txt$",
+	"#output_suffix_head": "head_",
+	"#output_suffix_tail": "_tail",
+	"input_dir": ".",
+	"output_dir": "/data1/cofile/file_out",
+	"input_extension": "txt",
+	"output_extension": "coenc"
+  },
+  "dec_option": {
+	"#input_filter": "[.]coenc$",
+	"#output_suffix_head": "head_",
+	"#output_suffix_tail": "_tail",
+	"input_dir": ".",
+	"output_dir": "/data1/cofile/file_out",
+	"input_extension": "coenc",
+	"output_extension": "codec"
+  }
+}
+

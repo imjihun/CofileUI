@@ -1,0 +1,54 @@
+﻿<Window x:Class="CofileUI.Windows.Window_AddJsonItem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" 
+        xmlns:local="clr-namespace:CofileUI"
+        mc:Ignorable="d"
+        Title="popup_AddJsonItem" Height="115" Width="300"
+        WindowStyle="None"
+        AllowsTransparency="True" Background="Transparent"  ResizeMode="NoResize">
+	<Window.Resources>
+	</Window.Resources>
+	<Grid>
+		<Border Margin="10">
+			<Border.Effect>
+				<DropShadowEffect Color="Gray"
+                              Direction="270"
+                              BlurRadius="10"
+                              ShadowDepth="1" />
+			</Border.Effect>
+			<Grid Background="White">
+				<Grid Height="30" VerticalAlignment="Top">
+					<Label Content="Add Json Item" FontSize="15"
+							Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+				</Grid>
+				<Grid Height="30" VerticalAlignment="Center">
+					<!--<TextBlock Text="key" FontSize="15"
+						   VerticalAlignment="Center" HorizontalAlignment="Center" 
+						   Margin="0, 0, 120, 0" Height="Auto" Width="100"
+						   Foreground="LightSteelBlue" Visibility="{Binding ElementName=textBox_key, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}" FontStyle="Italic" TextDecorations="{x:Null}"/>-->
+					<TextBox x:Name="textBox_key" Background="{x:Null}" FontSize="15"
+						 VerticalAlignment="Center" HorizontalAlignment="Center"
+						 Margin="0, 0, 120, 0" Width="150" Height="Auto" Custom:TextBoxHelper.Watermark="Input Key Name"/>
+					<ComboBox x:Name="comboBox_type"
+						  Margin="160, 0, 0, 0" Width="100" Height="25"  HorizontalAlignment="Center" VerticalAlignment="Center">
+						<ComboBoxItem Content="String" IsSelected="true" ></ComboBoxItem>
+						<ComboBoxItem Content="Boolean"></ComboBoxItem>
+						<ComboBoxItem Content="Integer"></ComboBoxItem>
+						<ComboBoxItem Content="Object"></ComboBoxItem>
+						<ComboBoxItem Content="Array"></ComboBoxItem>
+					</ComboBox>
+
+				</Grid>
+				<Grid Height="35" VerticalAlignment="Bottom">
+					<Button x:Name="btn_ok" Content="ok" Background="White"
+							Margin="5,5,70,5" Width="50" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Center"></Button>
+					<Button x:Name="btn_cancel" Content="cancel" Background="White"
+							Margin="70,5,5,5" Width="50" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Center"></Button>
+				</Grid>
+			</Grid>
+		</Border>
+	</Grid>
+</Window>

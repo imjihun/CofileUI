@@ -1,0 +1,125 @@
+﻿<Controls:MetroWindow	x:Class="CofileUI.Windows.WindowMain"
+						xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+						xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					  
+						xmlns:local="clr-namespace:CofileUI"
+						xmlns:UserControls="clr-namespace:CofileUI.UserControls"
+					  
+						xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+						xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+						
+						mc:Ignorable="d"
+					    TitleCharacterCasing="Normal"
+						Title="{StaticResource AppName}" Height="756" Width="1024"
+						ToolBarTray.IsLocked="True"
+						GlowBrush="{DynamicResource AccentColorBrush}">
+
+	<Controls:MetroWindow.RightWindowCommands>
+		<Controls:WindowCommands ShowLastSeparator="False">
+			<Button Content="{iconPacks:PackIconMaterial Kind=Settings}"
+					ToolTip="Settings"
+					Click="OnClickMainSetting"/>
+		</Controls:WindowCommands>
+	</Controls:MetroWindow.RightWindowCommands>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="3"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="160"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="0"/>
+			</Grid.RowDefinitions>
+			<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch">
+				<UserControls:ServerMenu DataContext="{Binding}"/>
+				<!--<Border BorderBrush="Black" BorderThickness="1"/>-->
+			</Grid>
+
+			<Grid x:Name="grid_root_view" Grid.Column="1" Grid.Row="0" Background="White"
+				  Margin="3,2,2,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<!--<Border BorderBrush="Black" BorderThickness="1"/>-->
+			</Grid>
+			<Grid Grid.Column="1" Grid.Row="1" Margin="3,2,2,2">
+				<Grid>
+					<UserControls:Status DataContext="{Binding}"/>
+				</Grid>
+				<!--<Border BorderBrush="Black" BorderThickness="1"/>-->
+
+				<Controls:MetroProgressBar x:Name="progressBar" Foreground="{DynamicResource AccentColorBrush}"
+										   Margin="0 10 0 0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+										   Maximum="100"
+										   Minimum="0"
+										   Value="{Binding ElementName=horizSlider, Path=Value}"
+										   Height="10"/>
+			</Grid>
+
+			<GridSplitter Background="Gray"
+						  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+						  HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2"/>
+			<GridSplitter Background="Gray"
+						  Grid.Column="1" Grid.Row="0"
+						  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="2"/>
+		</Grid>
+		<Grid Grid.Row="0" Grid.RowSpan="3">
+			<Controls:MetroAnimatedTabControl x:Name="tabControl" Grid.ColumnSpan = "2" Background="{x:Null}" 
+											  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+											  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel">
+				<!--<TabItem Header="Test">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+
+						<TreeView Name="trv_test" MouseDoubleClick="trv_test_MouseDoubleClick">
+							<TreeView.ItemTemplate>
+								<HierarchicalDataTemplate DataType="{x:Type UserControls:LinuxTree}" ItemsSource="{Binding Childs}">
+									<TextBlock Text="{Binding Fileinfo.Name}"/>
+								</HierarchicalDataTemplate>
+							</TreeView.ItemTemplate>
+						</TreeView>
+						
+					</Grid>
+				</TabItem>-->
+				<!--<TabItem Header="{StaticResource MainTab.Config}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<Tail:TailOptions/>
+					</Grid>
+				</TabItem>-->
+				<TabItem Header="{StaticResource MainTab.Cofile}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<!-- 이렇게 바인딩 시키면 이벤트(버블링)발생할때 탭컨트롤의 자식이된다. (SelectionChanged 이벤트가 Cofile안에 ComboBox 에 의해 발생되어도 탭컨트롤의 SelectionChanged 이벤트가 반응한다. -->
+						<UserControls:Cofile DataContext="{Binding}"/>
+					</Grid>
+				</TabItem>
+				<TabItem x:Name="tabItem_Config" Header="{StaticResource MainTab.Decrypt}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<UserControls:Decrypt DataContext="{Binding}"/>
+					</Grid>
+				</TabItem>
+				<TabItem Header="{StaticResource MainTab.Log}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<UserControls:Sqlite_LogTable DataContext="{Binding}"/>
+					</Grid>
+				</TabItem>
+				<TabItem Header="{StaticResource MainTab.Monitor}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<UserControls:Sqlite_StatusTable DataContext="{Binding}"/>
+					</Grid>
+				</TabItem>
+
+
+				<!--<TabItem Header="ServerCommand">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+						<UserControls:ServerCommand DataContext="{Binding}"/>
+					</Grid>
+				</TabItem>-->
+			</Controls:MetroAnimatedTabControl>
+			<Label x:Name="label_serverinfo" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20"/>
+		</Grid>
+	</Grid>
+</Controls:MetroWindow>

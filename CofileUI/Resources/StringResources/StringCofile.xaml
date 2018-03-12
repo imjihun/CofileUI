@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib" >
+
+	<system:String x:Key="String.MainDialog.Encrypt.Title">Encrypt?</system:String>
+	<system:String x:Key="String.MainDialog.Encrypt.Message">위 항목들을 암호화 하시겠습니까?</system:String>
+	<system:String x:Key="String.MainDialog.Decrypt.Title">Decrypt?</system:String>
+	<system:String x:Key="String.MainDialog.Decrypt.Message">위 항목들을 복호화 하시겠습니까?</system:String>
+	<system:String x:Key="String.MainDialog.Encrypt.Message.Tail">위 항목들을 계속 감시하시겠습니까? ( Deamon Mode )</system:String>
+	<!--<system:String x:Key="MainDialog.AllEncrypt.Title">All Encrypt</system:String>
+	<system:String x:Key="MainDialog.AllEncrypt.Message">모두 암호화 하시겠습니까?</system:String>
+	<system:String x:Key="MainDialog.AllDecrypt.Title">All Decrypt</system:String>
+	<system:String x:Key="MainDialog.AllDecrypt.Message">모두 복호화 하시겠습니까?</system:String>
+	<system:String x:Key="MainDialog.SelectedEncrypt.Title">Selected Encrypt</system:String>
+	<system:String x:Key="MainDialog.SelectedEncrypt.Message">선택된 항목을 암호화 하시겠습니까?</system:String>
+	<system:String x:Key="MainDialog.SelectedDecrypt.Title">Selected Decrypt</system:String>
+	<system:String x:Key="MainDialog.SelectedDecrypt.Message">선택된 항목을 복호화 하시겠습니까?</system:String>-->
+
+	<system:String x:Key="String.Context.Encrypt">Encrypt</system:String>
+	<system:String x:Key="String.Context.Decrypt">Decrypt</system:String>
+
+	<system:String x:Key="String.Context.Delete">Delete</system:String>
+	<system:String x:Key="String.Context.AllEncrypt">All Encrypt</system:String>
+	<system:String x:Key="String.Context.AllDecrypt">All Decrypt</system:String>
+	<system:String x:Key="String.Context.SelectedEncrypt">Selected Encrypt</system:String>
+	<system:String x:Key="String.Context.SelectedDecrypt">Selected Decrypt</system:String>
+
+	<system:String x:Key="String.CheckBox.HiddenFile">숨김 파일 표시</system:String>
+	<system:String x:Key="String.GridViewColumn.Name">Name</system:String>
+	<system:String x:Key="String.GridViewColumn.WriteTime">WriteTime</system:String>
+	<system:String x:Key="String.GridViewColumn.Size">Size</system:String>
+	<system:String x:Key="String.TextBox.Filter">Filter Regular Expression</system:String>
+	<system:String x:Key="String.Button.SelectConfig">Select Config</system:String>
+	<system:String x:Key="String.ComboBox.LinuxPath.Init">/</system:String>
+	<system:String x:Key="String.Button.Refresh">Refresh</system:String>
+	<system:String x:Key="String.CheckBox.DetailListView">Detail</system:String>
+	<system:String x:Key="String.Label.ListViewWork">Selected Files</system:String>
+</ResourceDictionary>

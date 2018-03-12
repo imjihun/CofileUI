@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CofileUI.UserControls.ConfigOptions"
+					xmlns:system="clr-namespace:System;assembly=mscorlib" >
+
+	<!--<system:String x:Key="sam.comm_option.sam_type">SAM file type</system:String>
+	<system:String x:Key="sam.comm_option.no_col">암호화 대상 컬럼 수?</system:String>
+	<system:String x:Key="sam.comm_option.sid">암호화 대상 DB SID</system:String>
+	<system:String x:Key="sam.comm_option.delimiter">Column 구분자</system:String>
+	<system:String x:Key="sam.comm_option.trim">공백제거 사용 유무</system:String>
+	<system:String x:Key="sam.comm_option.skip_header">암/복호화 제외 라인 수</system:String>
+	<system:String x:Key="sam.comm_option.record_len">New Line 구분이 없을 때 라인 길이</system:String>
+	<system:String x:Key="sam.comm_option.input_filter">Debug 용 로그파일 경로</system:String>
+	<system:String x:Key="sam.comm_option.input_dir">암/복호화 할 대상 폴더</system:String>
+	<system:String x:Key="sam.comm_option.input_ext">암/복호화 할 대상 확장자명</system:String>
+	<system:String x:Key="sam.comm_option.output_dir">암/복호화 후 저장할 폴더</system:String>
+	<system:String x:Key="sam.comm_option.output_ext">암/복호화 후 덧붙일 확장자명</system:String>
+	<system:String x:Key="sam.comm_option.dir_monitoring_yn">폴더 감시 모드 (daemon)</system:String>
+	<system:String x:Key="sam.comm_option.dir_monitoring_term">폴더 감시 모드일 때, 감시 주기</system:String>
+	<system:String x:Key="sam.comm_option.no_access_sentence">no_access_sentence</system:String>
+
+	<system:String x:Key="file.comm_option.sid">DB SID 이름</system:String>
+	<system:String x:Key="file.comm_option.item">암/복호화에 사용할 Item 명</system:String>
+	<system:String x:Key="file.comm_option.encode_type">암호화 인코딩 타입</system:String>
+	<system:String x:Key="file.comm_option.log_console_yn">암/복호화 진행사항을 화면에 출력</system:String>
+	<system:String x:Key="file.comm_option.header_file_save_yn">암호화에 관련된 Header 정보를 파일로 저장</system:String>
+	<system:String x:Key="file.comm_option.file_reserver_yn">암호화시 원본 파일 유지</system:String>
+	<system:String x:Key="file.comm_option.dir_monitoring_yn">폴더 감시 모드 (daemon)</system:String>
+	<system:String x:Key="file.comm_option.dir_monitoring_term">폴더 감시 모드 주기</system:String>
+	<system:String x:Key="file.comm_option.verify_yn">verify_yn</system:String>
+	<system:String x:Key="file.comm_option.schedule_time">schedule_time</system:String>
+	<system:String x:Key="file.comm_option.result_log_yn">result_log_yn</system:String>
+	<system:String x:Key="file.comm_option.thread_count">thread_count</system:String>
+	
+	<x:Array x:Key="file.comm_option" Type="sys:String" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+		<sys:String>DB SID 이름</sys:String>
+		<sys:String>암/복호화에 사용할 Item 명</sys:String>
+		<sys:String>암호화 인코딩 타입</sys:String>
+		<sys:String>암/복호화 진행사항을 화면에 출력</sys:String>
+		<sys:String>암호화에 관련된 Header 정보를 파일로 저장</sys:String>
+		<sys:String>암호화시 원본 파일 유지</sys:String>
+		<sys:String>폴더 감시 모드 (daemon)</sys:String>
+		<sys:String>폴더 감시 모드 주기</sys:String>
+		<sys:String>verify_yn</sys:String>
+		<sys:String>schedule_time</sys:String>
+		<sys:String>result_log_yn</sys:String>
+		<sys:String>thread_count</sys:String>
+	</x:Array>-->
+
+	<local:Int64ToStringConverter x:Key="Int64ToStringConverter"/>
+	<local:OnlyInt64Converter x:Key="OnlyInt64Converter"/>
+	<local:StringToInt64Converter x:Key="StringToInt64Converter"/>
+	<local:OnlyBooleanConverter x:Key="OnlyBooleanConverter"/>
+	<Style x:Key="StyleDataGrid" BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+		<Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+		<Setter Property="AutoGenerateColumns" Value="False" />
+		<Setter Property="GridLinesVisibility" Value="All"/>
+		<Setter Property="IsReadOnly" Value="true"/>
+	</Style>
+
+
+	<GridLength x:Key="GridColumnWidthKey">Auto</GridLength>
+	<GridLength x:Key="GridColumnWidthValue">*</GridLength>
+	<!--<GridLength x:Key="GridRowHeight">35</GridLength>
+	<system:Double x:Key="WidthValue">150</system:Double>
+	<system:Double x:Key="HeightValue">25</system:Double>
+	<VerticalAlignment x:Key="VerticalAlignmentValue">Center</VerticalAlignment>
+	<HorizontalAlignment x:Key="HorizontalAlignmentValue">Left</HorizontalAlignment>
+	<VerticalAlignment x:Key="VerticalAlignmentKey">Center</VerticalAlignment>
+	<Thickness x:Key="MarginKey">5,0,10,0</Thickness>-->
+	<!--<Style x:Key="StyleDataGrid" BasedOn="{StaticResource DataGridTextColumn}" TargetType="{x:Type DataGridTextColumn}">
+		<Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+		<Setter Property="AutoGenerateColumns" Value="False" />
+		<Setter Property="GridLinesVisibility" Value="All"/>
+	</Style>-->
+</ResourceDictionary>

@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="CofileUI.UserControls.ConfigOptions.Sam.SamOptions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CofileUI.UserControls.ConfigOptions.Sam"
+			 
+			 xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+			 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<Style x:Key="StyleTabItem" BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+			<Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="15"></Setter>
+		</Style>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Background="{DynamicResource AccentColorBrush}" MouseDown="TitleMouseDown">
+			<Grid Margin="2,2,2,0">
+				<TextBlock x:Name="textBlock" Text="Sam" VerticalAlignment="Center"/>
+			</Grid>
+		</Grid>
+		<Grid Grid.Row="1">
+			<Border BorderBrush="LightGray" BorderThickness="2">
+				<Grid Margin="2,0,2,2">
+					<TabControl x:Name="tabControl" Grid.ColumnSpan = "2" Background="{x:Null}"
+											HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+											Controls:TabControlHelper.IsUnderlined="True" 
+											Controls:TabControlHelper.Underlined="TabPanel"
+											TabStripPlacement="Left">
+
+						<TabItem Header="Common" Style="{StaticResource StyleTabItem}">
+							<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+								<Grid x:Name="grid1">
+									<!--<local:comm_option DataContext="{Binding comm_option.Parent}"/>-->
+								</Grid>
+							</ScrollViewer>
+						</TabItem>
+						<TabItem Header="Column" Style="{StaticResource StyleTabItem}">
+
+							<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+								<Grid x:Name="grid2">
+									<!--<local:col_var DataContext="{Binding col_var.Parent}"/>-->
+								</Grid>
+							</ScrollViewer>
+						</TabItem>
+						<!--<TabItem Header="Column" Style="{StaticResource StyleTabItem}">
+
+							<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+								<Grid x:Name="grid3">
+									--><!--<local:col_fix DataContext="{Binding col_fix.Parent}"/>--><!--
+								</Grid>
+							</ScrollViewer>
+						</TabItem>-->
+					</TabControl>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
+</UserControl>

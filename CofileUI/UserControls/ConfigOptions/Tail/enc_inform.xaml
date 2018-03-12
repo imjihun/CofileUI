@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="CofileUI.UserControls.ConfigOptions.Tail.enc_inform"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CofileUI.UserControls.ConfigOptions.Tail"
+			 
+			 xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+			 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/CofileUI;component/Resources/ConfigOptionResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+		<DataGrid x:Name="dataGrid" 
+				  ItemsSource="{Binding Value}" 
+				  Style="{StaticResource StyleDataGrid}">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="item" Binding="{Binding item}"/>
+				<DataGridTextColumn Header="enc pattern" Binding="{Binding pattern}"/>
+				<DataGridTextColumn Header="delimiter" Binding="{Binding delimiter}"/>
+				<Controls:DataGridNumericUpDownColumn Header="sub left len" Binding="{Binding sub_left_len, Converter={StaticResource Int64ToStringConverter}}"/>
+				<Controls:DataGridNumericUpDownColumn Header="sub right len" Binding="{Binding sub_right_len, Converter={StaticResource Int64ToStringConverter}}"/>
+				<DataGridCheckBoxColumn Header="jumin check yn" Binding="{Binding jumin_check_yn, Converter={StaticResource OnlyBooleanConverter}}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Grid.Row="1">
+			<Button Content="Add" Width="80" HorizontalAlignment="Center" Margin="0,0,200,0"
+					Click="OnClickAdd"/>
+			<Button Content="Delete" Width="80" HorizontalAlignment="Center"
+					Click="OnClickDelete"/>
+			<Button Content="Modify" Width="80" HorizontalAlignment="Center" Margin="200,0,0,0"
+					Click="OnClickModify"/>
+		</Grid>
+	</Grid>
+</UserControl>

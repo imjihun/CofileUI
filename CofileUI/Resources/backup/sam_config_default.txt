@@ -1,0 +1,47 @@
+{
+  "type": "sam",
+  "comm_option": {
+	"sam_type": 0,
+	"no_col": 2,
+	"sid": "API",
+	"delimiter": "||",
+	"trim": 0,
+	"skip_header": 0,
+	"record_len": 0,
+	"#input_filter": "[.]sam$",
+	"input_dir": ".",
+	"input_ext": "sam",
+	"output_dir": "/data1/cofile/sam_out",
+	"output_ext": "enc",
+	"dir_monitoring_yn": false,
+	"dir_monitoring_term": 1,
+	"#no_access_sentence":"Encrypted"
+  },
+  "col_var": [
+	{
+	  "item": "AES256",
+	  "column_pos": 2,
+	  "wrap_char": "0x22"
+	},
+	{
+	  "item": "AES256",
+	  "column_pos": 4,
+	  "#wrap_char": "0x22"
+	}
+  ],
+  "#col_fix": [
+	{
+	  "item": "AES256",
+	  "start_pos": 9,
+	  "size": 10,
+	  "col_size": 30
+	},
+	{
+	  "item": "AES256",
+	  "start_pos": 40,
+	  "size": 2,
+	  "col_size": 15
+	}
+  ]
+}
+

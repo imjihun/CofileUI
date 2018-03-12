@@ -1,0 +1,82 @@
+{ 
+	"type":"tail", 
+	"comm_option": { 
+		"input_dir": ".", 
+		"input_ext": "log", 
+		"output_dir": ".", 
+		"output_ext": "enc", 
+		"sid": "API", 
+		"#tail_type":"1:LINE, 2:PATTERN", 
+		"tail_type": 2, 
+		"interval": 1, 
+		"no_inform": 2, 
+		"#input_filter": "log_([1-2][0-9]{3}_[0-1][0-9]_[0-3][0-9]).log$", 
+		"zero_byte_yn": false, 
+		"file_reserver_yn": false, 
+		"daemon_yn": true, 
+		"limit_process": 1024, 
+		"dir_recursive_yn": false, 
+		"dir_recursive_max_depth": 10, 
+		"blacklist_filter": "[.](enc)$" 
+	}, 
+	"enc_inform": [ 
+		{ 
+			"item": "AES256", 
+			"pattern":"([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))-?[1-8][0-9]{6}", 
+			"#pattern": "[=:'\"][0-9]{13},", 
+			"delimiter": "$$", 
+			"#sub_left_len": 1, 
+			"#sub_right_len": 1, 
+			"jumin_check_yn": false 
+		}, 
+		{ 
+			"item": "AES256", 
+			"#pattern": "[96543][0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{4}", 
+			"pattern": "[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}", 
+			"delimiter": "@@", 
+			"jumin_check_yn": false 
+		} 
+	], 
+	"work_group": {
+		"test1": {
+			"comm_option": {
+				"tail_type": 1,
+				"blacklist_filter": "[.](enc|zip)$"
+			},
+			"processes": [
+				{
+					"comm_option": {
+						"tail_type": 1,
+						"input_dir": "/01_tail",
+						"blacklist_filter": "[.](enc|zip)$"
+					}
+				},
+				{
+					"comm_option": {
+						"input_dir": "/02_tail",
+						"blacklist_filter": "[.](enc|zip)$"
+					},
+					"enc_inform": [
+						{
+							"item": "AES256OFB"
+						},
+						{
+							"pattern": "([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))-?[1-8][0-9]{6}"
+						}
+					]
+				},
+				{
+					"comm_option": {
+						"input_dir": "/03_tail"
+					},
+					"enc_inform": [
+						{ },
+						{
+							"pattern": "([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))-?[1-8][0-9]{6}"
+						}
+					]
+				}
+			]
+		} 
+	}
+} 

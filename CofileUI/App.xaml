@@ -1,0 +1,51 @@
+﻿<Application x:Class="CofileUI.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:CofileUI" xmlns:UserControls="clr-namespace:CofileUI.UserControls" xmlns:ConfigOptions="clr-namespace:CofileUI.UserControls.ConfigOptions" StartupUri="Windows/WindowMain.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml">
+        </ResourceDictionary>
+        <!-- Accent and AppTheme setting -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml">
+        </ResourceDictionary>
+		<ResourceDictionary Source="/CofileUI;component/Resources/StringResources/StringResources.xaml">
+		</ResourceDictionary>
+      </ResourceDictionary.MergedDictionaries>
+      <!-- MyCustom -->
+      <!--Converter-->
+      <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
+      <local:ReverseBooleanToVisibilityConverter x:Key="MyReverseBoolToVisibilityConverter" />
+      <!--Style-->
+      <Style TargetType="UserControls:LinuxTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+      <!--<Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroTextBlock}" />-->
+      <Style TargetType="UserControls:ServerList" BasedOn="{StaticResource MetroListBox}" />
+      <Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroListBoxItem}" />
+      <Style TargetType="UserControls:ServerMenuButton" BasedOn="{StaticResource MetroToggleButton}" />
+      <Style TargetType="ConfigOptions:ConfigList" BasedOn="{StaticResource MetroTreeView}" />
+      <Style TargetType="ConfigOptions:ConfigInfoPanel" BasedOn="{StaticResource MetroTreeViewItem}" />
+      <Style TargetType="Window" BasedOn="{StaticResource MetroWindow}" />
+      <Style TargetType="UserControls:JsonTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+      <Style TargetType="UserControls:JsonButton" BasedOn="{StaticResource MetroButton}" />
+      <Style TargetType="UserControls:JsonAddButton" BasedOn="{StaticResource MetroButton}" />
+      <Style TargetType="UserControls:JsonDeleteButton" BasedOn="{StaticResource MetroButton}" />
+      <Style TargetType="UserControls:JsonToggleButton" BasedOn="{StaticResource MetroCircleToggleButtonStyle}" />
+      <Style TargetType="UserControls:JsonTextBox" BasedOn="{StaticResource MetroTextBox}" />
+      <Style TargetType="UserControls:KeyTextBox" BasedOn="{StaticResource MetroTextBox}" />
+      <Style TargetType="UserControls:ValueTextBox" BasedOn="{StaticResource MetroTextBox}" />
+      <!--<Style TargetType="UserControls:JsonTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+			<Style TargetType="UserControls:JsonButton" BasedOn="{StaticResource MetroButton}" />
+			<Style TargetType="UserControls:JsonAddButton" BasedOn="{StaticResource MetroButton}" />
+			<Style TargetType="UserControls:JsonDeleteButton" BasedOn="{StaticResource MetroButton}" />
+			<Style TargetType="UserControls:JsonToggleButton" BasedOn="{StaticResource MetroCircleToggleButtonStyle}" />
+			<Style TargetType="UserControls:JsonTextBox" BasedOn="{StaticResource MetroTextBox}" />
+			<Style TargetType="UserControls:KeyTextBox" BasedOn="{StaticResource MetroTextBox}" />
+			<Style TargetType="UserControls:ValueTextBox" BasedOn="{StaticResource MetroTextBox}" />-->
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

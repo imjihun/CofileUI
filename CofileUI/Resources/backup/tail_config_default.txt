@@ -1,0 +1,50 @@
+{
+  "type":"tail",
+  "comm_option": {
+	"input_dir": ".",
+	"input_ext": "log",
+	"output_dir": "/data1/cofile/tail_out",
+	"output_ext": "enc",
+	"sid": "API",
+	"tail_type": 2,
+	"interval": 1,
+	"no_inform": 2,
+	"#input_filter": "log_([1-2][0-9]{3}_[0-1][0-9]_[0-3][0-9]).log$",
+	"#input_filter_ex": "log_2016_09_27.log",
+	"#shutdown_time": 24,
+	"zero_byte_yn": true,
+	"#no_access_sentence":"Encrypted",
+	"file_reserver_yn": false,
+	"reg_yn": true
+  },
+  "enc_inform": [
+	{
+	  "item": "ARIA256CBC",
+	  "#enc_pattern":"nnnnnn-nnnnnnn",
+	  "#pattern":"([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}",
+	  "delimiter": "$$",
+	  "sub_left_len": 1,
+	  "sub_right_len": 1,
+	  "#jumin_check_yn": true
+	},
+	{
+	  "item": "ARIA256CBC",
+	  "#enc_pattern":"nnnnnn-nnnnnnn",
+	  "pattern": "[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}",
+	  "delimiter": "@@",
+	  "#sub_left_len": 1,
+	  "#sub_right_len": 1,
+	  "#jumin_check_yn": true
+	},
+	{
+	  "item": "ARIA256CBC",
+	  "enc_pattern":"nnnnnnnnnnnnn",
+	  "#pattern": "[96543][0-9]{3}-[0-9]{4}-[0-9]{4}-[0-9]{4}",
+	  "delimiter": "$$",
+	  "#sub_left_len": 1,
+	  "#sub_right_len": 1,
+	  "jumin_check_yn": true
+	}
+  ]
+}
+
