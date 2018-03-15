@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CofileUI.UserControls.CustomUI.Cofile
+namespace CofileUI.UserControls
 {
 	public class RelayCommand : ICommand
 	{

@@ -1,0 +1,36 @@
+[2018.03.14.11.05.56][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.14.11.05.59][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.14.11.05.59][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.14.11.05.59][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.14.11.06.00][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.14.11.06.00][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.14.11.06.13][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.14.11.57.19][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.14.11.57.22][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.14.11.57.22][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.14.11.57.22][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.14.11.57.23][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.14.11.57.23][Classes.SSHController._PullListInDirectory] Path = /
+

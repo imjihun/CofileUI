@@ -54,7 +54,6 @@ c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\o
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_EnvSetting.g.cs
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_LogIn.g.cs
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_MainSetting.g.cs
-c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_SelectJsonFile.g.cs
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ServerSetting.g.cs
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ViewFile.g.cs
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ViewImage.g.cs
@@ -97,7 +96,6 @@ c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\o
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_EnvSetting.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_LogIn.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_MainSetting.baml
-c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_SelectJsonFile.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ServerSetting.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ViewFile.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Windows\Window_ViewImage.baml

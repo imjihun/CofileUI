@@ -215,9 +215,6 @@
     <Compile Include="Windows\Window_MainSetting.xaml.cs">
       <DependentUpon>Window_MainSetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Window_SelectJsonFile.xaml.cs">
-      <DependentUpon>Window_SelectJsonFile.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Window_ServerSetting.xaml.cs">
       <DependentUpon>Window_ServerSetting.xaml</DependentUpon>
     </Compile>
@@ -423,10 +420,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\Window_SelectJsonFile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\Window_ServerSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -455,6 +448,12 @@
     <Resource Include="Resources\ico_cubeone32.ico" />
     <Resource Include="Resources\sam_config_default.txt" />
     <Resource Include="Resources\tail_config_default.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\directory_deny.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\is_directory.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net40\System.Data.SQLite.Core.targets')" />

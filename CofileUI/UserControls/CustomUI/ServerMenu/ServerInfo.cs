@@ -555,7 +555,7 @@ namespace CofileUI.UserControls
 				//((LinuxTreeViewItem)Cofile.current.treeView_linux_directory.Items[0]).IsExpanded = true;
 				//((LinuxTreeViewItem)Cofile.current.treeView_linux_directory.Items[0]).RefreshChild();
 				//Cofile.current.Refresh();
-				if(WindowMain.current != null)
+				if(SSHController.ReConnect() && WindowMain.current != null)
 					WindowMain.current.Refresh(selected_serverinfo_panel.Serverinfo.name);
 			}
 		}

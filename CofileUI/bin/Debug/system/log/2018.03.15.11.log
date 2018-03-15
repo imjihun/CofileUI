@@ -1,0 +1,830 @@
+[2018.03.15.11.02.06][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.02.09][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.02.09][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.02.09][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.02.10][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.02.12][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.02.13][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.02.18][Classes.SSHController._PullListInDirectory] Path = /home/test/test2
+
+[2018.03.15.11.04.29][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.04.32][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.04.32][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.04.32][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.04.33][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.04.33][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.04.33][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.04.37][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.04.39][Classes.SSHController._PullListInDirectory] Path = /home/cofile
+
+[2018.03.15.11.05.01][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.05.02][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.06.47][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.06.50][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.06.50][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.06.50][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.06.52][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.06.52][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.06.52][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.06.52][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.07.08][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.07.24][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.07.31][Classes.SSHController._PullListInDirectory] Path = /home/cofile
+
+[2018.03.15.11.07.34][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.07.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.07.37][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.09.35][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.09.38][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.09.38][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.09.38][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.09.39][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.15.09][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.15.12][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.15.12][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.15.12][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.15.13][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.15.13][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.15.13][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.15.20][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.15.22][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.16.40][Classes.SSHController._PullListInDirectory] Path = /dev
+
+[2018.03.15.11.16.45][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.16.45][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.16.45][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.16.45][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.16.47][Classes.SSHController._PullListInDirectory] Path = /dev
+
+[2018.03.15.11.16.58][Classes.SSHController._PullListInDirectory] Path = /home/cofile
+
+[2018.03.15.11.19.02][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.19.05][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.19.05][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.19.05][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.19.06][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.19.06][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.19.06][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.19.06][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.19.11][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.19.14][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.19.16][Classes.SSHController._PullListInDirectory] Path = /home/cofile
+
+[2018.03.15.11.22.53][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.22.56][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.22.56][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.22.56][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.22.57][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.22.57][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.22.57][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.22.57][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.23.00][Classes.SSHController._PullListInDirectory] Path = /bin
+
+[2018.03.15.11.23.33][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.23.36][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.23.36][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.23.36][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.23.36][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.23.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.23.36][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.23.36][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.24.12][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.24.15][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.24.15][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.24.15][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.24.16][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.24.16][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.24.16][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.24.16][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.24.41][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.24.44][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.24.44][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.24.44][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.24.44][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.24.44][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.24.44][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.24.45][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.24.45][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.24.45][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.24.45][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.24.52][Classes.SSHController._PullListInDirectory] Path = /home/cofile
+
+[2018.03.15.11.24.53][Classes.SSHController._PullListInDirectory] Path = /dev
+
+[2018.03.15.11.25.05][Classes.SSHController._PullListInDirectory] Path = /home/test/cofile-sample
+
+[2018.03.15.11.26.39][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.26.43][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.26.43][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.26.43][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.26.43][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.26.43][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.26.43][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.26.43][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.26.44][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.26.44][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.26.44][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.26.56][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.26.59][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.26.59][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.26.59][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.26.59][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.27.02][Classes.SSHController._PullListInDirectory] Path = /home/jeus
+
+[2018.03.15.11.28.27][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.28.30][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.28.30][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.28.30][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.28.30][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.28.30][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.28.30][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.28.30][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.28.31][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.30.19][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.30.22][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.30.22][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.30.22][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.30.23][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.30.23][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.30.23][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.30.23][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.30.24][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.34.15][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.34.18][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.34.18][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.34.18][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.34.19][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.34.19][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.34.19][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.34.19][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.34.20][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.34.50][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.34.53][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.34.53][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.34.53][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.34.54][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.34.54][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.34.54][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.34.54][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.49.38][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.49.41][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.49.41][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.49.41][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.49.42][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.49.43][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.49.43][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.49.43][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.51.43][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.51.46][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.51.46][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.51.46][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.51.48][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.51.48][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.51.55][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.11.52.14][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.52.40][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.53.42][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []JHLIM_DEBUG : (5) {
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []  "type": "file",
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []  "comm_option": {
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []    "sid": "API",
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []    "item": "AES256",
+
+[2018.03.15.11.53.53][Classes.Log.ViewMessage] []    "#encode_type": "0: binary, 1: ASCII",
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "encode_type": "0",
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "log_console_yn": false,
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "header_file_save_yn": false,
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "file_reserver_yn": true,
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "dir_monitoring_yn": false,
+
+[2018.03.15.11.53.54][Classes.Log.ViewMessage] []    "dir_monitoring_term": 1,
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "verify_yn": false,
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "result_log_yn": true,
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "#schedule_time": "12:00",
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "dir_recursive_yn": false,
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "dir_recursive_max_depth": 10,
+
+[2018.03.15.11.53.55][Classes.Log.ViewMessage] []    "delay_time": "2s",
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []    "scantime_yn": false
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []  },
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []  "enc_option": {
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []    "#input_filter": "[.]txt$",
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []    "#output_suffix_head": "head_",
+
+[2018.03.15.11.53.56][Classes.Log.ViewMessage] []    "#output_suffix_tail": "_tail",
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []    "input_dir": ".",
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []    "output_dir": ".",
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []    "input_extension": "txt",
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []    "output_extension": "coenc",
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []    "blacklist_filter": "[.](coenc)$"
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []  },
+
+[2018.03.15.11.53.57][Classes.Log.ViewMessage] []  "dec_option": {
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "#input_filter": "[.]coenc$",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "#output_suffix_head": "head_",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "#output_suffix_tail": "_tail",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "input_dir": ".",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "output_dir": ".",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "input_extension": "coenc",
+
+[2018.03.15.11.53.58][Classes.Log.ViewMessage] []    "output_extension": "codec",
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []    "blacklist_filter": "[.](codec|txt)$"
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []  },
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []  "work_group": {
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []    "test1": {
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []      "comm_option": {
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []        "file_reserver_yn": true,
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []        "dir_recursive_yn": true
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []      },
+
+[2018.03.15.11.53.59][Classes.Log.ViewMessage] []      "processes": [
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.00][Classes.Log.ViewMessage] []            "input_dir": "/01_file"
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []        },
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []            "input_dir": "/02_file",
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []            "blacklist_filter": "[.](coenc|zip)$"
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.01][Classes.Log.ViewMessage] []        },
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []            "delay_time": "1h"
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.02][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []          "dec_option": {
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []      ]
+
+[2018.03.15.11.54.03][Classes.Log.ViewMessage] []    },
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []    "test2": {
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []      "comm_option": {
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []        "file_reserver_yn": false,
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []        "dir_recursive_yn": false
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []      },
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []      "processes": [
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.04][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []            "input_dir": "/01_sam"
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.05][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []      ]
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []    }
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []  }
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []}
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) comm_option
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) enc_option
+
+[2018.03.15.11.54.06][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) dec_option
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) #input_filter
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) #output_suffix_head
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) #output_suffix_tail
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) input_dir
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) output_dir
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) input_extension
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) output_extension
+
+[2018.03.15.11.54.07][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) blacklist_filter
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) work_group
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []	JHLIM_DEBUG : (2) {
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []    "test1": {
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []      "comm_option": {
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []        "file_reserver_yn": true,
+
+[2018.03.15.11.54.08][Classes.Log.ViewMessage] []        "dir_recursive_yn": true
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []      },
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []      "processes": [
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.09][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []            "input_dir": "/01_file"
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []        },
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []            "input_dir": "/02_file",
+
+[2018.03.15.11.54.10][Classes.Log.ViewMessage] []            "blacklist_filter": "[.](coenc|zip)$"
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []        },
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []            "delay_time": "1h"
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.11][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []          "dec_option": {
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.12][Classes.Log.ViewMessage] []      ]
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []    },
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []    "test2": {
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []      "comm_option": {
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []        "file_reserver_yn": false,
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []        "dir_recursive_yn": false
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []      },
+
+[2018.03.15.11.54.13][Classes.Log.ViewMessage] []      "processes": [
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []        {
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.14][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []            "input_dir": "/01_sam"
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []      ]
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []    }
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []  }
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) test1
+
+[2018.03.15.11.54.15][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) comm_option
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) processes
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []JHLIM_DEBUG : (2) {
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.16][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []            "input_dir": "/01_file"
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) enc_option
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) {
+
+[2018.03.15.11.54.17][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []            "input_dir": "/02_file",
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []            "blacklist_filter": "[.](coenc|zip)$"
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []JHLIM_DEBUG : (3) {
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []            "delay_time": "1h"
+
+[2018.03.15.11.54.18][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []          "dec_option": {
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []            "input_dir": "/03_file"
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.19][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) enc_option
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) dec_option
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) input_dir
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) test2
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) comm_option
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) processes
+
+[2018.03.15.11.54.20][Classes.Log.ViewMessage] []JHLIM_DEBUG : (2) {
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []          "comm_option": {
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []            "file_reserver_yn": false,
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []            "dir_recursive_yn": true
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []          },
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []          "enc_option": {
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []            "input_dir": "/01_sam"
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []          }
+
+[2018.03.15.11.54.21][Classes.Log.ViewMessage] []        }
+
+[2018.03.15.11.54.22][Classes.Log.ViewMessage] []JHLIM_DEBUG : (1) enc_option
+
+[2018.03.15.11.54.22][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.11.54.22][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.11.56.20][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.11.56.23][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.56.23][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.56.23][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.11.56.23][Classes.Log.ViewMessage] []
+
+[2018.03.15.11.56.23][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.11.56.23][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.11.56.55][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.11.56.58][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.11.56.58][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.11.56.58][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.11.56.59][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.56.59][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.56.59][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.56.59][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.11.57.00][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.11.57.00][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.11.57.00][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.11.57.01][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.11.57.03][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.57.03][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.11.57.03][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.11.57.04][Classes.Log.ViewMessage] []
+
+[2018.03.15.11.57.04][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.11.57.04][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.11.57.20][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.11.57.27][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.11.57.59][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+

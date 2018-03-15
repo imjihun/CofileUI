@@ -1,0 +1,32 @@
+[2018.03.13.05.53.13][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.13.05.53.16][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.13.05.53.16][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.13.05.53.16][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.13.05.53.18][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db => c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db
+
+[2018.03.13.05.53.18][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db-shm => c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db-shm
+
+[2018.03.13.05.53.18][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db-wal => c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db-wal
+
+[2018.03.13.05.53.20][UserControls.Sqlite_LogTable.Refresh] Loaded
+
+[2018.03.13.05.53.20][UserControls.Sqlite_LogTable.Refresh] Loaded
+
+[2018.03.13.05.55.40][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.13.05.55.43][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.13.05.55.43][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.13.05.55.43][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.13.05.55.44][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.13.05.55.52][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.13.05.55.55][Classes.SSHController._PullListInDirectory] Path = /home/test
+

@@ -26,13 +26,15 @@ namespace CofileUI.UserControls
 	/// </summary>
 	public partial class ConfigMenu : UserControl
 	{
-		LinuxTreeViewItem root = null;
 		ConfigPanel servergrid = null;
+		JObject jobj_root;
+		public LinuxTreeViewItem ltvi_root { get; set; }
 
 		public ConfigMenu()
 		{
 			InitializeComponent();
-			root = (DataContext as LinuxTreeViewItem);
+			Console.WriteLine("JHLIM_DEBUG : DataContext = " + DataContext);
+			//if(DataContext != null)
 			InitConfigTab();
 		}
 		#region Config Menu Class
@@ -102,7 +104,7 @@ namespace CofileUI.UserControls
 
 							if(daemon_yn == "True")
 							{
-								LinuxTreeViewItem.ChangeColor(root, dir, jobj_config_root["type"] + "-" + work.Name + "-" + i);
+								Decrypt.current?.tv_linux?.ChangeColor(dir, jobj_config_root["type"] + "-" + work.Name + "-" + i);
 							}
 							i++;
 						}
@@ -121,8 +123,8 @@ namespace CofileUI.UserControls
 			try
 			{
 				//ConfigInfo.jobj_root = JObject.Parse(json);
-				JObject root = JObject.Parse("{ \"File Config\" : " + Properties.Resources.file_config_default + ", \"Sam Config\" : " + Properties.Resources.sam_config_default + ", \"Tail Config\" : " + Properties.Resources.tail_config_default + " }");
-				ConfigPanel panel_server = ConvertFromJson(root);
+				jobj_root = JObject.Parse("{ \"File Config\" : " + Properties.Resources.file_config_default + ", \"Sam Config\" : " + Properties.Resources.sam_config_default + ", \"Tail Config\" : " + Properties.Resources.tail_config_default + " }");
+				ConfigPanel panel_server = ConvertFromJson(jobj_root);
 
 				grid.Children.Add(panel_server);
 			}
@@ -137,7 +139,16 @@ namespace CofileUI.UserControls
 		protected override void OnMouseDown(MouseButtonEventArgs e)
 		{
 			base.OnMouseDown(e);
-			Console.WriteLine("JHLIM_DEBUG : " + servergrid.btn_group[0]?.Root["work_group"]?["test3"]);
+			Console.WriteLine("JHLIM_DEBUG : MouseDown");
+			if((Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel) == null)
+				Console.WriteLine("JHLIM_DEBUG : has no items " + Cofile.current.treeView_linux_directory1.Items[0]);
+			else
+			{
+				(Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel).IsExpanded = !(Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel).IsExpanded;
+				Console.WriteLine("JHLIM_DEBUG : has items");
+			}
+
+			//Console.WriteLine("JHLIM_DEBUG : " + servergrid.btn_group[0]?.Root["work_group"]?["test3"]);
 
 			JObject root = JObject.Parse("{ \"File Config\" : " + servergrid.btn_group[0].Root + ", \"Sam Config\" : " + servergrid.btn_group[1].Root + ", \"Tail Config\" : " + servergrid.btn_group[2].Root + " }");
 			servergrid.btn_group.Clear();

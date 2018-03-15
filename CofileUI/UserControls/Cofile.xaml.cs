@@ -47,69 +47,111 @@ namespace CofileUI.UserControls
 	{
 		public static Cofile current;
 		public bool bUpdated = false;
-		static LinuxTreeViewItem root;
+		LinuxTreeViewItem root;
 
 		public Cofile()
 		{
-			DataContext = root;
-			current = this;
 			InitializeComponent();
+
+			//root = new LinuxTreeViewItem("/", null, "/", true, null);
+			//treeView_linux_directory.Items.Add(root);
+
+			LinuxFileViewModel vfvm = new LinuxFileViewModel(this);
+			DataContext = vfvm;
+			current = this;
 			InitLinuxDirectory();
 			this.Loaded += (sender, e) => {
-				Console.WriteLine("JHLIM_DEBUG : loaded bUpdated = " + bUpdated);
 				if(!bUpdated)
 					Cofile.current.Refresh();
 			};
+			grid_config.Children.Add(new ConfigMenu() { DataContext = this });
 		}
 		#region Common
 		
 		string root_path = MainSettings.Path.PathDirPreviewFile;
-
 		public int Refresh()
 		{
 			if(WindowMain.current == null)
 				return -1;
 
-			//if(ssh != null && ssh.IsConnected)
-			//	ssh.Disconnect();
-			//if(sftp != null && sftp.IsConnected)
-			//	sftp.Disconnect();
-
-			// 삭제
-			//treeView_linux_directory.Items.Clear();
-			//listView_linux_files.Items.Clear();
-			root?.Items.Clear();
-			root = null;
-			treeView_linux_directory.Items.Clear();
-			listView_linux_files.Items.Clear();
-
+			if(!SSHController.IsConnected)
+				return -2;
 			// 추가
-			//string home_dir = sftp.WorkingDirectory;
 			// root 의 path 는 null 로 초기화
 			string working_dir = SSHController.WorkingDirectory;
 			if(working_dir == null)
 				return -1;
 
-			root = new LinuxTreeViewItem("/", null, "/", true, null);
-			treeView_linux_directory.Items.Add(root);
-			root.RefreshChild(working_dir, false);
-			Cofile.current.RefreshListView(LinuxTreeViewItem.Last_Refresh);
-			Log.PrintLog("[refresh]", "UserControls.Cofile.Refresh");
+			LinuxFileModel lfm_cur = treeView_linux_directory1.Items?[0] as LinuxFileModel;
+			if(lfm_cur != null)
+				lfm_cur.IsExpanded = true;
 
-			bUpdated = true;
+			string[] names = working_dir.Split('/');
+			Console.WriteLine("JHLIM_DEBUG : " + names);
+			if(names != null)
+			{
+				for(int i = 0; i < names.Length; i++)
+				{
+					if(names[i] == null || names[i].Length == 0)
+						continue;
+
+					for(int j = 0; j < lfm_cur.Children.Count; j++)
+					{
+						if(names[i] == lfm_cur.Children[j]?.Name)
+						{
+							lfm_cur = lfm_cur.Children[j];
+							lfm_cur.IsExpanded = true;
+							break;
+						}
+					}
+				}
+			}
+
+			//if(WindowMain.current == null)
+			//	return -1;
+
+			////if(ssh != null && ssh.IsConnected)
+			////	ssh.Disconnect();
+			////if(sftp != null && sftp.IsConnected)
+			////	sftp.Disconnect();
+
+			//// 삭제
+			////treeView_linux_directory.Items.Clear();
+			////listView_linux_files.Items.Clear();
+			//root?.Items.Clear();
+			//root = null;
+			//treeView_linux_directory.Items.Clear();
+			//listView_linux_files.Items.Clear();
+
+			//// 추가
+			////string home_dir = sftp.WorkingDirectory;
+			//// root 의 path 는 null 로 초기화
+			//string working_dir = SSHController.WorkingDirectory;
+			//if(working_dir == null)
+			//	return -1;
+
+			//if(root == null)
+			//{
+			//	root = new LinuxTreeViewItem("/", null, "/", true, null);
+			//	treeView_linux_directory.Items.Add(root);
+			//}
+			//root.RefreshChild(working_dir, false);
+			//Cofile.current.RefreshListView(LinuxTreeViewItem.Last_Refresh);
+			//Log.PrintLog("[refresh]", "UserControls.Cofile.Refresh");
+
+			//bUpdated = true;
 
 			return 0;
 			//LinuxTreeViewItem.ReconnectServer();
 		}
 		public void Clear()
 		{
-			root?.Items.Clear();
-			root = null;
-			treeView_linux_directory.Items.Clear();
-			listView_linux_files.Items.Clear();
-			SelectedConfigLocalPath = "Not Selected";
+			//root?.Items.Clear();
+			//root = null;
+			//treeView_linux_directory.Items.Clear();
+			//listView_linux_files.Items.Clear();
+			//SelectedConfigLocalPath = "Not Selected";
 		}
-
 		public void PrintCheckConfigFile()
 		{
 			Status.current.Clear();
@@ -203,9 +245,9 @@ namespace CofileUI.UserControls
 			//	SelectedConfigLocalPath = ofd.FileName;
 		}
 
-		#endregion
+#endregion
 
-		#region Linux Directory View
+#region Linux Directory View
 
 		static bool bool_show_hidden = true;
 		public static bool Bool_show_hidden
@@ -214,7 +256,6 @@ namespace CofileUI.UserControls
 			set
 			{
 				bool_show_hidden = value;
-				LinuxTreeViewItem.Filter(root, Filter_string, bool_show_hidden);
 			}
 		}
 		static string filter_string = "";
@@ -224,16 +265,26 @@ namespace CofileUI.UserControls
 			set
 			{
 				filter_string = value;
-
-				LinuxTreeViewItem.Filter(root, filter_string, Bool_show_hidden);
 			}
 		}
 
 		private void InitLinuxDirectory()
 		{
-			textBox_linux_directory_filter.TextChanged += delegate { Filter_string = textBox_linux_directory_filter.Text; RefreshListView(cur_LinuxTreeViewItem); };
-			checkBox_hidden.Checked += delegate { Bool_show_hidden = true; RefreshListView(cur_LinuxTreeViewItem); };
-			checkBox_hidden.Unchecked += delegate { Bool_show_hidden = false; RefreshListView(cur_LinuxTreeViewItem); };
+			textBox_linux_directory_filter.TextChanged += delegate {
+				Filter_string = textBox_linux_directory_filter.Text;
+				RefreshListView(cur_LinuxTreeViewItem);
+				LinuxTreeViewItem.Filter(root, Filter_string, Bool_show_hidden);
+			};
+			checkBox_hidden.Checked += delegate {
+				Bool_show_hidden = true;
+				RefreshListView(cur_LinuxTreeViewItem);
+				LinuxTreeViewItem.Filter(root, Filter_string, Bool_show_hidden);
+			};
+			checkBox_hidden.Unchecked += delegate {
+				Bool_show_hidden = false;
+				RefreshListView(cur_LinuxTreeViewItem);
+				LinuxTreeViewItem.Filter(root, Filter_string, Bool_show_hidden);
+			};
 			checkBox_hidden.IsChecked = false;
 
 			checkBox_linux_detail.IsChecked = true;
@@ -254,7 +305,7 @@ namespace CofileUI.UserControls
 				LinuxTreeViewItem ltvi = cur.Items[i] as LinuxTreeViewItem;
 				if(ltvi == null)
 					continue;
-				llvi = new LinuxListViewItem() { BindingName = ltvi.Header.Text, IsDirectory = ltvi.IsDirectory, LinuxTVI = ltvi };
+				llvi = new LinuxListViewItem() { BindingName = ltvi.FileName, IsDirectory = ltvi.IsDirectory, LinuxTVI = ltvi };
 				list_LinuxListViewItem.Add(llvi);
 			}
 
@@ -308,7 +359,7 @@ namespace CofileUI.UserControls
 				if(llvi.LinuxTVI == null)
 					return -1;
 
-				llvi.LinuxTVI.RefreshChild();
+				llvi.LinuxTVI.ReLoadChild();
 				//RefreshListView(selected.LinuxTVI);
 
 				//llvi.LinuxTVI.IsExpanded = false;
@@ -369,7 +420,7 @@ namespace CofileUI.UserControls
 					{
 						if(SSHController.MoveFileToLocal(root_path, remote_path_dec_file, local_filename, 0))
 						{
-							llvi.LinuxTVI.RefreshChildFromParent();
+							llvi.LinuxTVI?.Parent?.ReLoadChild();
 							Cofile.current.RefreshListView(Cofile.cur_LinuxTreeViewItem);
 
 							string url_localfile = root_path + local_filename;
@@ -387,7 +438,7 @@ namespace CofileUI.UserControls
 								|| expansion == "tiff"
 								)
 							{
-								Window_ViewImage wvi = new Window_ViewImage(LoadImage(url_localfile), llvi.LinuxTVI.FileInfo.Name);
+								Window_ViewImage wvi = new Window_ViewImage(LoadImage(url_localfile), llvi.LinuxTVI.FileName);
 								FileContoller.DeleteFile(url_localfile);
 
 								Point pt = this.PointToScreen(new Point(0, 0));
@@ -401,7 +452,7 @@ namespace CofileUI.UserControls
 								string str = FileContoller.Read(url_localfile);
 								FileContoller.DeleteFile(url_localfile);
 
-								Window_ViewFile wvf = new Window_ViewFile(str, llvi.LinuxTVI.FileInfo.Name);
+								Window_ViewFile wvf = new Window_ViewFile(str, llvi.LinuxTVI.FileName);
 
 								Point pt = this.PointToScreen(new Point(0, 0));
 								wvf.Left = pt.X;
@@ -478,32 +529,32 @@ namespace CofileUI.UserControls
 
 		private void OnKeyDownLinuxPath(object sender, KeyEventArgs e)
 		{
-			if(e.Key == Key.Enter)
-			{
-				root.RefreshChild(comboBox_listView_linuxpath.Text, false);
-				RefreshListView(LinuxTreeViewItem.Last_Refresh);
-			}
+			//if(e.Key == Key.Enter)
+			//{
+			//	root.RefreshChild(comboBox_listView_linuxpath.Text, false);
+			//	RefreshListView(LinuxTreeViewItem.Last_Refresh);
+			//}
 		}
 
 		private void OnClickRefresh(object sender, RoutedEventArgs e)
 		{
-			if(root == null)
-				Refresh();
+			//if(root == null)
+			//	Refresh();
 
-			else if(root != null)
-			{
-				string path = null;
-				if(LinuxTreeViewItem.Last_Refresh == null)
-					path = SSHController.WorkingDirectory;
-				else
-					path = LinuxTreeViewItem.Last_Refresh.Path;
+			//else if(root != null)
+			//{
+			//	string path = null;
+			//	if(LinuxTreeViewItem.Last_Refresh == null)
+			//		path = SSHController.WorkingDirectory;
+			//	else
+			//		path = LinuxTreeViewItem.Last_Refresh.Path;
 
-				if(path != null)
-				{
-					root.RefreshChild(path, false);
-					RefreshListView(LinuxTreeViewItem.Last_Refresh);
-				}
-			}
+			//	if(path != null)
+			//	{
+			//		root.RefreshChild(path, false);
+			//		RefreshListView(LinuxTreeViewItem.Last_Refresh);
+			//	}
+			//}
 		}
 
 		DateTime LastKeyDonwTime = DateTime.Now;
@@ -612,7 +663,7 @@ namespace CofileUI.UserControls
 			e.Handled = true;
 		}
 
-		#endregion
+#endregion
 		
 
 		public class LinuxListViewItem

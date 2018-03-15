@@ -1,0 +1,246 @@
+[2018.03.15.09.34.58][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.35.01][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.35.01][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.35.01][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.35.02][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.35.02][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.35.04][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.35.04][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.35.05][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.35.05][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.09.36.00][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.36.03][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.36.03][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.36.03][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.36.05][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db => C:\Users\Administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db
+
+[2018.03.15.09.36.05][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db-shm => C:\Users\Administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db-shm
+
+[2018.03.15.09.36.05][Classes.SSHController.DownloadFile] /home/test/var/data/cofile.db-wal => C:\Users\Administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\system\tmp\1.db-wal
+
+[2018.03.15.09.36.05][UserControls.Sqlite_LogTable.Refresh] Loaded
+
+[2018.03.15.09.36.05][UserControls.Sqlite_LogTable.Refresh] Loaded
+
+[2018.03.15.09.37.14][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.37.17][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.37.17][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.37.17][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.37.19][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.37.20][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.37.20][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.37.20][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.09.37.20][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.37.20][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.44.32][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.44.35][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.44.35][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.44.35][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.44.36][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.44.36][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.44.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.44.36][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.44.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.46.22][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.46.25][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.46.25][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.46.25][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.46.26][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.46.26][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.46.51][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.46.51][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.46.51][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.47.04][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.47.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.47.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.48.12][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.48.17][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.48.54][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.48.57][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.48.57][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.48.57][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.48.58][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.48.58][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.49.08][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.49.24][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.49.44][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.50.35][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.50.38][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.50.38][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.50.38][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.50.39][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.50.39][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.50.57][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.51.00][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.51.00][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.51.00][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.51.00][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.00][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.00][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.51.00][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.51.00][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.51.11][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.12][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.12][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.14][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.51.14][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.51.15][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.51.15][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.51.16][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.51.20][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.32][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.51.35][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.51.35][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.51.35][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.51.36][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.36][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.51.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.51.36][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.51.36][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.52.04][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.52.07][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.52.07][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.52.07][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.52.09][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.52.09][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.52.27][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.53.00][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.55.05][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.56.39][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.56.42][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.56.42][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.56.42][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.56.46][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.56.48][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.56.53][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.56.55][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.58.12][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.09.58.15][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.09.58.15][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.09.58.15][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.09.58.16][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.58.16][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.58.16][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.58.33][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.09.58.33][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.09.58.33][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.09.58.33][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.09.58.36][Classes.SSHController._PullListInDirectory] Path = /
+

@@ -50,16 +50,20 @@ namespace CofileUI.UserControls.ConfigOptions
 			get { return path; }
 			set
 			{
-				if(value != null)
-				{
-					path = value;
-					if(current as ConfigOptions.File.FileOptions != null)
-						((ConfigOptions.File.FileOptions)current).textBlock.Text = "File [ " + path + " ]";
-					if(current as ConfigOptions.Sam.SamOptions != null)
-						((ConfigOptions.Sam.SamOptions)current).textBlock.Text = "Sam [ " + path + " ]";
-					if(current as ConfigOptions.Tail.TailOptions != null)
-						((ConfigOptions.Tail.TailOptions)current).textBlock.Text = "Tail [ " + path + " ]";
-				}
+				path = value;
+
+				string path_title = "";
+				if(path != null)
+					path_title = " [ " + path + " ]";
+				
+				if(current as ConfigOptions.File.FileOptions != null)
+					((ConfigOptions.File.FileOptions)current).textBlock.Text = "File" + path_title;
+				if(current as ConfigOptions.Sam.SamOptions != null)
+					((ConfigOptions.Sam.SamOptions)current).textBlock.Text = "Sam" + path_title;
+				if(current as ConfigOptions.Tail.TailOptions != null)
+					((ConfigOptions.Tail.TailOptions)current).textBlock.Text = "Tail" + path_title;
+
+				Console.WriteLine("JHLIM_DEBUG : path = " + path + " current = " + current?.GetType());
 			}
 		}
 		private static string FileName
@@ -83,7 +87,7 @@ namespace CofileUI.UserControls.ConfigOptions
 					WindowMain.current.tabItem_Config.Header = Application.Current.FindResource("MainTab.Config") as string;
 			}
 		}
-		public static void Clear()
+		static void Clear()
 		{
 			current = null;
 
@@ -120,6 +124,8 @@ namespace CofileUI.UserControls.ConfigOptions
 		}
 		public static UserControl CreateOption(JToken token, string _work_name = null, string _index = null)
 		{
+			ConfigOptionManager.Clear();
+
 			Root = token;
 			work_name = _work_name;
 			index = _index;

@@ -33,7 +33,6 @@ namespace CofileUI.UserControls
 			InitializeComponent();
 
 			this.Loaded += (sender, e) => {
-				Console.WriteLine("JHLIM_DEBUG : loaded");
 				if(!DataBaseInfo.bUpdated)
 					DataBaseInfo.RefreshUi();
 			};
@@ -173,7 +172,6 @@ namespace CofileUI.UserControls
 		private void DelayRefresh()
 		{
 			SSHController.RunCofileCommand("cofile_monitor");
-			Log.PrintConsole("ssh connected = " + SSHController.ssh.IsConnected.ToString(), "JHLIM_DEBUG");
 			Thread.Sleep(500);
 			UserControls.DataBaseInfo.RefreshUi();
 		}

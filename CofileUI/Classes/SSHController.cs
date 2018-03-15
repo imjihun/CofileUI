@@ -152,6 +152,7 @@ namespace CofileUI.Classes
 				if(e.Result as string != null)
 				{
 					Log.ErrorIntoUI(e.Result as string, "Connect", Status.current.richTextBox_status);
+					WindowMain.current.ShowMessageDialog("Connect", "서버와 연결에 실패하였습니다.\n" + e.Result as string, MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
 				}
 			};
 			bw_connect.RunWorkerAsync("MyName");
@@ -629,7 +630,9 @@ namespace CofileUI.Classes
 				retval = Connect(ip, port, timeout_ms);
 
 				if(!IsConnected || !InitConnected())
+				{
 					retval = false;
+				}
 			}
 			return retval;
 		}
@@ -952,6 +955,7 @@ namespace CofileUI.Classes
 			}
 			catch(Exception e)
 			{
+				WindowMain.current.ShowMessageDialog("Open", e.Message, MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
 				Log.ErrorIntoUI(e.Message, "Pull Directory", Status.current.richTextBox_status);
 				Log.PrintError(e.Message, "Classes.SSHController._PullListInDirectory");
 			}
@@ -1099,6 +1103,38 @@ namespace CofileUI.Classes
 			}
 			return retval;
 		}
+		public static bool NewSendNRecvCofileCommand(IEnumerable<Object> selected_list, bool isEncrypt, string config_info, string cofile_type)
+		{
+			Status.current.Clear();
+
+			List <LinuxTree> parents = new List<LinuxTree>();
+			var enumerator = selected_list.GetEnumerator();
+			for(int i = 0; enumerator.MoveNext(); i++)
+			{
+				LinuxTreeViewItem ltvi = enumerator.Current as LinuxTreeViewItem;
+
+				CofileUI.UserControls.Cofile.LinuxListViewItem llvi = enumerator.Current as CofileUI.UserControls.Cofile.LinuxListViewItem;
+				if(llvi != null)
+					ltvi = llvi.LinuxTVI as LinuxTreeViewItem;
+
+				if(ltvi == null)
+					break;
+
+				string send_cmd = "cofile " + cofile_type + " -e -c " + config_info;
+
+				if(!SendCommand(send_cmd))
+					return false;
+
+				LinuxTree parent = ltvi.Parent;
+				if(parent != null && parents.IndexOf(parent) < 0)
+					parents.Add(parent);
+			}
+			WindowMain.current.progressBar.Value = 0;
+			for(int i = 0; i < parents.Count; i++)
+				parents[i].ReLoadChild();
+			Cofile.current.RefreshListView(Cofile.cur_LinuxTreeViewItem);
+			return true;
+		}
 		public static bool SendNRecvCofileCommand(IEnumerable<Object> selected_list, bool isEncrypt, bool is_tail_deamon)
 		{
 			Status.current.Clear();
@@ -1116,7 +1152,7 @@ namespace CofileUI.Classes
 			//	return false;
 
 			string env_co_home = EnvCoHome;
-			List <LinuxTreeViewItem> parents = new List<LinuxTreeViewItem>();
+			List <LinuxTree> parents = new List<LinuxTree>();
 			var enumerator = selected_list.GetEnumerator();
 			for(int i = 0; enumerator.MoveNext(); i++)
 			{
@@ -1144,13 +1180,13 @@ namespace CofileUI.Classes
 				//string caption = isEncrypt ? "Encrypt" : "Decrypt";
 				//Log.ViewMessage(ret, caption, Status.current.richTextBox_status);
 
-				LinuxTreeViewItem parent = ltvi.Parent;
+				LinuxTree parent = ltvi.Parent;
 				if(parent != null && parents.IndexOf(parent) < 0)
 					parents.Add(parent);
 			}
 			WindowMain.current.progressBar.Value = 0;
 			for(int i = 0; i < parents.Count; i++)
-				parents[i].RefreshChild();
+				parents[i].ReLoadChild();
 			Cofile.current.RefreshListView(Cofile.cur_LinuxTreeViewItem);
 			return true;
 		}
@@ -1167,7 +1203,7 @@ namespace CofileUI.Classes
 			//	return false;
 
 			string env_co_home = EnvCoHome;
-			List <LinuxTreeViewItem> parents = new List<LinuxTreeViewItem>();
+			List <LinuxTree> parents = new List<LinuxTree>();
 			var enumerator = selected_list.GetEnumerator();
 			for(int i = 0; enumerator.MoveNext(); i++)
 			{
@@ -1194,13 +1230,13 @@ namespace CofileUI.Classes
 				//string caption = isEncrypt ? "Encrypt" : "Decrypt";
 				//Log.ViewMessage(ret, caption, Status.current.richTextBox_status);
 
-				LinuxTreeViewItem parent = ltvi.Parent;
+				LinuxTree parent = ltvi.Parent;
 				if(parent != null && parents.IndexOf(parent) < 0)
 					parents.Add(parent);
 			}
 			WindowMain.current.progressBar.Value = 0;
 			for(int i = 0; i < parents.Count; i++)
-				parents[i].RefreshChild();
+				parents[i].ReLoadChild();
 			Cofile.current.RefreshListView(Cofile.cur_LinuxTreeViewItem);
 			return true;
 		}
@@ -1288,60 +1324,5 @@ namespace CofileUI.Classes
 			return UploadFile(local_file_path, remote_path_dir, remote_backup_path_dir);
 		}
 		#endregion
-
-
-		public static SftpFileTree GetListConfigFile()
-		{
-			string remote_directory = EnvCoHome;
-			if(remote_directory == null)
-				return null;
-
-			string remote_path_dir = remote_directory + add_path_config_dir + ServerList.selected_serverinfo_panel.Serverinfo.id + "/";
-
-			SftpFileTree.MakeTree(SftpFileTree.root, remote_path_dir);
-			return SftpFileTree.root;
-		}
-	}
-
-	public class SftpFileTree
-	{
-		public static SftpFileTree root = new SftpFileTree();
-		private SftpFile file;
-		public SftpFile File { get { return file; } set { file = value; } }
-		public SftpFileTree parent = null;
-		public List<SftpFileTree> children = new List<SftpFileTree>();
-		private SftpFileTree() { parent = this; }
-		public SftpFileTree(SftpFile _file)
-		{
-			File = _file;
-		}
-
-		public static void MakeTree(SftpFileTree cur, string remote_path_dir)
-		{
-			cur.children.Clear();
-
-			SftpFile[] files = SSHController.PullListInDirectory(remote_path_dir);
-			for(int i = 0; i < files.Length; i++)
-			{
-				if(files[i].Name == ".")
-					continue;
-
-				SftpFileTree child = new SftpFileTree(files[i]);
-
-				cur.children.Add(child);
-				child.parent = cur;
-
-				if(files[i].IsDirectory)
-				{
-					if(files[i].Name == "..")
-					{
-						if(cur.parent != null)
-							child.children = cur.parent.children;
-					}
-					else
-						MakeTree(child, files[i].FullName);
-				}
-			}
-		}
 	}
 }

@@ -106,7 +106,6 @@ namespace CofileUI.UserControls
 			comboBox_change_count_page.SelectionChanged += ComboBox_change_count_page_SelectionChanged;
 
 			this.Loaded += (sender, e) => {
-				Console.WriteLine("JHLIM_DEBUG : loaded");
 				if(!DataBaseInfo.bUpdated)
 					DataBaseInfo.RefreshUi();
 			};

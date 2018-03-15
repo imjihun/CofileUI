@@ -170,7 +170,38 @@
 					</Grid>
 				</Grid>
 				<Grid Grid.Row="1">
-					<TreeView x:Name="treeView_linux_directory"/>
+					<TreeView x:Name="treeView_linux_directory1" ItemsSource="{Binding LinuxFileTree}">
+						<TreeView.Style >
+							<Style TargetType="{x:Type TreeView}" BasedOn="{StaticResource MetroTreeView}">
+								<Setter Property="local:Behaviours.MouseMoveBehaviour" Value="{Binding MouseMoveCommand}"/>
+							</Style>
+						</TreeView.Style>
+						<TreeView.ItemContainerStyle>
+							<Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
+								<!--<Setter Property="local:Behaviours.ExpandedBehaviour" Value="{Binding ExpandedCommand}"/>-->
+								<Setter Property="local:Behaviours.MouseLeftButtonUpBehaviour" Value="{Binding MouseLeftButtonUpCommand}"/>
+								<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+								<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+								<Setter Property="Background" Value="{Binding BackGroundColor}"/>
+							</Style>
+						</TreeView.ItemContainerStyle>
+
+						<TreeView.ItemTemplate>
+							<HierarchicalDataTemplate ItemsSource="{Binding Children}" >
+								<DockPanel>
+									<DockPanel DockPanel.Dock="Left" Background="{Binding NameBackGroundColor}" Opacity="{Binding Opacity}" >
+										<Rectangle Width="20" Height="20" DockPanel.Dock="Left" VerticalAlignment="Center" Opacity="{Binding Opacity}">
+											<Rectangle.Fill>
+												<ImageBrush ImageSource="{Binding Icon}"/>
+											</Rectangle.Fill>
+										</Rectangle>
+										<TextBlock Background="OldLace" Text="{Binding Name}" DockPanel.Dock="Left" VerticalAlignment="Center" FontWeight="{Binding FontWeight}" Foreground="{Binding FontColor}"/>
+									</DockPanel>
+									<TextBlock Background="Red" Text="{Binding ConfigIndex}" Margin="0,0,5,0" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+								</DockPanel>
+							</HierarchicalDataTemplate>
+						</TreeView.ItemTemplate>
+					</TreeView>
 				</Grid>
 				<Grid Grid.Row="2" Margin="2">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
@@ -199,8 +230,8 @@
 							  Grid.Row="1"
 							  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="2"/>
 			</Grid>
-			<Grid Grid.Column="1">
-				<UserControls:ConfigMenu DataContext="{Binding DataContext}"/>
+			<Grid x:Name="grid_config" Grid.Column="1">
+				<!--<UserControls:ConfigMenu DataContext="{Binding}"/>-->
 			</Grid>
 
 			<GridSplitter Background="Gray"

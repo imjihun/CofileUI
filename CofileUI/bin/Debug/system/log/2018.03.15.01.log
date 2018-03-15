@@ -1,0 +1,310 @@
+[2018.03.15.01.23.35][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.23.38][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.23.38][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.23.38][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.23.39][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.23.39][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.23.39][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.23.39][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.23.49][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.23.49][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.23.49][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.23.49][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.23.49][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.23.49][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.23.56][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.23.56][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.23.56][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.23.57][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.23.57][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.23.57][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.26.06][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.26.08][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.26.08][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.26.09][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.27.05][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.27.08][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.27.08][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.27.08][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.27.09][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.27.09][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.27.09][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.27.09][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.18][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.19][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.20][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.21][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.21][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.21][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.21][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.21][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.28][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.27.32][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.32][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.27.32][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.27.33][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.27.33][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.27.33][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.27.33][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.29.15][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.29.18][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.29.18][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.29.18][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.29.18][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.29.18][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.29.18][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.29.19][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.29.19][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.29.19][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.29.19][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.29.25][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.29.45][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.29.48][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.29.48][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.29.48][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.29.49][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.29.49][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.29.49][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.29.49][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.29.54][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.29.57][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.29.59][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.29.59][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.29.59][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.29.59][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.30.00][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.31.13][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.31.16][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.31.16][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.31.16][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.31.17][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.31.17][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.31.17][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.31.17][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.31.20][UserControls.ConfigOptions.ConfigOptionManager.CreateOption] type = file
+
+[2018.03.15.01.31.22][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.31.22][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.31.22][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.31.22][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] [][test@localhost ~]$ cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.31.23][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+
+[2018.03.15.01.32.07][Classes.SSHController.Connect.bw_connect] ip = 192.168.1.55, port = 22
+
+[2018.03.15.01.32.10][Classes.SSHController.sendCommand] echo $CO_HOME
+
+[2018.03.15.01.32.10][Classes.SSHController.ReadLinesBlocking] /home/test
+
+[2018.03.15.01.32.10][Classes.SSHController._LoadEnvCoHome] $CO_HOME = /home/test
+
+[2018.03.15.01.32.11][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.32.11][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.32.11][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.32.12][Classes.SSHController._PullListInDirectory] Path = /
+
+[2018.03.15.01.32.12][Classes.SSHController._PullListInDirectory] Path = /home
+
+[2018.03.15.01.32.12][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.32.12][UserControls.Cofile.Refresh] [refresh]
+
+[2018.03.15.01.32.14][Classes.SSHController._PullListInDirectory] Path = /home/test
+
+[2018.03.15.01.32.21][Classes.SSHController.sendCommand] cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.32.21][Classes.Log.ViewMessage] []cofile file -e -c /home/test/var/conf/test/file.json
+
+[2018.03.15.01.32.21][Classes.Log.ViewMessage] []Copyright (c) 2004-2016, eGlobal Systems, Co., Ltd.
+
+[2018.03.15.01.32.22][Classes.Log.ViewMessage] []
+
+[2018.03.15.01.32.22][Classes.Log.ViewMessage] []input_dir not found or no perm [/01_sam]
+
+[2018.03.15.01.32.22][Classes.Log.ViewMessage] []CheckCoFileConfig Error
+

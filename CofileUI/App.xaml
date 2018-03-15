@@ -21,8 +21,9 @@
       <!--Converter-->
       <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
       <local:ReverseBooleanToVisibilityConverter x:Key="MyReverseBoolToVisibilityConverter" />
-      <!--Style-->
-      <Style TargetType="UserControls:LinuxTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+			<!--Style-->
+			<Style TargetType="UserControls:LinuxTreeView" BasedOn="{StaticResource MetroTreeView}" />
+			<Style TargetType="UserControls:LinuxTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
       <!--<Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroTextBlock}" />-->
       <Style TargetType="UserControls:ServerList" BasedOn="{StaticResource MetroListBox}" />
       <Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroListBoxItem}" />

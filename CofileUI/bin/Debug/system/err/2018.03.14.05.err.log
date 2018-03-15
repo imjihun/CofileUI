@@ -1,0 +1,57 @@
+[2018.03.14.05.00.01][Config Error] Check the Config file [path = ]
+
+[2018.03.14.05.00.06][Config Error] Check the Config file [path = ]
+
+[2018.03.14.05.00.08][Config Error] Check the Config file [path = ]
+
+[2018.03.14.05.13.06][UserControls.ServerInfo.ConvertFromJson] 개체 참조가 개체의 인스턴스로 설정되지 않았습니다.
+
+[2018.03.14.05.13.06][UserControls.ConfigMenu.InitConfigtab] 값은 null일 수 없습니다.
+매개 변수 이름: 'System.Windows.Controls.UIElementCollection'의 자식은 null일 수 없습니다. UIElement에서 파생된 개체가 필요합니다.
+
+[2018.03.14.05.13.06][UserControls.ServerInfo.ConvertFromJson] 개체 참조가 개체의 인스턴스로 설정되지 않았습니다.
+
+[2018.03.14.05.13.06][UserControls.ConfigMenu.InitConfigtab] 값은 null일 수 없습니다.
+매개 변수 이름: 'System.Windows.Controls.UIElementCollection'의 자식은 null일 수 없습니다. UIElement에서 파생된 개체가 필요합니다.
+
+[2018.03.14.05.13.35][UserControls.ServerInfo.ConvertFromJson] 개체 참조가 개체의 인스턴스로 설정되지 않았습니다.
+
+[2018.03.14.05.13.35][UserControls.ConfigMenu.InitConfigtab] 값은 null일 수 없습니다.
+매개 변수 이름: 'System.Windows.Controls.UIElementCollection'의 자식은 null일 수 없습니다. UIElement에서 파생된 개체가 필요합니다.
+
+[2018.03.14.05.13.58][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.14.36][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.16.12][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.17.42][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.18.11][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.19.05][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.21.08][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.22.11][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.23.19][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.23.45][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.24.20][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.26.24][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.30.26][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.32.42][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.36.15][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.37.01][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.37.58][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+
+[2018.03.14.05.40.08][Classes.SSHController.Connect.th_popup] 스레드가 중단되었습니다.
+

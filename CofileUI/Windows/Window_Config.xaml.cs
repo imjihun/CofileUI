@@ -27,7 +27,6 @@ namespace CofileUI.Windows
 			InitializeComponent();
 
 			IsModal = _IsModal;
-			ConfigOptionManager.Clear();
 
 			ConfigOptionManager.Path = path;
 			if(ui != null)

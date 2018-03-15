@@ -19,52 +19,12 @@ namespace CofileUI.UserControls
 	///						-> Items -> LinuxTreeViewItem
 	/// </summary>
 
-	public class LinuxTree
+	public interface LinuxTree
 	{
-		private SftpFile fileinfo;
-		public SftpFile Fileinfo { get { return fileinfo; } set { fileinfo = value; } }
-		private List<LinuxTree> childs = new List<LinuxTree>();
-		public List<LinuxTree> Childs { get { return childs; } set { childs = value; } }
-
-		private bool IsLoaded = false;
-
-		public LinuxTree(SftpFile _fileinfo)
-		{
-			Fileinfo = _fileinfo;
-		}
-		public bool LoadChild()
-		{
-			if(IsLoaded)
-				return true;
-
-			SftpFile[] files;
-
-			files = SSHController.PullListInDirectory(Fileinfo.FullName);
-			if(files == null)
-				return false;
-
-			this.Childs.Clear();
-			foreach(var file in files)
-				this.Childs.Add(new LinuxTree(file));
-
-			IsLoaded = true;
-			return true;
-		}
-		public LinuxTree[] GetChild()
-		{
-			LoadChild();
-			return Childs.ToArray();
-		}
-		public bool ViewUpdate()
-		{
-			LoadChild();
-
-			return true;
-		}
+		void ReLoadChild();
 	}
 
-	
-	public class LinuxTreeViewItem : TreeViewItem
+	public class LinuxTreeView : TreeView, LinuxTree
 	{
 		public static class _Color
 		{
@@ -82,8 +42,176 @@ namespace CofileUI.UserControls
 			public static SolidColorBrush Background_unselected = null;
 			#endregion
 		}
+		public static string[] IGNORE_FILENAME = new string[] {".", ".."};
 
-		static string[] IGNORE_FILENAME = new string[] {".", ".."};
+		private List<LinuxTreeViewItem> selected_list = new List<LinuxTreeViewItem>();
+		public List<LinuxTreeViewItem> Selected_list { get { return selected_list; } }
+
+		public LinuxTreeViewItem last_refresh = null;
+		public LinuxTreeViewItem Last_refresh { get { return last_refresh; } set { last_refresh = value; } }
+
+		bool bool_show_hidden = true;
+		public bool Bool_show_hidden
+		{
+			get { return bool_show_hidden; }
+			set
+			{
+				bool_show_hidden = value;
+				//LinuxTreeViewItem.Filter(tv_linux, Filter_string, bool_show_hidden);
+			}
+		}
+		string filter_string = "";
+		public string Filter_string
+		{
+			get { return filter_string; }
+			set
+			{
+				filter_string = value;
+
+				//LinuxTreeViewItem.Filter(tv_linux, filter_string, Bool_show_hidden);
+			}
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			//Log.Print(linked_jtoken);
+			base.OnMouseMove(e);
+			if(e.LeftButton == MouseButtonState.Pressed
+				&& Selected_list.Count > 0)
+			{
+				DataObject data = new DataObject();
+				data.SetData("Object", Selected_list);
+				DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
+			}
+
+			//e.Handled = true;
+		}
+
+		public void ReLoadChild()
+		{
+			SftpFile[] files;
+			files = SSHController.PullListInDirectory("/");
+			if(files == null)
+			{
+				return;
+			}
+
+			this.Items.Clear();
+
+			int count_have_directory = 0;
+			LinuxTreeViewItem ltvi_cur = null;
+			foreach(var file in files)
+			{
+				int i;
+				for(i = 0; i < LinuxTreeView.IGNORE_FILENAME.Length; i++)
+				{
+					if(file.Name == LinuxTreeView.IGNORE_FILENAME[i])
+						break;
+				}
+				if(i != LinuxTreeView.IGNORE_FILENAME.Length)
+					continue;
+
+				LinuxTreeViewItem ltvi;
+				if(file.IsDirectory)
+				{
+					ltvi = new LinuxTreeViewItem(this, file.FullName, file, file.Name, true, this);
+					this.Items.Insert(count_have_directory++, ltvi);
+				}
+				else
+				{
+					ltvi = new LinuxTreeViewItem(this, file.FullName, file, file.Name, false, this);
+					this.Items.Add(ltvi);
+				}
+			}
+		}
+		public int ReLoadChild(string path)
+		{
+			if(path == null
+				|| path.Length <= 0
+				|| path[0] != '/')
+				return -1;
+
+			string[] path_names = path.Split('/');
+
+			this.ReLoadChild();
+
+			if(path != null)
+			{
+				LinuxTree lt_cur = this;
+				for(int i = 0; i < path_names.Length; i++)
+				{
+					if(lt_cur != null && path_names[i].Length > 0)
+					{
+						ItemCollection items = (lt_cur as ItemsControl)?.Items;
+						lt_cur = null;
+						if(items != null)
+						{
+							int j;
+							for(j = 0; j < items.Count; j++)
+							{
+								if((items[j] as LinuxTreeViewItem)?.FileName == path_names[i])
+								{
+									lt_cur = items[j] as LinuxTree;
+									lt_cur.ReLoadChild();
+									break;
+								}
+							}
+							if(j == items.Count)
+								return -2;
+						}
+					}
+				}
+			}
+			return 0;
+		}
+		public int ChangeColor(string path, string config_path)
+		{
+			if(path == null
+				|| path.Length <= 0
+				|| path[0] != '/')
+				return -1;
+
+			string[] path_names = path.Split('/');
+
+			if(path != null)
+			{
+				LinuxTree lt_cur = this;
+				for(int i = 0; i < path_names.Length; i++)
+				{
+					if(lt_cur != null && path_names[i].Length > 0)
+					{
+						ItemCollection items = (lt_cur as ItemsControl)?.Items;
+						lt_cur = null;
+						if(items != null)
+						{
+							int j;
+							for(j = 0; j < items.Count; j++)
+							{
+								if((items[j] as LinuxTreeViewItem)?.FileName == path_names[i])
+								{
+									lt_cur = items[j] as LinuxTree;
+									if(i == path_names.Length - 1)
+									{
+										(items[j] as LinuxTreeViewItem).OriginBackground = Brushes.LightGreen;
+										(items[j] as LinuxTreeViewItem).ConfigPath = config_path;
+									}
+									else
+										(items[j] as LinuxTreeViewItem).OriginBackground = Brushes.LightCyan;
+									break;
+								}
+							}
+							if(j == items.Count)
+								return -2;
+						}
+					}
+				}
+			}
+			return 0;
+		}
+	}
+	public class LinuxTreeViewItem : TreeViewItem, LinuxTree
+	{
+		private LinuxTreeView view;
 
 		private string path;
 		public string Path
@@ -92,8 +220,6 @@ namespace CofileUI.UserControls
 			set
 			{
 				path = value;
-				if(value == "/")
-					this.Header.Text = value;
 			}
 		}
 		private bool isDirectory = false;
@@ -105,105 +231,85 @@ namespace CofileUI.UserControls
 				isDirectory = value;
 				if(value)
 				{
-					TextBlock tb = this.Header.Tb_name as TextBlock;
-					if(tb == null)
+					Label dummy = new Label();
+					this.Items.Add(dummy);
+					if(tbName == null)
 						return;
 
-					tb.FontWeight = FontWeights.Bold;
-					tb.Foreground = _Color.Folder_foreground;
+					tbName.FontWeight = FontWeights.Bold;
+					tbName.Foreground = LinuxTreeView._Color.Folder_foreground;
 				}
 				else
 				{
 				}
 			}
 		}
+
+		public string FileName { get { if(FileInfo == null) return Path; else return FileInfo.Name; } }
 
 		private SftpFile fileInfo;
 		public SftpFile FileInfo { get { return fileInfo; } set { fileInfo = value; } }
 		#region header
-		public class Grid_Header : DockPanel
-		{
-			private TextBlock tb_name;
-			public TextBlock Tb_name { get { return tb_name; } }
-			//const int HEIGHT = 30;
-			public string Text
-			{
-				get
-				{
-					if(tb_name == null)
-						return null;
-					return tb_name.Text;
-					//tb.Text = newText;
-				}
-				set
-				{
-					if(tb_name == null)
-						return;
-					tb_name.Text = value;
-				}
-			}
-
-			public TextBlock tb_config_path;
-
-			public Grid_Header(string header, bool isDirectory)
-			{
-				//this.Height = HEIGHT;
-				//this.Orientation = Orientation.Horizontal;
-				Image img = new Image();
-				if(isDirectory)
-					img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/directory.png", System.UriKind.Relative));
-					//img.Source = BitmapToImageSource(Properties.Resources.directory);
-				else
-					img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/file.png", System.UriKind.Relative));
-					//img.Source = BitmapToImageSource(Properties.Resources.file);
-				img.Height = img.Width = 20;
-				DockPanel.SetDock(img, Dock.Left);
-				this.Children.Add(img);
-
-				tb_name = new TextBlock();
-				tb_name.Text = header;
-				tb_name.VerticalAlignment = VerticalAlignment.Center;
-				DockPanel.SetDock(tb_name, Dock.Left);
-				this.Children.Add(tb_name);
-
-				tb_config_path = new TextBlock();
-				tb_config_path.VerticalAlignment = VerticalAlignment.Center;
-				tb_config_path.HorizontalAlignment = HorizontalAlignment.Right;
-				tb_config_path.Text = "";
-				tb_config_path.Margin = new Thickness(0, 0, 5, 0);
-				DockPanel.SetDock(tb_config_path, Dock.Right);
-				this.Children.Add(tb_config_path);
-			}
-			BitmapImage BitmapToImageSource(System.Drawing.Bitmap bitmap)
-			{
-				using(MemoryStream memory = new MemoryStream())
-				{
-					bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-					memory.Position = 0;
-					BitmapImage bitmapimage = new BitmapImage();
-					bitmapimage.BeginInit();
-					bitmapimage.StreamSource = memory;
-					bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-					bitmapimage.EndInit();
-
-					return bitmapimage;
-				}
-			}
-
-		}
 		// Casting ( Object To Grid_Header )
-		public new Grid_Header Header { get { return base.Header as Grid_Header; } set { base.Header = value; } }
-		#endregion
-
-		public LinuxTreeViewItem(string _path, SftpFile _file, string header, bool _isDirectory, LinuxTreeViewItem _parent)
+		public new DockPanel Header { get { return base.Header as DockPanel; } }
+		private ContextMenu enableContextMenu = null;
+		private TextBlock tbName;
+		private TextBlock tbConfigPath;
+		private Image img;
+		public string ConfigPath
 		{
+			get { return tbConfigPath.Text; }
+			set
+			{
+				tbConfigPath.Text = value;
+				if(value == null || value.Length == 0)
+					this.ContextMenu = null;
+				else
+				{
+					this.ContextMenu = enableContextMenu;
+				}
+			}
+		}
+		public Brush HaederBackGround { set { tbName.Background = value; } }
+		void InitHeader(string header, bool _isDirectory)
+		{
+			base.Header = new DockPanel();
+			img = new Image();
+			if(_isDirectory)
+				img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/is_directory.png", System.UriKind.Relative));
+			//img.Source = BitmapToImageSource(Properties.Resources.directory);
+			else
+				img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/file.png", System.UriKind.Relative));
+			//img.Source = BitmapToImageSource(Properties.Resources.file);
+			img.Height = img.Width = 20;
+			DockPanel.SetDock(img, Dock.Left);
+			this.Header.Children.Add(img);
+
+			tbName = new TextBlock();
+			tbName.Text = header;
+			tbName.VerticalAlignment = VerticalAlignment.Center;
+			DockPanel.SetDock(tbName, Dock.Left);
+			this.Header.Children.Add(tbName);
+
+			tbConfigPath = new TextBlock();
+			tbConfigPath.VerticalAlignment = VerticalAlignment.Center;
+			tbConfigPath.HorizontalAlignment = HorizontalAlignment.Right;
+			tbConfigPath.Text = "";
+			tbConfigPath.Margin = new Thickness(0, 0, 5, 0);
+			DockPanel.SetDock(tbConfigPath, Dock.Right);
+			this.Header.Children.Add(tbConfigPath);
+		}
+		#endregion
+		public LinuxTreeViewItem(LinuxTreeView _view, string _path, SftpFile _file, string header, bool _isDirectory, LinuxTree _parent)
+		{
+			view = _view;
 			if(header == null && _path != null)
 			{
 				string[] splited = _path.Split('/');
 				header = splited[splited.Length - 1];
 			}
 			
-			this.Header = new Grid_Header(header, _isDirectory);
+			InitHeader(header, _isDirectory);
 			this.Cursor = Cursors.Hand;
 			this.Path = _path;
 			this.parent = _parent;
@@ -214,62 +320,31 @@ namespace CofileUI.UserControls
 
 			this.IsDirectory = _isDirectory;
 
-			if(this.IsDirectory)
-			{
-				// 임시
-				Label dummy = new Label();
-				this.Items.Add(dummy);
-				TextBlock tb = this.Header.Tb_name as TextBlock;
-				if(tb == null)
-					return;
-
-				tb.FontWeight = FontWeights.Bold;
-				tb.Foreground = _Color.Folder_foreground;
-			}
-
-			if(this.Header.Text != null && this.Header.Text.Length > 0 && this.Header.Text[0] == '.')
+			if(this.FileName != null && this.FileName.Length > 0 && this.FileName[0] == '.')
 			{
 				this.Header.Opacity = .5;
 			}
-		}
 
-		#region Context Menu
-		private void InitContextMenu()
-		{
-			this.ContextMenu = new ContextMenu();
+			enableContextMenu = new ContextMenu();
 			MenuItem item = new MenuItem();
-			item.Header = Cofile.current.Resources["String.Context.Encrypt"];
-			item.Icon = new PackIconFontAwesome()
+			item.Header = "Kill";
+			//item.Icon = new PackIconFontAwesome()
+			//{
+			//	Kind = PackIconFontAwesomeKind.Lock,
+			//	VerticalAlignment = VerticalAlignment.Center,
+			//	HorizontalAlignment = HorizontalAlignment.Center
+			//};
+			item.Click += (sender, e) =>
 			{
-				Kind = PackIconFontAwesomeKind.Lock,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
+				Console.WriteLine("JHLIM_DEBUG : Kill??");
 			};
-			item.Click += OnClickEncrypt;
-			this.ContextMenu.Items.Add(item);
-			item = new MenuItem();
-			item.Icon = new PackIconFontAwesome()
-			{
-				Kind = PackIconFontAwesomeKind.Unlock,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			item.Header = Cofile.current.Resources["String.Context.Decrypt"];
-			item.Click += OnClickDecrypt;
-			this.ContextMenu.Items.Add(item);
+			enableContextMenu.Items.Add(item);
 		}
-		private void OnClickEncrypt(object sender, RoutedEventArgs e)
-		{
-			Cofile.current.ConfirmEncDec(selected_list, true);
-		}
-		private void OnClickDecrypt(object sender, RoutedEventArgs e)
-		{
-			Cofile.current.ConfirmEncDec(selected_list, false);
-		}
-		#endregion
 
 		#region Multi Select From Mouse Handle
-		private static List<LinuxTreeViewItem> selected_list = new List<LinuxTreeViewItem>();
+		private Brush originBackground = LinuxTreeView._Color.Background_unselected;
+		public Brush OriginBackground { get { return originBackground; } set { originBackground = value; if(!this.MySelected) this.Background = value; } }
+		private bool isMouseDownHandled = false;
 		private bool mySelected = false;
 		public bool MySelected
 		{
@@ -281,20 +356,21 @@ namespace CofileUI.UserControls
 				// 색 변경
 				if(value)
 				{
-					selected_list.Add(this);
-					this.Background = _Color.Background_selected;
+					view.Selected_list.Add(this);
+					OriginBackground = this.Background;
+					this.Background = LinuxTreeView._Color.Background_selected;
 					if(!this.IsDirectory)
 					{
-						this.Foreground = _Color.File_foreground_selected;
+						this.Foreground = LinuxTreeView._Color.File_foreground_selected;
 					}
 				}
 				else
 				{
-					selected_list.Remove(this);
-					this.Background = _Color.Background_unselected;
+					view.Selected_list.Remove(this);
+					this.Background = OriginBackground;
 					if(!this.IsDirectory)
 					{
-						this.Foreground = _Color.File_foreground_unselected;
+						this.Foreground = LinuxTreeView._Color.File_foreground_unselected;
 					}
 				}
 			}
@@ -302,9 +378,9 @@ namespace CofileUI.UserControls
 		public new void Focus()
 		{
 			// 다른 선택 해제
-			while(selected_list.Count > 0)
+			while(view.Selected_list.Count > 0)
 			{
-				selected_list[0].MySelected = false;
+				view.Selected_list[0].MySelected = false;
 			}
 			MySelected = true;
 
@@ -320,30 +396,31 @@ namespace CofileUI.UserControls
 			//	((FrameworkElement)child).BringIntoView();
 			//}
 		}
-
 		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
+			isMouseDownHandled = true;
+
 			if(WindowMain.bCtrl)
 				MySelected = !MySelected;
-			else if(WindowMain.bShift && selected_list.Count > 0)
+			else if(WindowMain.bShift && view.Selected_list.Count > 0)
 			{
-				LinuxTreeViewItem parent = this.Parent as LinuxTreeViewItem;
-				if(parent != null)
+				ItemCollection Items = (this.Parent as ItemsControl)?.Items;
+				if(Items != null)
 				{
-					int idx_start = parent.Items.IndexOf(selected_list[0]);
-					int idx_end = parent.Items.IndexOf(this);
+					int idx_start = Items.IndexOf(view.Selected_list[0]);
+					int idx_end = Items.IndexOf(this);
 
 					if(idx_start >= 0 && idx_end >= 0)
 					{
 						// 선택 초기화
-						while(selected_list.Count > 0)
-							selected_list[0].MySelected = false;
+						while(view.Selected_list.Count > 0)
+							view.Selected_list[0].MySelected = false;
 
 						// 선택
 						int add_i = idx_start < idx_end ? 1 : -1;
 						for(int i = idx_start; i != idx_end + add_i; i += add_i)
 						{
-							LinuxTreeViewItem child = parent.Items[i] as LinuxTreeViewItem;
+							LinuxTreeViewItem child = Items[i] as LinuxTreeViewItem;
 							if(child == null)
 								continue;
 
@@ -356,64 +433,40 @@ namespace CofileUI.UserControls
 				else
 					Focus();
 			}
-			else
+			else if(!MySelected)
 				Focus();
+			else
+				isMouseDownHandled = false;
 
 			if(e.ClickCount > 1)
-			{
-				//this.RefreshChild();
 				this.IsExpanded = !this.IsExpanded;
-			}
+			e.Handled = true;
+		}
+		protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+		{
+			if(!isMouseDownHandled)
+				Focus();
 
 			e.Handled = true;
 		}
 		protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
 		{
-			if(selected_list.IndexOf(this) < 0)
+			if(view.Selected_list.IndexOf(this) < 0)
 				this.Focus();
 			base.OnMouseRightButtonDown(e);
 			e.Handled = true;
 		}
 		#endregion
-		
-		protected override void OnMouseMove(MouseEventArgs e)
-		{
-			//Log.Print(linked_jtoken);
-			base.OnMouseMove(e);
-			if(e.LeftButton == MouseButtonState.Pressed
-				&& LinuxTreeViewItem.selected_list.Count > 0)
-			{
-				DataObject data = new DataObject();
-				data.SetData("Object", LinuxTreeViewItem.selected_list);
-				DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
-			}
-
-			//e.Handled = true;
-		}
 
 		#region Load Directory And Refresh View
 		protected override void OnExpanded(RoutedEventArgs e)
 		{
 			base.OnExpanded(e);
 			this.Focus();
-
-			//if(flag_expanded_via_screen)
-			//{
-			//	this.RefreshChild();
-			//}
-			this.RefreshChild();
+			
+			this._ReLoadChild();
 
 			this.BringIntoView();
-			//this.BringIntoView(new Rect(0, 0, 50, 50));
-			//// scroll bar syncronized
-			//var tvItem = (LinuxTreeViewItem)e.OriginalSource;
-			//var itemCount = VisualTreeHelper.GetChildrenCount(tvItem);
-
-			//for(var i = itemCount - 1; i >= 0; i--)
-			//{
-			//	var child = VisualTreeHelper.GetChild(tvItem, i);
-			//	((FrameworkElement)child).BringIntoView();
-			//}
 		}
 		//private bool flag_expanded_via_screen = true; 
 		public new bool IsExpanded { get { return base.IsExpanded; }
@@ -424,65 +477,25 @@ namespace CofileUI.UserControls
 				//flag_expanded_via_screen = true;
 			}
 		}
-		public static void Clear(LinuxTreeViewItem root)
-		{
-			if(root != null)
-			{
-				root.Items.Clear();
-				root = null;
-			}
-		}
-		public static LinuxTreeViewItem Last_Refresh = null;
-		public void RefreshChild(string remained_path = null, bool bRefreshListView = true)
-		{
-			if(IsDirectory)
-			{
-				this.IsExpanded = true;
-
-				RefreshDirectory(remained_path);
-
-				// LinuxTreeViewItem 을 참조하여 ListView 를 재구성하기 때문에 LinuxTreeViewItem 이 Refresh 될 때 Refresh 해야함.
-				if(bRefreshListView)
-					Cofile.current.RefreshListView(this);
-			}
-		}
-		private void RefreshDirectory(string remained_path = null)
-		{
-			Last_Refresh = this;
-
-			ReLoadDirectory(remained_path);
-			// refresh filter
-			Cofile.Filter_string = Cofile.Filter_string;
-		}
-		private LinuxTreeViewItem parent = null;
-		public new LinuxTreeViewItem Parent {
+		private LinuxTree parent = null;
+		public new LinuxTree Parent {
 			get
 			{
-				LinuxTreeViewItem ltvi = base.Parent as LinuxTreeViewItem;
-				if(ltvi == null)
-					return parent;
-
-				return ltvi;
+				return parent;
 			}
 		}
-		public void RefreshChildFromParent()
-		{
-			LinuxTreeViewItem par = this.Parent as LinuxTreeViewItem;
-			if(par == null)
-				return;
-
-			par.RefreshChild();
-		}
 		// remind_path = '/' 부터 시작
-		void ReLoadDirectory(string remainned_path = null)
+		private void _ReLoadChild()
 		{
 			SftpFile[] files;
 			files = SSHController.PullListInDirectory(this.path);
 			if(files == null)
 			{
 				this.IsExpanded = false;
+				img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/directory_deny.png", System.UriKind.Relative));
 				return;
 			}
+			img.Source = new BitmapImage(new System.Uri("/CofileUI;component/Resources/directory.png", System.UriKind.Relative));
 
 			this.Items.Clear();
 
@@ -490,38 +503,32 @@ namespace CofileUI.UserControls
 			foreach(var file in files)
 			{
 				int i;
-				for(i = 0; i < IGNORE_FILENAME.Length; i++)
+				for(i = 0; i < LinuxTreeView.IGNORE_FILENAME.Length; i++)
 				{
-					if(file.Name == IGNORE_FILENAME[i])
+					if(file.Name == LinuxTreeView.IGNORE_FILENAME[i])
 						break;
 				}
-				if(i != IGNORE_FILENAME.Length)
+				if(i != LinuxTreeView.IGNORE_FILENAME.Length)
 					continue;
 
 				LinuxTreeViewItem ltvi;
 				if(file.IsDirectory)
 				{
-					//this.Items.Insert(0, new LinuxTreeViewItem(file.FullName, file.Name, true));
-					//this.Items.Add(new LinuxTreeViewItem(file.FullName, file.Name, true));
-					ltvi = new LinuxTreeViewItem(file.FullName, file, file.Name, true, this);
-					this.Items.Insert(count_have_directory++, ltvi);
-
-					// remainned_path = '/' 부터 시작
-					if(remainned_path != null)
-					{
-						string[] split = remainned_path.Split('/');
-						if(split.Length > 1 && split[1] == file.Name)
-						{
-							ltvi.RefreshChild(remainned_path.Substring(split[1].Length + 1));
-						}
-					}
+					ltvi = new LinuxTreeViewItem(view, file.FullName, file, file.Name, true, this);
+					this.Items.Insert(count_have_directory++, ltvi);	
 				}
 				else
 				{
-					ltvi = new LinuxTreeViewItem(file.FullName, file, file.Name, false, this);
+					ltvi = new LinuxTreeViewItem(view, file.FullName, file, file.Name, false, this);
 					this.Items.Add(ltvi);
 				}
 			}
+			view.Last_refresh = this;
+			//LinuxTreeViewItem.Filter(this, filter_string, b_show_hidden);
+		}
+		public void ReLoadChild()
+		{
+			IsExpanded = true;
 		}
 		#endregion
 
@@ -549,7 +556,7 @@ namespace CofileUI.UserControls
 				if(child == null)
 					continue;
 
-				string name = child.Header.Text;
+				string name = child.FileName;
 				if(!filter_string.IsMatch(name)
 					|| (!bShow_hidden && name[0] == '.'))
 					child.Visibility = Visibility.Collapsed;
@@ -570,43 +577,6 @@ namespace CofileUI.UserControls
 			}
 		}
 
-		public static int ChangeColor(LinuxTreeViewItem root, string _path, string config_path)
-		{
-			if(_path == null
-				|| _path.Length <= 0
-				|| _path[0] != '/'
-				|| root == null)
-				return -1;
-
-			string[] arr_path = _path.Trim('/').Split('/');
-
-			LinuxTreeViewItem cur = root;
-			for(int i = 0; i < arr_path.Length; i++)
-			{
-				Console.WriteLine("JHLIM_DEBUG : " + cur.FileInfo?.Name + " / " + arr_path[i]);
-				int j;
-				int count = cur.Items.Count;
-				for(j = 0; j < count; j++)
-				{
-					if((cur.Items[j] as LinuxTreeViewItem)?.FileInfo.Name == arr_path[i])
-					{
-						if(i == arr_path.Length - 1)
-						{
-							(cur.Items[j] as LinuxTreeViewItem).Header.Tb_name.Background = Brushes.LightGreen;
-							(cur.Items[j] as LinuxTreeViewItem).Header.tb_config_path.Text = config_path;
-						}
-						else
-							(cur.Items[j] as LinuxTreeViewItem).Header.Tb_name.Background = Brushes.LightCyan;
-						cur = (cur.Items[j] as LinuxTreeViewItem);
-						break;
-					}
-				}
-				if(j == count)
-					break;
-			}
-
-			return 0;
-		}
 		#endregion
 	}
 }

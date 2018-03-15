@@ -93,7 +93,8 @@
 				<TabItem Header="{StaticResource MainTab.Cofile}">
 					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
 						<!-- 이렇게 바인딩 시키면 이벤트(버블링)발생할때 탭컨트롤의 자식이된다. (SelectionChanged 이벤트가 Cofile안에 ComboBox 에 의해 발생되어도 탭컨트롤의 SelectionChanged 이벤트가 반응한다. -->
-						<UserControls:Cofile DataContext="{Binding}"/>
+						<!--<UserControls:Cofile DataContext="{Binding}"/>-->
+						<UserControls:Cofile />
 					</Grid>
 				</TabItem>
 				<TabItem x:Name="tabItem_Config" Header="{StaticResource MainTab.Decrypt}">
