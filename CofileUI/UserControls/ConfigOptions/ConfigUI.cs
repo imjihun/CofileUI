@@ -79,7 +79,11 @@ namespace CofileUI.UserControls.ConfigOptions
 		public string work_name;
 		public string index;
 		public string path;
-		
+
+		private string cofile_type = "";
+		private string str_enc = "";
+		private string cofile_enc = "";
+
 		public Grid grid;
 		public TextBlock tb_title;
 		private TextBlock tb_dir;
@@ -226,51 +230,50 @@ namespace CofileUI.UserControls.ConfigOptions
 					}
 				});
 		}
-		RelayCommand EncryptCommand;
-		void Encrypt(object parameter)
+		RelayCommand RequestEncryptionCommand;
+		void RequestEncryption(object parameter)
 		{
 			WindowMain.current.ShowMessageDialog(
-				this.root["type"] + " 암호화",
-				"해당항목들을 암호화 하시겠습니까?",
+				this.root["type"] + " " + str_enc,
+				"해당항목들을 " + str_enc + " 하시겠습니까?",
 				MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative,
 				() =>
 				{
 					bool? enc_retval = null;
-					List<string> list_command = parameter as List<string>;
-					if(list_command != null)
+					List<string> list_cofile_opt = parameter as List<string>;
+					if(list_cofile_opt != null)
 					{
-						for(int i = 0; i < list_command.Count; i++)
+						for(int i = 0; i < list_cofile_opt.Count; i++)
 						{
-							enc_retval = WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(list_command[i]);
+							string command = "cofile " + cofile_type + " " + cofile_enc + " " + list_cofile_opt[i];
+							enc_retval = WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(command);
 							if(enc_retval != true)
 								break;
 						}
 					}
 					else
 					{
-						string cofile_type = this.root["type"].ToString();
 						//string config_info = this.work_name;
 						//if(this.index != null)
 						//	config_info += "_" + this.index;
-						string config_info = WindowMain.current?.enableConnect?.sshManager?.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
+						string cofile_config = WindowMain.current?.enableConnect?.sshManager?.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
 
-						string command = "cofile " + cofile_type + " -c " + config_info;
+						string command = "cofile " + cofile_type + " " + cofile_enc + " -c " + cofile_config;
 						enc_retval = WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(command);
-						Console.WriteLine("\tJHLIM_DEBUG : " + WindowMain.current?.enableConnect?.sshManager?.JHLIM_DEBUG_2);
 					}
 
 					if(enc_retval == true)
 					{
 						WindowMain.current.ShowMessageDialog(
-							this.root["type"] + " 암호화",
-							"암호화 요청을 보냈습니다.",
+							this.root["type"] + " " + str_enc,
+							str_enc + " 요청을 보냈습니다.",
 							MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
 					}
 					else
 					{
 						WindowMain.current.ShowMessageDialog(
-							this.root["type"] + " 암호화",
-							"암호화 요청에 실패하였습니다.",
+							this.root["type"] + " " + str_enc,
+							str_enc + " 요청에 실패하였습니다.",
 							MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
 					}
 				});
@@ -294,7 +297,7 @@ namespace CofileUI.UserControls.ConfigOptions
 				this.tb_dir.Text = _path;
 			}
 			this.AllowDrop = true;
-
+			
 			this.ContextMenu = new ContextMenu();
 			MenuItem item;
 			if(this.index == null)
@@ -337,17 +340,40 @@ namespace CofileUI.UserControls.ConfigOptions
 				};
 				this.ContextMenu.Items.Add(item);
 			}
-			EncryptCommand = new RelayCommand(Encrypt);
-			item = new MenuItem();
-			item.Command = EncryptCommand;
-			item.Header = "Encrypt";
-			item.Icon = new PackIconMaterial()
+
+			cofile_type = this.root["type"].ToString();
+			if(WindowMain.current.tabControl.SelectedIndex == 0)
 			{
-				Kind = PackIconMaterialKind.Lock,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			this.ContextMenu.Items.Add(item);
+				str_enc = "암호화";
+				cofile_enc = "-e";
+				RequestEncryptionCommand = new RelayCommand(RequestEncryption);
+				item = new MenuItem();
+				item.Command = RequestEncryptionCommand;
+				item.Header = "Encrypt";
+				item.Icon = new PackIconMaterial()
+				{
+					Kind = PackIconMaterialKind.Lock,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center
+				};
+				this.ContextMenu.Items.Add(item);
+			}
+			else if(WindowMain.current.tabControl.SelectedIndex == 1)
+			{
+				str_enc = "복호화";
+				cofile_enc = "-d";
+				RequestEncryptionCommand = new RelayCommand(RequestEncryption);
+				item = new MenuItem();
+				item.Command = RequestEncryptionCommand;
+				item.Header = "Decrypt";
+				item.Icon = new PackIconMaterial()
+				{
+					Kind = PackIconMaterialKind.Lock,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center
+				};
+				this.ContextMenu.Items.Add(item);
+			}
 		}
 
 		protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
@@ -376,7 +402,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			List<LinuxTreeViewItem> list_ltvi = data_obj as List<LinuxTreeViewItem>;
 			if(list_ltvi != null)
 			{
-				List<string> list_command = new List<string>();
+				List<string> list_cofile_opt = new List<string>();
 				int i;
 				for(i = 0; i<list_ltvi.Count;i++)
 				{
@@ -417,7 +443,7 @@ namespace CofileUI.UserControls.ConfigOptions
 								//if(new_cip.index != null)
 								//	config_info += "_" + new_cip.index;
 								string config_info = "/home/test/var/conf/test/" + this.root["type"].ToString() + ".json";
-								list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info);
+								list_cofile_opt.Add("-c " + config_info);
 							}
 							else
 								break;
@@ -431,18 +457,18 @@ namespace CofileUI.UserControls.ConfigOptions
 						string config_info = "/home/test/var/conf/test/" + this.root["type"].ToString() + ".json";
 						if(ltvi.IsDirectory)
 						{
-							list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info + " -id " + ltvi.Path + " -od " + ltvi.Path);
+							list_cofile_opt.Add("-c " + config_info + " -id " + ltvi.Path + " -od " + ltvi.Path);
 						}
 						else
 						{
 							string dir = ltvi.Path.Substring(0, ltvi.Path.Length - ltvi.FileName.Length);
-							list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info + " -id " + dir + " -od " + dir + " -f " + ltvi.FileName);
+							list_cofile_opt.Add("-c " + config_info + " -id " + dir + " -od " + dir + " -f " + ltvi.FileName);
 						}
 					}
 				}
 				if(i == list_ltvi.Count)
 				{
-					Encrypt(list_command);
+					RequestEncryption(list_cofile_opt);
 				}
 			}
 			e.Handled = true;

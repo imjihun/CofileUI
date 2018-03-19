@@ -16,8 +16,6 @@ namespace CofileUI.Classes
 {
 	public class SSHManager
 	{
-		private static int JHLIM_DEBUG = 0;
-		public int JHLIM_DEBUG_2 = 0;
 		private const int NO_TIMEOUT = -1;
 		private const double SECOND_TIMEOUT_READ = 2;
 
@@ -66,7 +64,6 @@ namespace CofileUI.Classes
 			ip = _ip;
 			port = _port;
 			id = _id;
-			JHLIM_DEBUG_2 = JHLIM_DEBUG++;
 		}
 
 		#region Connect
