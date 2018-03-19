@@ -61,6 +61,34 @@ namespace CofileUI.Properties {
         }
         
         /// <summary>
+        ///   {
+        ///	daemon_info:[
+        ///		{
+        ///			path:&quot;/home/test/bin&quot;,
+        ///			config:&quot;file-test4-0&quot;
+        ///		},
+        ///		{
+        ///			path:&quot;/home/test/lib&quot;,
+        ///			config:&quot;file-test4-1&quot;
+        ///		},
+        ///		{
+        ///			path:&quot;/test/101_test&quot;,
+        ///			config:&quot;sam-test4-0&quot;
+        ///		},
+        ///		{
+        ///			path:&quot;/test/100_test&quot;,
+        ///			config:&quot;tail-test4-0&quot;
+        ///		}
+        ///	]
+        ///}과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string daemon_info_default {
+            get {
+                return ResourceManager.GetString("daemon_info_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   All Encrypt과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string Dialog_AllEncrypt_Title {
@@ -90,26 +118,28 @@ namespace CofileUI.Properties {
         }
         
         /// <summary>
-        ///   {
-        ///  &quot;type&quot;: &quot;file&quot;,
-        ///  &quot;comm_option&quot;: {
-        ///    &quot;sid&quot;: &quot;API&quot;,
-        ///    &quot;item&quot;: &quot;AES256&quot;,
-        ///    &quot;#encode_type&quot;: &quot;0: binary, 1: ASCII&quot;,
-        ///    &quot;encode_type&quot;: &quot;0&quot;,
-        ///    &quot;log_console_yn&quot;: false,
-        ///    &quot;header_file_save_yn&quot;: false,
-        ///    &quot;file_reserver_yn&quot;: true,
-        ///    &quot;dir_monitoring_yn&quot;: false,
-        ///    &quot;dir_monitoring_term&quot;: 1,
-        ///    &quot;verify_yn&quot;: false,
-        ///    &quot;schedule_time&quot;: &quot;12:00&quot;
-        ///  },
-        ///  &quot;enc_option&quot;: {
-        ///    &quot;#input_filter&quot;: &quot;[.]txt$&quot;,
-        ///    &quot;#output_suffix_head&quot;: &quot;head_&quot;,
-        ///    &quot;#output_suffix_tail&quot;: &quot;_tail&quot;,
-        ///    &quot;input_d[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   { 
+        ///	&quot;type&quot;: &quot;file&quot;, 
+        ///	&quot;comm_option&quot;: { 
+        ///		&quot;sid&quot;: &quot;API&quot;, 
+        ///		&quot;item&quot;: &quot;AES256&quot;, 
+        ///		&quot;#encode_type&quot;: &quot;0: binary, 1: ASCII&quot;, 
+        ///		&quot;encode_type&quot;: &quot;0&quot;, 
+        ///		&quot;log_console_yn&quot;: false, 
+        ///		&quot;header_file_save_yn&quot;: false, 
+        ///		&quot;file_reserver_yn&quot;: true, 
+        ///		&quot;dir_monitoring_yn&quot;: false, 
+        ///		&quot;dir_monitoring_term&quot;: 1, 
+        ///		&quot;verify_yn&quot;: false, 
+        ///		&quot;result_log_yn&quot;: true, 
+        ///		&quot;#schedule_time&quot;: &quot;12:00&quot;, 
+        ///		&quot;dir_recursive_yn&quot;: false, 
+        ///		&quot;dir_recursive_max_depth&quot;: 10, 
+        ///		&quot;delay_time&quot;: &quot;2s&quot;, 
+        ///		&quot;scantime_yn&quot;: false 
+        ///	}, 
+        ///	&quot;enc_option&quot;: { 
+        ///		&quot;#in[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string file_config_default {
             get {
@@ -118,29 +148,29 @@ namespace CofileUI.Properties {
         }
         
         /// <summary>
-        ///   {
-        ///  &quot;type&quot;: &quot;sam&quot;,
-        ///  &quot;comm_option&quot;: {
-        ///    &quot;#sam_type&quot;: &quot;0:var 1:fixed&quot;,
-        ///    &quot;sam_type&quot;: 0,
-        ///    &quot;no_col&quot;: 2,
-        ///    &quot;sid&quot;: &quot;API&quot;,
-        ///    &quot;delimiter&quot;: &quot;||&quot;,
-        ///    &quot;trim&quot;: 0,
-        ///    &quot;skip_header&quot;: 0,
-        ///    &quot;record_len&quot;: 0,
-        ///    &quot;#input_filter&quot;: &quot;[.]sam$&quot;,
-        ///    &quot;input_dir&quot;: &quot;/&quot;,
-        ///    &quot;input_ext&quot;: &quot;sam&quot;,
-        ///    &quot;output_dir&quot;: &quot;/&quot;,
-        ///    &quot;output_ext&quot;: &quot;enc&quot;,
-        ///    &quot;dir_monitoring_yn&quot;: false,
-        ///    &quot;dir_monitoring_term&quot;: 1,
-        ///    &quot;#no_access_sentence&quot;: &quot;Encrypted&quot;,
-        ///    &quot;#log_file&quot;: &quot;sam_debug.log&quot;
-        ///  },
-        ///  &quot;col_var&quot;: [
-        ///  [나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   { 
+        ///	&quot;type&quot;: &quot;sam&quot;, 
+        ///	&quot;comm_option&quot;: { 
+        ///		&quot;#sam_type&quot;:&quot;0:var 1:fixed&quot;, 
+        ///		&quot;sam_type&quot;: 0, 
+        ///		&quot;no_col&quot;: 2, 
+        ///		&quot;sid&quot;: &quot;API&quot;, 
+        ///		&quot;delimiter&quot;: &quot;||&quot;, 
+        ///		&quot;trim&quot;: 0, 
+        ///		&quot;skip_header&quot;: 0, 
+        ///		&quot;record_len&quot;: 0, 
+        ///		&quot;#input_filter&quot;: &quot;[.]sam$&quot;, 
+        ///		&quot;input_dir&quot;: &quot;.&quot;, 
+        ///		&quot;input_ext&quot;: &quot;sam&quot;, 
+        ///		&quot;output_dir&quot;: &quot;.&quot;, 
+        ///		&quot;output_ext&quot;: &quot;enc&quot;, 
+        ///		&quot;dir_monitoring_yn&quot;: false, 
+        ///		&quot;dir_monitoring_term&quot;: 1, 
+        ///		&quot;file_reserver_yn&quot;: true, 
+        ///		&quot;#no_access_sentence&quot;:&quot;Encrypted&quot;, 
+        ///		&quot;#log_file&quot;:&quot;sam_debug.log&quot;, 
+        ///		&quot;dir_recursive_yn&quot;: false, 
+        ///		&quot;[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string sam_config_default {
             get {
@@ -149,27 +179,27 @@ namespace CofileUI.Properties {
         }
         
         /// <summary>
-        ///   {
-        ///  &quot;type&quot;: &quot;tail&quot;,
-        ///  &quot;comm_option&quot;: {
-        ///    &quot;input_dir&quot;: &quot;/&quot;,
-        ///    &quot;input_ext&quot;: &quot;log&quot;,
-        ///    &quot;output_dir&quot;: &quot;/&quot;,
-        ///    &quot;output_ext&quot;: &quot;enc&quot;,
-        ///    &quot;sid&quot;: &quot;API&quot;,
-        ///    &quot;#tail_type&quot;: &quot;1:LINE, 2:PATTERN&quot;,
-        ///    &quot;tail_type&quot;: 2,
-        ///    &quot;interval&quot;: 1,
-        ///    &quot;no_inform&quot;: 2,
-        ///    &quot;#input_filter&quot;: &quot;log_([1-2][0-9]{3}_[0-1][0-9]_[0-3][0-9]).log$&quot;,
-        ///    &quot;#input_filter_ex&quot;: &quot;log_2016_09_27.log&quot;,
-        ///    &quot;#shutdown_time&quot;: 24,
-        ///    &quot;zero_byte_yn&quot;: true
-        ///  },
-        ///  &quot;enc_inform&quot;: [
-        ///    {
-        ///      &quot;item&quot;: &quot;ARIA256CBC&quot;,
-        ///      &quot;#pattern&quot;: [나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   { 
+        ///	&quot;type&quot;:&quot;tail&quot;, 
+        ///	&quot;comm_option&quot;: { 
+        ///		&quot;input_dir&quot;: &quot;.&quot;, 
+        ///		&quot;input_ext&quot;: &quot;log&quot;, 
+        ///		&quot;output_dir&quot;: &quot;.&quot;, 
+        ///		&quot;output_ext&quot;: &quot;enc&quot;, 
+        ///		&quot;sid&quot;: &quot;API&quot;, 
+        ///		&quot;#tail_type&quot;:&quot;1:LINE, 2:PATTERN&quot;, 
+        ///		&quot;tail_type&quot;: 2, 
+        ///		&quot;interval&quot;: 1, 
+        ///		&quot;no_inform&quot;: 2, 
+        ///		&quot;#input_filter&quot;: &quot;log_([1-2][0-9]{3}_[0-1][0-9]_[0-3][0-9]).log$&quot;, 
+        ///		&quot;zero_byte_yn&quot;: false, 
+        ///		&quot;file_reserver_yn&quot;: false, 
+        ///		&quot;daemon_yn&quot;: true, 
+        ///		&quot;limit_process&quot;: 1024, 
+        ///		&quot;dir_recursive_yn&quot;: false, 
+        ///		&quot;dir_recursive_max_depth&quot;: 10, 
+        ///		&quot;blacklist_filter&quot;: &quot;[.](enc)$&quot; 
+        ///[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string tail_config_default {
             get {

@@ -543,7 +543,7 @@ namespace CofileUI.Classes
 				if(fi.Exists)
 				{
 					//FileStream fs = File.Open(local_path, FileMode.Open, FileAccess.Read);
-					remote_file_path = remote_directory + fi.Name;
+					remote_file_path = remote_directory + "/" + fi.Name;
 					//if(isOverride)
 					//{
 					//	sftp.UploadFile(fs, remote_file_path);
@@ -595,8 +595,8 @@ namespace CofileUI.Classes
 				}
 				else
 				{
-					Log.ErrorIntoUI("Not Exist File", "upload file", Status.current.richTextBox_status);
-					Log.PrintError("Not Exist File", "Classes.SSHManager.UploadFile");
+					Log.ErrorIntoUI("Not Exist File [" + local_path + "]", "upload file", Status.current.richTextBox_status);
+					Log.PrintError("Not Exist File [" + local_path + "]", "Classes.SSHManager.UploadFile");
 					return null;
 				}
 			}
@@ -680,7 +680,7 @@ namespace CofileUI.Classes
 			{
 				string local;
 				if(local_file_name != null)
-					local = local_path_folder + local_file_name;
+					local = local_path_folder + "\\" + local_file_name;
 				else
 				{
 					if(remote_filename == null)
@@ -688,7 +688,7 @@ namespace CofileUI.Classes
 						string[] split = remote_path_file.Split('/');
 						remote_filename = split[split.Length - 1];
 					}
-					local = local_path_folder + remote_filename;
+					local = local_path_folder + "\\" + remote_filename;
 				}
 
 				if(!FileContoller.CreateDirectory(local_path_folder))
@@ -835,7 +835,7 @@ namespace CofileUI.Classes
 			return null;
 		}
 
-		public int NewGetConfig(string local_dir)
+		public int GetConfig(string local_dir)
 		{
 			if(!IsConnected)
 				return -2;
@@ -852,7 +852,7 @@ namespace CofileUI.Classes
 			else
 				return 0;
 		}
-		public int NewSetConfig(string local_dir)
+		public int SetConfig(string local_dir)
 		{
 			if(!IsConnected)
 				return -2;
@@ -861,7 +861,7 @@ namespace CofileUI.Classes
 			int i;
 			for(i = 0; i < filenames.Length; i++)
 			{
-				if(null == UploadFile(local_dir + filenames[i], EnvCoHome + "/var/conf/" + id))
+				if(null == UploadFile(local_dir + "\\" + filenames[i], EnvCoHome + "/var/conf/" + id))
 					break;
 			}
 			if(i != filenames.Length)
@@ -875,6 +875,24 @@ namespace CofileUI.Classes
 			string env_co_home = EnvCoHome;
 			string command = "tail -n" + n + " '" + env_co_home + "/var/log/event_log'";
 			return SendNReadBlocking(command, n);
+		}
+		
+		public int GetDaemonInfo(string local_dir)
+		{
+			if(!IsConnected)
+				return -2;
+
+			string[] filenames = { "daemon_info.json" };
+			int i;
+			for(i = 0; i < filenames.Length; i++)
+			{
+				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + id + "/" + filenames[i], filenames[i], filenames[i]))
+					break;
+			}
+			if(i != filenames.Length)
+				return -1;
+			else
+				return 0;
 		}
 	}
 }

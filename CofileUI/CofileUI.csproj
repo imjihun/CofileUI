@@ -112,14 +112,17 @@
     <Compile Include="Classes\ReturnValue.cs" />
     <Compile Include="Classes\SSHManager.cs" />
     <Compile Include="Resources\Class1.cs" />
-    <Compile Include="UserControls\Cofile.xaml.cs">
-      <DependentUpon>Cofile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ConfigMenu.xaml.cs">
-      <DependentUpon>ConfigMenu.xaml</DependentUpon>
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuButton.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeView.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeViewItem.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\RealayCommand.cs" />
+    <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxFileModel2.cs" />
+    <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxTreeView.cs" />
+    <Compile Include="UserControls\EncryptTab.xaml.cs">
+      <DependentUpon>EncryptTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ConfigOptions\ConfigOptionManager.cs" />
-    <Compile Include="UserControls\ConfigOptions\ConfigUI.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuRootPanel.cs" />
     <Compile Include="UserControls\ConfigOptions\File\comm_option.xaml.cs">
       <DependentUpon>comm_option.xaml</DependentUpon>
     </Compile>
@@ -159,16 +162,10 @@
     <Compile Include="UserControls\ConfigOptions\Tail\TailOptions.xaml.cs">
       <DependentUpon>TailOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CustomUI\Cofile\Behaviours.cs" />
-    <Compile Include="UserControls\CustomUI\Cofile\LinuxFileModel.cs" />
-    <Compile Include="UserControls\CustomUI\Cofile\LinuxFileViewModel.cs" />
-    <Compile Include="UserControls\CustomUI\Cofile\LinuxTreeViewItem.cs" />
-    <Compile Include="UserControls\CustomUI\Cofile\RelayCommand.cs" />
-    <Compile Include="UserControls\CustomUI\Cofile\ViewModelBase.cs" />
-    <Compile Include="UserControls\CustomUI\ConfigJsonTree\JsonTreeViewItem.cs" />
+    <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxTreeViewItem.cs" />
     <Compile Include="UserControls\CustomUI\ServerMenu\ServerInfo.cs" />
-    <Compile Include="UserControls\Decrypt.xaml.cs">
-      <DependentUpon>Decrypt.xaml</DependentUpon>
+    <Compile Include="UserControls\DecryptTab.xaml.cs">
+      <DependentUpon>DecryptTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ServerMenu.xaml.cs">
       <DependentUpon>ServerMenu.xaml</DependentUpon>
@@ -296,11 +293,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Cofile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\ConfigMenu.xaml">
+    <Page Include="UserControls\EncryptTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -356,7 +349,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\Decrypt.xaml">
+    <Page Include="UserControls\DecryptTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -454,6 +447,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\is_directory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\daemon_info_default.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net40\System.Data.SQLite.Core.targets')" />

@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="CofileUI.UserControls.DecryptTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 
+             xmlns:local="clr-namespace:CofileUI.UserControls"
+			 xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" 
+			 xmlns:System="clr-namespace:System;assembly=mscorlib"
+			 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+			 xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+			 xmlns:UserControls="clr-namespace:CofileUI.UserControls"
+			 
+             mc:Ignorable="d" 
+			 
+             d:DesignHeight="300" d:DesignWidth="800">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/CofileUI;component/Resources/StringResources/StringCofile.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Column="0" x:Name="grid_treeView_linux_directory">
+		</Grid>
+		<Grid Grid.Column="1" x:Name="grid_config_menu">
+			<!--<UserControls:ConfigMenu DataContext="{Binding}" />-->
+		</Grid>
+
+		<GridSplitter Background="Gray"
+					Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+					HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2"/>
+	</Grid>
+</UserControl>

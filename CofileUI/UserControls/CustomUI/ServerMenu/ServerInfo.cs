@@ -55,15 +55,6 @@ namespace CofileUI.UserControls
 				sshManager.port = port;
 			}
 		}
-		//public string password;
-
-		//public ServerInfo(string _name, string _ip, string _id, string _password)
-		//{
-		//	name = _name;
-		//	ip = _ip;
-		//	id = _id;
-		//	password = _password;
-		//}
 		public ServerInfo(string _name, string _ip, int _port)
 			: this()
 		{

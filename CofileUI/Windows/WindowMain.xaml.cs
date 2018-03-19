@@ -124,8 +124,8 @@ namespace CofileUI.Windows
 		#region View Update
 		public void bUpdateInit(bool val)
 		{
-			Cofile.current.bUpdated = val;
-			Decrypt.current.bUpdated = val;
+			EncryptTab.current.bUpdated = val;
+			DecryptTab.current.bUpdated = val;
 			DataBaseInfo.bUpdated = val;
 		}
 		string connectedServerName = "";
@@ -150,8 +150,8 @@ namespace CofileUI.Windows
 		{
 			this.enableConnect = si;
 
-			if(tabControl.SelectedIndex == 0) Cofile.current.Refresh();
-			else if(tabControl.SelectedIndex == 1) Decrypt.current.Refresh();
+			if(tabControl.SelectedIndex == 0) EncryptTab.current.Refresh();
+			else if(tabControl.SelectedIndex == 1) DecryptTab.current.Refresh();
 			else if(tabControl.SelectedIndex == 2) DataBaseInfo.RefreshUi();
 			else if(tabControl.SelectedIndex == 3) DataBaseInfo.RefreshUi();
 
@@ -162,10 +162,10 @@ namespace CofileUI.Windows
 		}
 		public void Clear()
 		{
-			if(Cofile.current != null)
-				Cofile.current.Clear();
-			if(Decrypt.current != null)
-				Decrypt.current.Clear();
+			if(EncryptTab.current != null)
+				EncryptTab.current.Clear();
+			if(DecryptTab.current != null)
+				DecryptTab.current.Clear();
 			if(Sqlite_LogTable.current != null)
 				Sqlite_LogTable.current.Clear();
 			if(Sqlite_StatusTable.current != null)

@@ -26,7 +26,7 @@ namespace CofileUI.UserControls
 	/// </summary>
 	public partial class ConfigMenu : UserControl
 	{
-		ConfigPanel configgrid = null;
+		ConfigMenuRootPanel configgrid = null;
 
 		public ConfigMenuButton btnFileConfig = null;
 		public ConfigMenuButton btnSamConfig = null;
@@ -37,7 +37,7 @@ namespace CofileUI.UserControls
 			InitializeComponent();
 			try
 			{
-				configgrid = new ConfigPanel();
+				configgrid = new ConfigMenuRootPanel();
 				grid.Children.Add(configgrid);
 
 				btnFileConfig = new ConfigMenuButton(configgrid, null, "File Config");

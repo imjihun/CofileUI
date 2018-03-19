@@ -1,0 +1,20 @@
+﻿{
+	daemon_info:[
+		{
+			path:"/home/test/bin",
+			config:"file-test4-0"
+		},
+		{
+			path:"/home/test/lib",
+			config:"file-test4-1"
+		},
+		{
+			path:"/test/101_test",
+			config:"sam-test4-0"
+		},
+		{
+			path:"/test/100_test",
+			config:"tail-test4-0"
+		}
+	]
+}

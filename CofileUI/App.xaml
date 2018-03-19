@@ -21,32 +21,16 @@
       <!--Converter-->
       <BooleanToVisibilityConverter x:Key="MyBoolToVisibilityConverter" />
       <local:ReverseBooleanToVisibilityConverter x:Key="MyReverseBoolToVisibilityConverter" />
-			<!--Style-->
-			<Style TargetType="UserControls:LinuxTreeView" BasedOn="{StaticResource MetroTreeView}" />
-			<Style TargetType="UserControls:LinuxTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
-      <!--<Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroTextBlock}" />-->
-      <Style TargetType="UserControls:ServerList" BasedOn="{StaticResource MetroListBox}" />
-      <Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroListBoxItem}" />
-      <Style TargetType="UserControls:ServerMenuButton" BasedOn="{StaticResource MetroToggleButton}" />
-      <Style TargetType="ConfigOptions:ConfigList" BasedOn="{StaticResource MetroTreeView}" />
-      <Style TargetType="ConfigOptions:ConfigInfoPanel" BasedOn="{StaticResource MetroTreeViewItem}" />
-      <Style TargetType="Window" BasedOn="{StaticResource MetroWindow}" />
-      <Style TargetType="UserControls:JsonTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
-      <Style TargetType="UserControls:JsonButton" BasedOn="{StaticResource MetroButton}" />
-      <Style TargetType="UserControls:JsonAddButton" BasedOn="{StaticResource MetroButton}" />
-      <Style TargetType="UserControls:JsonDeleteButton" BasedOn="{StaticResource MetroButton}" />
-      <Style TargetType="UserControls:JsonToggleButton" BasedOn="{StaticResource MetroCircleToggleButtonStyle}" />
-      <Style TargetType="UserControls:JsonTextBox" BasedOn="{StaticResource MetroTextBox}" />
-      <Style TargetType="UserControls:KeyTextBox" BasedOn="{StaticResource MetroTextBox}" />
-      <Style TargetType="UserControls:ValueTextBox" BasedOn="{StaticResource MetroTextBox}" />
-      <!--<Style TargetType="UserControls:JsonTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
-			<Style TargetType="UserControls:JsonButton" BasedOn="{StaticResource MetroButton}" />
-			<Style TargetType="UserControls:JsonAddButton" BasedOn="{StaticResource MetroButton}" />
-			<Style TargetType="UserControls:JsonDeleteButton" BasedOn="{StaticResource MetroButton}" />
-			<Style TargetType="UserControls:JsonToggleButton" BasedOn="{StaticResource MetroCircleToggleButtonStyle}" />
-			<Style TargetType="UserControls:JsonTextBox" BasedOn="{StaticResource MetroTextBox}" />
-			<Style TargetType="UserControls:KeyTextBox" BasedOn="{StaticResource MetroTextBox}" />
-			<Style TargetType="UserControls:ValueTextBox" BasedOn="{StaticResource MetroTextBox}" />-->
-    </ResourceDictionary>
+		<!--Style-->
+		<Style TargetType="UserControls:LinuxTreeView" BasedOn="{StaticResource MetroTreeView}" />
+		<Style TargetType="UserControls:LinuxTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+		<!--<Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroTextBlock}" />-->
+		<Style TargetType="UserControls:ServerList" BasedOn="{StaticResource MetroListBox}" />
+		<Style TargetType="UserControls:ServerInfoPanel" BasedOn="{StaticResource MetroListBoxItem}" />
+		<Style TargetType="UserControls:ServerMenuButton" BasedOn="{StaticResource MetroToggleButton}" />
+		<Style TargetType="UserControls:ConfigMenuTreeView" BasedOn="{StaticResource MetroTreeView}" />
+		<Style TargetType="UserControls:ConfigMenuTreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}" />
+		<Style TargetType="Window" BasedOn="{StaticResource MetroWindow}" />
+	</ResourceDictionary>
   </Application.Resources>
 </Application>

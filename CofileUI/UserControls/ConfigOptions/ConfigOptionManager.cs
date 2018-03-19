@@ -14,11 +14,6 @@ using System.Windows.Media;
 
 namespace CofileUI.UserControls.ConfigOptions
 {
-	public interface IOptions
-	{
-		FrameworkElement GetUIOptionKey(JProperty optionKey, Panel pan_value);
-		FrameworkElement GetUIOptionValue(JProperty optionKey, JToken optionValue);
-	}
 	enum ConfigType
 	{
 		file = 0,
@@ -81,10 +76,10 @@ namespace CofileUI.UserControls.ConfigOptions
 			set
 			{
 				_bChanged = value;
-				if(value)
-					WindowMain.current.tabItem_Config.Header = "*" + Application.Current.FindResource("MainTab.Config") as string;
-				else
-					WindowMain.current.tabItem_Config.Header = Application.Current.FindResource("MainTab.Config") as string;
+				//if(value)
+				//	WindowMain.current.tabItem_Config.Header = "*" + Application.Current.FindResource("MainTab.Config") as string;
+				//else
+				//	WindowMain.current.tabItem_Config.Header = Application.Current.FindResource("MainTab.Config") as string;
 			}
 		}
 		static void Clear()
@@ -424,10 +419,15 @@ namespace CofileUI.UserControls.ConfigOptions
 						}
 					}
 				}
+				//WindowMain.current?.enableConnect?.sshManager?.UploadString(Root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + Root["type"].ToString() + ".json");
+				if(WindowMain.current?.enableConnect?.Name == null
+					|| WindowMain.current?.enableConnect?.sshManager?.id == null)
+					return -1;
 
-				//Console.WriteLine("JHLIM_DEBUG : jobj_cur_data\n" + jobj_cur_data["comm_option"]);
+				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.enableConnect.Name  + "\\" + WindowMain.current.enableConnect.sshManager.id;
 
-				WindowMain.current?.enableConnect?.sshManager?.UploadString(Root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + Root["type"].ToString() + ".json");
+				FileContoller.Write(local_dir + "\\" + Root["type"].ToString() + ".json", Root.ToString());
+				WindowMain.current?.enableConnect?.sshManager?.SetConfig(local_dir);
 			}
 			else
 			{
@@ -437,7 +437,15 @@ namespace CofileUI.UserControls.ConfigOptions
 					|| WindowMain.current?.enableConnect?.sshManager?.EnvCoHome == null)
 					return -2;
 
-				WindowMain.current?.enableConnect?.sshManager?.UploadString(root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + root["type"].ToString() + ".json");
+				//WindowMain.current?.enableConnect?.sshManager?.UploadString(root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + root["type"].ToString() + ".json");
+				if(WindowMain.current?.enableConnect?.Name == null
+					|| WindowMain.current?.enableConnect?.sshManager?.id == null)
+					return -1;
+
+				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.enableConnect.Name + "\\" + WindowMain.current.enableConnect.sshManager.id;
+
+				FileContoller.Write(local_dir + "\\" + root["type"].ToString() + ".json", root.ToString());
+				WindowMain.current?.enableConnect?.sshManager?.SetConfig(local_dir);
 			}
 			return 0;
 		}

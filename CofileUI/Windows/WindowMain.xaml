@@ -72,34 +72,14 @@
 			<Controls:MetroAnimatedTabControl x:Name="tabControl" Grid.ColumnSpan = "2" Background="{x:Null}" 
 											  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 											  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel">
-				<!--<TabItem Header="Test">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
-
-						<TreeView Name="trv_test" MouseDoubleClick="trv_test_MouseDoubleClick">
-							<TreeView.ItemTemplate>
-								<HierarchicalDataTemplate DataType="{x:Type UserControls:LinuxTree}" ItemsSource="{Binding Childs}">
-									<TextBlock Text="{Binding Fileinfo.Name}"/>
-								</HierarchicalDataTemplate>
-							</TreeView.ItemTemplate>
-						</TreeView>
-						
-					</Grid>
-				</TabItem>-->
-				<!--<TabItem Header="{StaticResource MainTab.Config}">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
-						<Tail:TailOptions/>
-					</Grid>
-				</TabItem>-->
 				<TabItem Header="{StaticResource MainTab.Cofile}">
 					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
-						<!-- 이렇게 바인딩 시키면 이벤트(버블링)발생할때 탭컨트롤의 자식이된다. (SelectionChanged 이벤트가 Cofile안에 ComboBox 에 의해 발생되어도 탭컨트롤의 SelectionChanged 이벤트가 반응한다. -->
-						<!--<UserControls:Cofile DataContext="{Binding}"/>-->
-						<UserControls:Cofile />
+						<UserControls:EncryptTab DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
-				<TabItem x:Name="tabItem_Config" Header="{StaticResource MainTab.Decrypt}">
+				<TabItem Header="{StaticResource MainTab.Decrypt}">
 					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
-						<UserControls:Decrypt DataContext="{Binding}"/>
+						<UserControls:DecryptTab DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
 				<TabItem Header="{StaticResource MainTab.Log}">
@@ -112,13 +92,6 @@
 						<UserControls:Sqlite_StatusTable DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
-
-
-				<!--<TabItem Header="ServerCommand">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
-						<UserControls:ServerCommand DataContext="{Binding}"/>
-					</Grid>
-				</TabItem>-->
 			</Controls:MetroAnimatedTabControl>
 			<Label x:Name="label_serverinfo" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="20"/>
 		</Grid>
