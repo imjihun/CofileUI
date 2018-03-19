@@ -20,7 +20,6 @@ c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\b
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\Newtonsoft.Json.xml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\Renci.SshNet.xml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\bin\Debug\System.Data.SQLite.xml
-c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.csprojResolveAssemblyReference.cache
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.csproj.ResolveComReference.cache
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\Resources\StringResources\StringCofile.baml
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\UserControls\Cofile.g.cs
@@ -105,3 +104,4 @@ c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\o
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.csproj.GenerateResource.Cache
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.exe
 c:\users\administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.pdb
+C:\Users\Administrator\documents\visual studio 2015\Projects\CofileUI\CofileUI\obj\Debug\CofileUI.csprojResolveAssemblyReference.cache

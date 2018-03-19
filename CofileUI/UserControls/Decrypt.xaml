@@ -28,8 +28,8 @@
 		</Grid.ColumnDefinitions>
 		<Grid Grid.Column="0" x:Name="grid_treeView_linux_directory">
 		</Grid>
-		<Grid Grid.Column="1">
-			<UserControls:ConfigMenu DataContext="{Binding}" />
+		<Grid Grid.Column="1" x:Name="grid_config_menu">
+			<!--<UserControls:ConfigMenu DataContext="{Binding}" />-->
 		</Grid>
 
 		<GridSplitter Background="Gray"

@@ -40,6 +40,7 @@ namespace CofileUI.Windows
 	public partial class WindowMain : MetroWindow
 	{
 		public static WindowMain current;
+		public ServerInfo enableConnect;
 		public WindowMain()
 		{
 			//string[] dll_path = new string[] { @"bin\EntityFramework.dll"
@@ -82,7 +83,7 @@ namespace CofileUI.Windows
 		
 		private void DisconnectTimeout_Tick(object sender, EventArgs e)
 		{
-			if(MainSettings.IsTimeOut && SSHController.IsConnected
+			if(MainSettings.IsTimeOut && enableConnect?.sshManager?.IsConnected == true
 				&& LastInputTime.AddMinutes(MainSettings.SessionTimeOut) < DateTime.Now)
 			//&& LastInputTime.AddSeconds(5) < DateTime.Now)
 			{
@@ -92,7 +93,7 @@ namespace CofileUI.Windows
 		}
 		private void DisconnectTimeout()
 		{
-			SSHController.DisConnect();
+			enableConnect?.sshManager?.DisConnect();
 		}
 
 		public static bool bCtrl = false;
@@ -127,11 +128,11 @@ namespace CofileUI.Windows
 			Decrypt.current.bUpdated = val;
 			DataBaseInfo.bUpdated = val;
 		}
-		string changed_server_name = "";
-		public string Changed_server_name { get { return changed_server_name; }
+		string connectedServerName = "";
+		public string ConnectedServerName { get { return connectedServerName; }
 			set
 			{
-				changed_server_name = value;
+				connectedServerName = value;
 				if(value == "")
 				{
 					label_serverinfo.Content = "";
@@ -139,26 +140,32 @@ namespace CofileUI.Windows
 				}
 				else
 				{
-					label_serverinfo.Content = "[ " + changed_server_name + " ] is Connected from [ " + ServerList.selected_serverinfo_panel.Serverinfo.id + " ]";
+					label_serverinfo.Content = "[ " + connectedServerName + " ] is Connected from [ " + enableConnect?.sshManager?.id + " ]";
 				}
 			}
 		}
 		
 		// 서버메뉴리스트에서 서버를 컨넥팅 동작을 할 때 작동
-		public void Refresh(string _changed_server_name)
+		public void Refresh(ServerInfo si)
 		{
+			this.enableConnect = si;
+
 			if(tabControl.SelectedIndex == 0) Cofile.current.Refresh();
 			else if(tabControl.SelectedIndex == 1) Decrypt.current.Refresh();
 			else if(tabControl.SelectedIndex == 2) DataBaseInfo.RefreshUi();
 			else if(tabControl.SelectedIndex == 3) DataBaseInfo.RefreshUi();
 
-			if(!SSHController.IsConnected)
-				bUpdateInit(true);
+			if(this.enableConnect?.sshManager?.IsConnected == true)
+			{
+				ConnectedServerName = this.enableConnect?.sshManager?.name;
+			}
 		}
 		public void Clear()
 		{
 			if(Cofile.current != null)
 				Cofile.current.Clear();
+			if(Decrypt.current != null)
+				Decrypt.current.Clear();
 			if(Sqlite_LogTable.current != null)
 				Sqlite_LogTable.current.Clear();
 			if(Sqlite_StatusTable.current != null)
@@ -166,7 +173,7 @@ namespace CofileUI.Windows
 			if(Status.current != null)
 				Status.current.Clear();
 
-			Changed_server_name = "";
+			ConnectedServerName = "";
 		}
 		#endregion
 

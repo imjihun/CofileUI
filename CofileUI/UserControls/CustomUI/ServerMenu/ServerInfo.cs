@@ -28,11 +28,33 @@ namespace CofileUI.UserControls
 	{
 		public static string PATH = MainSettings.Path.PathDirServerInfo + MainSettings.Path.FileNameServerInfo;
 		public static JObject jobj_root = new JObject();
-		
-		public string name;
-		public string ip;
-		public int port;
-		public string id = "";
+
+		public SSHManager sshManager = null;
+
+		private string name;
+		public string Name {
+			get { return name; }
+			set {
+				name = value;
+				sshManager.name = name;
+			}
+		}
+		private string ip;
+		public string Ip {
+			get { return ip; }
+			set {
+				ip = value;
+				sshManager.ip = ip;
+			}
+		}
+		private int port;
+		public int Port {
+			get { return port; }
+			set {
+				port = value;
+				sshManager.port = port;
+			}
+		}
 		//public string password;
 
 		//public ServerInfo(string _name, string _ip, string _id, string _password)
@@ -43,13 +65,15 @@ namespace CofileUI.UserControls
 		//	password = _password;
 		//}
 		public ServerInfo(string _name, string _ip, int _port)
+			: this()
 		{
-			name = _name;
-			ip = _ip;
-			port = _port;
+			Name = _name;
+			Ip = _ip;
+			Port = _port;
 		}
 		private ServerInfo()
 		{
+			sshManager = new SSHManager(null, null, 0);
 		}
 
 		public static bool save()
@@ -131,7 +155,7 @@ namespace CofileUI.UserControls
 					// property 만들기
 					jobj.Add(new JProperty(f[i].Name, f[i].GetValue(serverinfo)));
 				}
-				JProperty jporp = new JProperty(serverinfo.name,  jobj);
+				JProperty jporp = new JProperty(serverinfo.Name,  jobj);
 				return jporp;
 			}
 			catch(Exception e)
@@ -198,15 +222,19 @@ namespace CofileUI.UserControls
 			if(jobj_serverinfo == null)
 				return null;
 
-			type.GetField("name").SetValue(serverinfo, jprop.Name);
+			//serverinfo.Name = jprop.Name;
+			type.GetProperty("Name")?.SetValue(serverinfo, jprop.Name, null);
 			foreach(var v in jobj_serverinfo.Properties())
 			{
 				JValue jval = (JValue)v.Value;
+				if(jval == null)
+					continue;
+
 				// port 받을때
 				if(jval.Type == JTokenType.Integer)
-					type.GetField(v.Name).SetValue(serverinfo, Convert.ToInt32(jval.Value));
+					type.GetProperty(v.Name)?.SetValue(serverinfo, Convert.ToInt32(jval.Value), null);
 				else
-					type.GetField(v.Name).SetValue(serverinfo, jval.Value);
+					type.GetProperty(v.Name)?.SetValue(serverinfo, jval.Value, null);
 			}
 
 			return serverinfo;
@@ -230,29 +258,33 @@ namespace CofileUI.UserControls
 		public string Text { get { return tb.Text; } set { tb.Text = value; } }
 
 		private static List<ServerInfoPanel> list_total_serverinfo = new List<ServerInfoPanel>();
-		private bool isConnected = false;
 		public bool IsConnected
 		{
-			get { return isConnected; }
-			set
-			{
-				if(value)
-				{
-					for(int i = 0; i < list_total_serverinfo.Count; i++)
-					{
-						list_total_serverinfo[i].isConnected = false;
-						list_total_serverinfo[i].icon.Visibility = Visibility.Hidden;
-					}
-				}
-
-				isConnected = value;
-				if(value)
-					icon.Visibility = Visibility.Visible;
+			get {
+				if(Serverinfo?.sshManager?.IsConnected != true)
+					return false;
 				else
-					icon.Visibility = Visibility.Hidden;
+					return true;
 			}
+			//set
+			//{
+			//	if(value)
+			//	{
+			//		for(int i = 0; i < list_total_serverinfo.Count; i++)
+			//		{
+			//			list_total_serverinfo[i].isConnected = false;
+			//			list_total_serverinfo[i].icon.Visibility = Visibility.Hidden;
+			//		}
+			//	}
+
+			//	isConnected = value;
+			//	if(value)
+			//		icon.Visibility = Visibility.Visible;
+			//	else
+			//		icon.Visibility = Visibility.Hidden;
+			//}
 		}
-		//public bool IsConnected { get { return SSHController.CheckConnection(serverinfo.ip, serverinfo.port); } }
+		//public bool IsConnected { get { return WindowMain.current?.enableConnect?.sshManager?.CheckConnection(serverinfo.ip, serverinfo.port); } }
 		private void CreateMember()
 		{
 			sp = new StackPanel();
@@ -291,15 +323,13 @@ namespace CofileUI.UserControls
 
 			Serverinfo = si;
 			this.HorizontalAlignment = HorizontalAlignment.Stretch;
-			this.Text = si.name;
+			this.Text = si.Name;
 		}
 	}
 
 	public class ServerList : ListBox
 	{
 		public ServerMenuButton parent;
-		public static ServerInfoPanel selected_serverinfo_panel;
-		public static ServerInfoPanel connected_serverinfo_panel;
 		MenuItem Disconnect;
 		MenuItem Setting;
 		private void InitContextMenu()
@@ -369,30 +399,38 @@ namespace CofileUI.UserControls
 
 			this.ContextMenu.Opened += ContextMenu_Opened;
 		}
-		private void OnClickEnvSetting(object sender, RoutedEventArgs e)
-		{
-			Window_EnvSetting wms = new Window_EnvSetting();
-			Point pt = this.PointToScreen(new Point(0, 0));
-			wms.Left = pt.X;
-			wms.Top = pt.Y;
-			wms.textBox_cohome.Text = SSHController.EnvCoHome;
-			if(wms.ShowDialog() == true)
-			{
-				SSHController.EnvCoHome = wms.textBox_cohome.Text;
-			}
-		}
+		//private void OnClickEnvSetting(object sender, RoutedEventArgs e)
+		//{
+		//	SSHManager ssh = (this.SelectedItem as ServerInfoPanel)?.Serverinfo.sshManager;
+		//	if(ssh == null)
+		//		return;
+
+		//	Window_EnvSetting wms = new Window_EnvSetting();
+		//	Point pt = this.PointToScreen(new Point(0, 0));
+		//	wms.Left = pt.X;
+		//	wms.Top = pt.Y;
+		//	wms.textBox_cohome.Text = ssh.EnvCoHome;
+		//	if(wms.ShowDialog() == true)
+		//	{
+		//		ssh.EnvCoHome = wms.textBox_cohome.Text;
+		//	}
+		//}
 		private void ContextMenu_Opened(object sender, RoutedEventArgs e)
 		{
+			ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+			if(sip == null)
+				return;
+
 			if(Disconnect != null)
 			{
-				if(selected_serverinfo_panel != null && selected_serverinfo_panel.IsConnected)
+				if(sip.IsConnected)
 					Disconnect.IsEnabled = true;
 				else
 					Disconnect.IsEnabled = false;
 			}
 			if(Setting != null)
 			{
-				if(selected_serverinfo_panel != null && selected_serverinfo_panel.IsConnected)
+				if(sip.IsConnected)
 					Setting.IsEnabled = true;
 				else
 					Setting.IsEnabled = false;
@@ -457,37 +495,40 @@ namespace CofileUI.UserControls
 		}
 		private void OnClickDeleteServer(object sender, RoutedEventArgs e)
 		{
-			if(ServerList.selected_serverinfo_panel == null)
-				return;
-
 			WindowMain.current.ShowMessageDialog("Delete Server", "해당 서버 정보를 정말 삭제하시겠습니까?", MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, DeleteServerInfoUI);
 		}
 		private void OnClickConnectServer(object sender, RoutedEventArgs e)
 		{
-			//if(ServerList.selected_serverinfo_textblock == null)
-			//	return;
-			ServerInfoPanel sitb = this.SelectedItem as ServerInfoPanel;
-			if(sitb == null)
+			ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+			if(sip == null)
 				return;
 
-			//SSHController.ReConnect();
-			WindowMain.current.Refresh(sitb.Serverinfo.name);
+			if(sip.Serverinfo.sshManager?.ReConnect() == true)
+				sip.icon.Visibility = Visibility.Visible;
+			else
+				sip.icon.Visibility = Visibility.Hidden;
+			WindowMain.current.Refresh(sip.Serverinfo);
+
 		}
 		private void OnClickDisConnectServer(object sender, RoutedEventArgs e)
 		{
-			SSHController.DisConnect();
+			ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+			if(sip == null)
+				return;
+
+			sip.Serverinfo.sshManager?.DisConnect();
+			sip.icon.Visibility = Visibility.Hidden;
+
 			if(WindowMain.current != null)
 				WindowMain.current.Clear();
 		}
 		private void OnClickModifyServer(object sender, RoutedEventArgs e)
 		{
-			//if(ServerList.selected_serverinfo_textblock == null)
-			//	return;
-			ServerInfoPanel sitb = this.SelectedItem as ServerInfoPanel;
-			if(sitb == null)
+			ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+			if(sip == null)
 				return;
 
-			Window_AddServer wms = new Window_AddServer(sitb.Serverinfo);
+			Window_AddServer wms = new Window_AddServer(sip.Serverinfo);
 			//wms.textBox_password.Password = sitb.serverinfo.password;
 
 			Point pt = this.PointToScreen(new Point(0, 0));
@@ -507,14 +548,14 @@ namespace CofileUI.UserControls
 
 					// JProperty 바꾸기
 					JProperty newprop = ServerInfo.ConvertToJson(new ServerInfo(name, ip, port));
-					jobj[ServerList.selected_serverinfo_panel.Serverinfo.name].Parent.Replace(newprop);
+					jobj[sip.Serverinfo.Name].Parent.Replace(newprop);
 
 					if(!ServerInfo.save())
 						return;
 
-					sitb.Text = sitb.Serverinfo.name = name;
-					sitb.Serverinfo.ip = ip;
-					sitb.Serverinfo.port = port;
+					sip.Text = sip.Serverinfo.Name = name;
+					sip.Serverinfo.Ip = ip;
+					sip.Serverinfo.Port = port;
 					//sitb.serverinfo.id = wms.textBox_id.Text;
 					//sitb.serverinfo.password = wms.textBox_password.Password;
 				}
@@ -526,18 +567,21 @@ namespace CofileUI.UserControls
 		}
 		private void DeleteServerInfoUI()
 		{
+			ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+			if(sip == null)
+				return;
 			try
 			{
 				JObject jobj = ServerInfo.jobj_root[parent.Content] as JObject;
 				if(jobj == null)
 					return;
 
-				jobj.Remove(ServerList.selected_serverinfo_panel.Serverinfo.name);
+				jobj.Remove(sip.Serverinfo.Name);
 
 				if(!ServerInfo.save())
 					return;
 
-				this.Items.Remove(ServerList.selected_serverinfo_panel);
+				this.Items.Remove(sip);
 				//ServerButtonChildren.selected_server_info.Remove();
 			}
 			catch(Exception ex)
@@ -552,21 +596,16 @@ namespace CofileUI.UserControls
 			base.OnMouseDoubleClick(e);
 			if(e.ChangedButton == MouseButton.Left)
 			{
-				//((LinuxTreeViewItem)Cofile.current.treeView_linux_directory.Items[0]).IsExpanded = true;
-				//((LinuxTreeViewItem)Cofile.current.treeView_linux_directory.Items[0]).RefreshChild();
-				//Cofile.current.Refresh();
-				if(SSHController.ReConnect() && WindowMain.current != null)
-					WindowMain.current.Refresh(selected_serverinfo_panel.Serverinfo.name);
+				ServerInfoPanel sip = this.SelectedItem as ServerInfoPanel;
+				if(sip == null)
+					return;
+
+				if(sip.Serverinfo.sshManager?.ReConnect() == true)
+					sip.icon.Visibility = Visibility.Visible;
+				else
+					sip.icon.Visibility = Visibility.Hidden;
+				WindowMain.current.Refresh(sip.Serverinfo);
 			}
-		}
-		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
-		{
-			base.OnSelectionChanged(e);
-
-			selected_serverinfo_panel = this.SelectedItem as ServerInfoPanel;
-
-			//if(WindowMain.current != null)
-			//	WindowMain.current.Refresh(selected_serverinfo_textblock.serverinfo.name);
 		}
 		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{

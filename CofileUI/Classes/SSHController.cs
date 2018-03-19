@@ -456,18 +456,18 @@ namespace CofileUI.Classes
 			{
 				Log.ErrorIntoUI(ex.Message, "send command", Status.current.richTextBox_status);
 				Log.PrintError(ex.Message, "Classes.SSHController.sendCommand");
-				if(ServerList.selected_serverinfo_panel == null)
-					return false;
+				//if(ServerList.selected_serverinfo_panel == null)
+				//	return false;
 
-				string ip = ServerList.selected_serverinfo_panel.Serverinfo.ip;
-				//string id = ServerList.selected_serverinfo_textblock.serverinfo.id;
-				//string password = ServerList.selected_serverinfo_textblock.serverinfo.password;
-				int port = ServerList.selected_serverinfo_panel.Serverinfo.port;
+				//string ip = ServerList.selected_serverinfo_panel.Serverinfo.ip;
+				////string id = ServerList.selected_serverinfo_textblock.serverinfo.id;
+				////string password = ServerList.selected_serverinfo_textblock.serverinfo.password;
+				//int port = ServerList.selected_serverinfo_panel.Serverinfo.port;
 
-				//DisConnect();
-				SSHController.Connect(ip, port, timeout_connect_ms);
-				if(IsConnected)
-					readDummyMessageBlocking();
+				////DisConnect();
+				//SSHController.Connect(ip, port, timeout_connect_ms);
+				//if(IsConnected)
+				//	readDummyMessageBlocking();
 			}
 			return false;
 		}
@@ -610,7 +610,7 @@ namespace CofileUI.Classes
 			}
 		}
 
-		public static bool ReConnect(int timeout_ms = NO_TIMEOUT)
+		public static bool ReConnect(ServerInfo serverinfo, int timeout_ms = NO_TIMEOUT)
 		{
 			bool retval = true;
 
@@ -1322,6 +1322,40 @@ namespace CofileUI.Classes
 			//string remote_path = ConvertPathLocalToRemote(local_file_path, cur_local_root_path);
 			string remote_backup_path_dir = remote_directory + add_path_config_dir + @".backup/" + ServerList.selected_serverinfo_panel.Serverinfo.id + "/";
 			return UploadFile(local_file_path, remote_path_dir, remote_backup_path_dir);
+		}
+		public static int NewGetConfig(string local_dir)
+		{
+			if(!IsConnected)
+				return -2;
+
+			string[] filenames = { "file.json", "sam.json", "tail.json" };
+			int i;
+			for(i = 0; i < filenames.Length; i++)
+			{
+				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + ServerList.selected_serverinfo_panel.Serverinfo.id + "/" + filenames[i], filenames[i], filenames[i]))
+					break;
+			}
+			if(i != filenames.Length)
+				return -1;
+			else
+				return 0;
+		}
+		public static int NewSetConfig(string local_dir)
+		{
+			if(!IsConnected)
+				return -2;
+
+			string[] filenames = { "file.json", "sam.json", "tail.json" };
+			int i;
+			for(i = 0; i < filenames.Length; i++)
+			{
+				if(null == UploadFile(local_dir + filenames[i], EnvCoHome + "/var/conf/" + ServerList.selected_serverinfo_panel.Serverinfo.id))
+					break;
+			}
+			if(i != filenames.Length)
+				return -1;
+			else
+				return 0;
 		}
 		#endregion
 	}

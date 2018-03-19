@@ -43,9 +43,9 @@ namespace CofileUI.Windows
 			Port = 22;
 			if(si != null)
 			{
-				ServerName = si.name;
-				Ip = si.ip;
-				Port = si.port;
+				ServerName = si.Name;
+				Ip = si.Ip;
+				Port = si.Port;
 			}
 		}
 

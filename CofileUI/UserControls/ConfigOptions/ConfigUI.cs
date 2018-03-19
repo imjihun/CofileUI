@@ -80,17 +80,22 @@ namespace CofileUI.UserControls.ConfigOptions
 		public string index;
 		public string path;
 		
-		public StackPanel sp;
-		public TextBlock tb;
+		public Grid grid;
+		public TextBlock tb_title;
+		private TextBlock tb_dir;
 		public PackIconModern icon;
 
 		public ConfigMenuButton bnt_parent;
 
 		private void CreateMember()
 		{
-			sp = new StackPanel();
+			grid = new Grid();
 
-			sp.Orientation = Orientation.Horizontal;
+			grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+			DockPanel dp = new DockPanel();
+			grid.Children.Add(dp);
+			Grid.SetColumn(dp, 0);
+
 			icon = new PackIconModern()
 			{
 				Kind = PackIconModernKind.Connect,
@@ -98,20 +103,23 @@ namespace CofileUI.UserControls.ConfigOptions
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
 			icon.Margin = new Thickness(2, 0, 3, 0);
-			sp.Children.Add(icon);
-
-			//Binding binding = new Binding("IsConnected");
-			//binding.Mode = BindingMode.OneWay;
-			//binding.Source = this;
-			//binding.Converter = new BooleanToVisibilityConverter();
-			//BindingOperations.SetBinding(icon,PackIconModern.VisibilityProperty, binding);
 			icon.Visibility = Visibility.Hidden;
+			dp.Children.Add(icon);
 
-			tb = new TextBlock();
-			tb.Foreground = Brushes.Black;
-			sp.Children.Add(tb);
+			tb_title = new TextBlock();
+			tb_title.Foreground = Brushes.Black;
+			dp.Children.Add(tb_title);
 
-			this.Header = sp;
+			if(index != null)
+			{
+				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+				tb_dir = new TextBlock();
+				tb_dir.Foreground = Brushes.Black;
+				tb_dir.Margin = new Thickness(0, 0, 5, 0);
+				grid.Children.Add(tb_dir);
+				Grid.SetColumn(tb_dir, 1);
+			}
+			this.Header = grid;
 		}
 
 		RelayCommand AddConfigWorkGroupCommand;
@@ -154,12 +162,13 @@ namespace CofileUI.UserControls.ConfigOptions
 					try
 					{
 						this.root["work_group"]?[work_name]?.Parent?.Remove();
+						ConfigOptionManager.SaveOption(this.root);
 						int? _cnt = this.bnt_parent?.pan_parent?.btn_selected.child.Items.Count;
 						int cnt = _cnt == null ? 0 : _cnt.Value;
 						for(int i = 0; i < cnt; i++)
 						{
 							if(work_name != null
-							&& (this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.tb.Text == work_name)
+							&& (this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.tb_title.Text == work_name)
 							{
 								this.bnt_parent?.pan_parent?.btn_selected.child.Items.RemoveAt(i);
 								break;
@@ -173,44 +182,168 @@ namespace CofileUI.UserControls.ConfigOptions
 					}
 				});
 		}
+		RelayCommand DelConfigProcessCommand;
+		void DelConfigProcess(object parameter)
+		{
+			if(ServerInfo.jobj_root == null)
+				return;
+
+			WindowMain.current.ShowMessageDialog("Delete Config", "해당 Config 를 정말 삭제하시겠습니까?", MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative,
+				() =>
+				{
+					try
+					{
+						this.root["work_group"]?[work_name]?["processes"]?[Int32.Parse(index)]?.Remove();
+						ConfigOptionManager.SaveOption(this.root);
+						int? _cnt = this.bnt_parent?.pan_parent?.btn_selected.child.Items.Count;
+						int cnt = _cnt == null ? 0 : _cnt.Value;
+						for(int i = 0; i < cnt; i++)
+						{
+							if(work_name != null
+							&& (this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.tb_title.Text == work_name)
+							{
+								int? _cnt2 = (this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.Items.Count;
+								int cnt2 = _cnt2 == null ? 0 : _cnt2.Value;
+								int j;
+								for(j = 0; j < cnt2; j++)
+								{
+									if(index != null
+									&& ((this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.Items[j] as ConfigInfoPanel)?.tb_title.Text == index)
+									{
+										(this.bnt_parent?.pan_parent?.btn_selected.child.Items[i] as ConfigInfoPanel)?.Items.RemoveAt(j);
+										break;
+									}
+								}
+								if(j != cnt2)
+									break;
+							}
+						}
+					}
+					catch(Exception ex)
+					{
+						Log.ErrorIntoUI(ex.Message, "Del Server Menu", Status.current.richTextBox_status);
+						Log.PrintError(ex.Message, "UserControls.ServerMenuButton.DeleteServerMenuUI");
+					}
+				});
+		}
+		RelayCommand EncryptCommand;
+		void Encrypt(object parameter)
+		{
+			WindowMain.current.ShowMessageDialog(
+				this.root["type"] + " 암호화",
+				"해당항목들을 암호화 하시겠습니까?",
+				MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative,
+				() =>
+				{
+					bool? enc_retval = null;
+					List<string> list_command = parameter as List<string>;
+					if(list_command != null)
+					{
+						for(int i = 0; i < list_command.Count; i++)
+						{
+							enc_retval = WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(list_command[i]);
+							if(enc_retval != true)
+								break;
+						}
+					}
+					else
+					{
+						string cofile_type = this.root["type"].ToString();
+						//string config_info = this.work_name;
+						//if(this.index != null)
+						//	config_info += "_" + this.index;
+						string config_info = WindowMain.current?.enableConnect?.sshManager?.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
+
+						string command = "cofile " + cofile_type + " -c " + config_info;
+						enc_retval = WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(command);
+						Console.WriteLine("\tJHLIM_DEBUG : " + WindowMain.current?.enableConnect?.sshManager?.JHLIM_DEBUG_2);
+					}
+
+					if(enc_retval == true)
+					{
+						WindowMain.current.ShowMessageDialog(
+							this.root["type"] + " 암호화",
+							"암호화 요청을 보냈습니다.",
+							MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
+					}
+					else
+					{
+						WindowMain.current.ShowMessageDialog(
+							this.root["type"] + " 암호화",
+							"암호화 요청에 실패하였습니다.",
+							MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
+					}
+				});
+		}
 
 		public ConfigInfoPanel(ConfigMenuButton _bnt_parent, JObject _root, string _work_name, string _index = null, string _path = null)
 		{
-			CreateMember();
 			this.bnt_parent = _bnt_parent;
 			this.root = _root;
 			this.work_name = _work_name;
 			this.index = _index;
+			this.path = _path;
+			CreateMember();
+
 			this.HorizontalAlignment = HorizontalAlignment.Stretch;
 			if(_index == null)
-				this.tb.Text = _work_name;
+				this.tb_title.Text = _work_name;
 			else
-				this.tb.Text = _index + "\t" + _path;
+			{
+				this.tb_title.Text = _index;
+				this.tb_dir.Text = _path;
+			}
 			this.AllowDrop = true;
-			path = _path;
 
-			AddConfigWorkGroupCommand = new RelayCommand(AddConfigWorkGroup);
 			this.ContextMenu = new ContextMenu();
 			MenuItem item;
+			if(this.index == null)
+			{
+				AddConfigWorkGroupCommand = new RelayCommand(AddConfigWorkGroup);
+				item = new MenuItem();
+				item.Command = AddConfigWorkGroupCommand;
+				item.Header = "Add Config Work Group";
+				item.Icon = new PackIconMaterial()
+				{
+					Kind = PackIconMaterialKind.FolderPlus,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center
+				};
+				this.ContextMenu.Items.Add(item);
 
+				DelConfigWorkGroupCommand = new RelayCommand(DelConfigWorkGroup);
+				item = new MenuItem();
+				item.Command = DelConfigWorkGroupCommand;
+				item.Header = "Del Config Work Group";
+				item.Icon = new PackIconMaterial()
+				{
+					Kind = PackIconMaterialKind.FolderRemove,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center
+				};
+				this.ContextMenu.Items.Add(item);
+			}
+			else
+			{
+				DelConfigProcessCommand = new RelayCommand(DelConfigProcess);
+				item = new MenuItem();
+				item.Command = DelConfigProcessCommand;
+				item.Header = "Del Config";
+				item.Icon = new PackIconMaterial()
+				{
+					Kind = PackIconMaterialKind.FolderRemove,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center
+				};
+				this.ContextMenu.Items.Add(item);
+			}
+			EncryptCommand = new RelayCommand(Encrypt);
 			item = new MenuItem();
-			item.Command = AddConfigWorkGroupCommand;
-			item.Header = "Add Config Work Group";
+			item.Command = EncryptCommand;
+			item.Header = "Encrypt";
 			item.Icon = new PackIconMaterial()
 			{
-				Kind = PackIconMaterialKind.FolderPlus,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			this.ContextMenu.Items.Add(item);
-
-			DelConfigWorkGroupCommand = new RelayCommand(DelConfigWorkGroup);
-			item = new MenuItem();
-			item.Command = DelConfigWorkGroupCommand;
-			item.Header = "Del Config Work Group";
-			item.Icon = new PackIconMaterial()
-			{
-				Kind = PackIconMaterialKind.FolderRemove,
+				Kind = PackIconMaterialKind.Lock,
 				VerticalAlignment = VerticalAlignment.Center,
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
@@ -220,12 +353,11 @@ namespace CofileUI.UserControls.ConfigOptions
 		protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
 		{
 			base.OnMouseRightButtonDown(e);
-			//e.Handled = true;
-			//this.IsSelected = true;
-			if(this.Parent as ConfigList != null)
-				this.IsSelected = true;
+			e.Handled = true;
+			this.IsSelected = true;
+			//if(this.Parent as ConfigList != null)
+			//	this.IsSelected = true;
 		}
-
 		protected override void OnDragOver(DragEventArgs e)
 		{
 			base.OnDragOver(e);
@@ -244,6 +376,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			List<LinuxTreeViewItem> list_ltvi = data_obj as List<LinuxTreeViewItem>;
 			if(list_ltvi != null)
 			{
+				List<string> list_command = new List<string>();
 				int i;
 				for(i = 0; i<list_ltvi.Count;i++)
 				{
@@ -272,46 +405,60 @@ namespace CofileUI.UserControls.ConfigOptions
 							if(retval == true)
 							{
 								(this.root?["work_group"]?[work_name]?["processes"] as JArray)?.Add(jobj);
-								this.Items.Add(new ConfigInfoPanel(this.bnt_parent, this.root, this.work_name, tmp_index, ltvi.Path));
+								ConfigInfoPanel new_cip = new ConfigInfoPanel(this.bnt_parent, this.root, this.work_name, tmp_index, ltvi.Path);
+								this.Items.Add(new_cip);
 
 								//string cofile_type = this.root["type"].ToString();
-								//string config_info = SSHController.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
-								//SSHController.NewSendNRecvCofileCommand(list_ltvi, true, config_info, cofile_type);
+								//string config_info = WindowMain.current?.enableConnect?.sshManager?.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
+								//WindowMain.current?.enableConnect?.sshManager?.NewSendNRecvCofileCommand(list_ltvi, true, config_info, cofile_type);
 								Console.WriteLine("JHLIM_DEBUG : Encrypt {0} {1} {2} [{3}]", this.root["type"], this.work_name, tmp_index, ltvi.Path);
+
+								//string config_info = new_cip.work_name;
+								//if(new_cip.index != null)
+								//	config_info += "_" + new_cip.index;
+								string config_info = "/home/test/var/conf/test/" + this.root["type"].ToString() + ".json";
+								list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info);
 							}
 							else
 								break;
 						}
 					}
+					else
+					{
+						//string config_info = this.work_name;
+						//if(this.index != null)
+						//	config_info += "_" + this.index;
+						string config_info = "/home/test/var/conf/test/" + this.root["type"].ToString() + ".json";
+						if(ltvi.IsDirectory)
+						{
+							list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info + " -id " + ltvi.Path + " -od " + ltvi.Path);
+						}
+						else
+						{
+							string dir = ltvi.Path.Substring(0, ltvi.Path.Length - ltvi.FileName.Length);
+							list_command.Add("cofile " + this.root["type"].ToString() + " -e -c " + config_info + " -id " + dir + " -od " + dir + " -f " + ltvi.FileName);
+						}
+					}
 				}
 				if(i == list_ltvi.Count)
 				{
-					WindowMain.current.ShowMessageDialog(
-						this.root["type"] + " 암호화",
-						"해당항목들을 암호화 하시겠습니까?",
-						MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative,
-						() =>
-						{
-							string cofile_type = this.root["type"].ToString();
-							string config_info = SSHController.EnvCoHome + "/var/conf/test/" + cofile_type + ".json";
-							if(SSHController.NewSendNRecvCofileCommand(list_ltvi, true, config_info, cofile_type))
-							{
-								WindowMain.current.ShowMessageDialog(
-									this.root["type"] + " 암호화",
-									"암호화 요청을 보냈습니다.",
-									MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
-							}
-							else
-							{
-								WindowMain.current.ShowMessageDialog(
-									this.root["type"] + " 암호화",
-									"암호화 요청에 실패하였습니다.",
-									MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
-							}
-						});
+					Encrypt(list_command);
 				}
 			}
 			e.Handled = true;
+		}
+		protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
+		{
+			base.OnMouseDoubleClick(e);
+			if(this.IsSelected && e.ChangedButton == MouseButton.Left)
+			{
+				Window_Config wc = new Window_Config(root, work_name, index, path: path);
+				Point pt = WindowMain.current.PointToScreen(new Point(WindowMain.current.Width - wc.Width, WindowMain.current.Height - wc.Height));
+				wc.Left = pt.X;
+				wc.Top = pt.Y;
+				wc.Show();
+				e.Handled = true;
+			}
 		}
 	}
 
@@ -321,14 +468,17 @@ namespace CofileUI.UserControls.ConfigOptions
 
 		private void OnClickEnvSetting(object sender, RoutedEventArgs e)
 		{
+			if(WindowMain.current?.enableConnect?.sshManager == null)
+				return;
+
 			Window_EnvSetting wms = new Window_EnvSetting();
 			Point pt = this.PointToScreen(new Point(0, 0));
 			wms.Left = pt.X;
 			wms.Top = pt.Y;
-			wms.textBox_cohome.Text = SSHController.EnvCoHome;
+			wms.textBox_cohome.Text = WindowMain.current.enableConnect.sshManager.EnvCoHome;
 			if(wms.ShowDialog() == true)
 			{
-				SSHController.EnvCoHome = wms.textBox_cohome.Text;
+				WindowMain.current.enableConnect.sshManager.EnvCoHome = wms.textBox_cohome.Text;
 			}
 		}
 		
@@ -339,33 +489,19 @@ namespace CofileUI.UserControls.ConfigOptions
 
 			this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
 		}
-
-		protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
-		{
-			base.OnMouseDoubleClick(e);
-			if(e.ChangedButton == MouseButton.Left)
-			{
-				JObject root = null;
-				string work_name = null;
-				string index = null;
-
-				root = (this.SelectedItem as ConfigInfoPanel)?.root;
-				work_name = (this.SelectedItem as ConfigInfoPanel)?.work_name;
-				index = (this.SelectedItem as ConfigInfoPanel)?.index;
-
-				Window_Config wc = new Window_Config(root, work_name, index, path: (this.SelectedItem as ConfigInfoPanel)?.path);
-				Point pt = WindowMain.current.PointToScreen(new Point(WindowMain.current.Width - wc.Width, WindowMain.current.Height - wc.Height));
-				wc.Left = pt.X;
-				wc.Top = pt.Y;
-				wc.Show();
-				e.Handled = true;
-			}
-		}
 	}
 
 	public class ConfigMenuButton : ToggleButton
 	{
-		public JObject Root = null;
+		private JObject root = null;
+		public JObject Root {
+			get { return root; }
+			set {
+				root = value;
+				RefreshChild();
+			}
+		}
+
 		const double HEIGHT = 30;
 		const double FONTSIZE = 13;
 		public ConfigList child;
@@ -400,9 +536,9 @@ namespace CofileUI.UserControls.ConfigOptions
 				{
 					string work_group_name = wms.textBox_name.Text;
 					if(this.pan_parent?.btn_selected == null
-					|| this.pan_parent?.btn_selected.Root["work_group"] as JObject == null)
+					|| this.pan_parent?.btn_selected.Root?["work_group"] as JObject == null)
 						return;
-					(this.pan_parent?.btn_selected.Root["work_group"] as JObject).Add(new JProperty(work_group_name, new JObject(new JProperty("processes", new JArray()))));
+					(this.pan_parent?.btn_selected.Root?["work_group"] as JObject).Add(new JProperty(work_group_name, new JObject(new JProperty("processes", new JArray()))));
 
 					ConfigInfoPanel ui_config_group = new ConfigInfoPanel(this, this.pan_parent?.btn_selected.Root, work_group_name);
 					ui_config_group.IsExpanded = true;
@@ -458,6 +594,45 @@ namespace CofileUI.UserControls.ConfigOptions
 			this.ContextMenu.Items.Add(item);
 		}
 
+		void RefreshChild()
+		{
+			this.child?.Items.Clear();
+
+			JObject jobj_work_group_root = root?["work_group"] as JObject;
+			if(jobj_work_group_root == null)
+				return;
+
+			foreach(var work in jobj_work_group_root.Properties())
+			{
+				JObject jobj_server_menu = work.Value as JObject;
+				if(jobj_server_menu == null)
+					continue;
+
+				ConfigInfoPanel ui_config_group = new ConfigInfoPanel(this, root, work.Name);
+				ui_config_group.IsExpanded = true;
+				this.child.Items.Add(ui_config_group);
+
+				JArray jarr_processes = jobj_server_menu?["processes"] as JArray;
+				if(jarr_processes == null)
+					continue;
+				int i = 0;
+				foreach(var jprop_server_info in jarr_processes)
+				{
+					JObject jobj_process_info = jprop_server_info as JObject;
+					if(jobj_process_info == null)
+						continue;
+					string dir = null;
+					if(root["type"].ToString() == "file")
+						dir = (jobj_process_info["enc_option"] as JObject)?["input_dir"]?.ToString();
+					else
+						dir = (jobj_process_info["comm_option"] as JObject)?["input_dir"]?.ToString();
+					ui_config_group.Items.Add(new ConfigInfoPanel(this, root, work.Name, i.ToString(), dir));
+					
+					i++;
+				}
+			}
+		}
+
 		protected override void OnToggle()
 		{
 			if(this.pan_parent != null)
@@ -508,7 +683,7 @@ namespace CofileUI.UserControls.ConfigOptions
 		protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
 		{
 			base.OnMouseDoubleClick(e);
-			if(e.ChangedButton == MouseButton.Left && this.IsChecked == true)
+			if(Root != null && e.ChangedButton == MouseButton.Left && this.IsChecked == true)
 			{
 				Window_Config wc = new Window_Config(this.Root);
 				Point pt = WindowMain.current.PointToScreen(new Point(WindowMain.current.Width - wc.Width, WindowMain.current.Height - wc.Height));
@@ -547,9 +722,9 @@ namespace CofileUI.UserControls.ConfigOptions
 					{
 						string work_group_name = wms.textBox_name.Text;
 						if(this.pan_parent?.btn_selected == null
-						|| this.pan_parent?.btn_selected.Root["work_group"] as JObject == null)
+						|| this.pan_parent?.btn_selected.Root?["work_group"] as JObject == null)
 							return;
-						(this.pan_parent?.btn_selected.Root["work_group"] as JObject).Add(new JProperty(work_group_name, new JObject(new JProperty("processes", new JArray()))));
+						(this.pan_parent?.btn_selected.Root?["work_group"] as JObject).Add(new JProperty(work_group_name, new JObject(new JProperty("processes", new JArray()))));
 
 						ConfigOptions.ConfigInfoPanel ui_config_group = new ConfigOptions.ConfigInfoPanel(this.pan_parent?.btn_selected, this.pan_parent?.btn_selected.Root, work_group_name);
 						ui_config_group.IsExpanded = true;

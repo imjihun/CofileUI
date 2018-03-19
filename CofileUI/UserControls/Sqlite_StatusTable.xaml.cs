@@ -36,6 +36,7 @@ namespace CofileUI.UserControls
 				if(!DataBaseInfo.bUpdated)
 					DataBaseInfo.RefreshUi();
 			};
+			this.IsVisibleChanged += (sender, e) => { if(this.IsVisible && !DataBaseInfo.bUpdated) DataBaseInfo.RefreshUi(); };
 		}
 		public void Refresh()
 		{
@@ -131,7 +132,7 @@ namespace CofileUI.UserControls
 		}
 		private void KillAll()
 		{
-			SSHController.RunCofileCommand("cofile_monitor -killall");
+			WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand("cofile_monitor -killall");
 
 			DelayRefresh();
 			//UserControls.DataBaseInfo.RefreshUi();
@@ -159,7 +160,7 @@ namespace CofileUI.UserControls
 				}
 			}
 			command.Remove(command.Length - 1, 1);
-			SSHController.RunCofileCommand(command.ToString());
+			WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand(command.ToString());
 
 			DelayRefresh();
 			//UserControls.DataBaseInfo.RefreshUi();
@@ -171,7 +172,7 @@ namespace CofileUI.UserControls
 		}
 		private void DelayRefresh()
 		{
-			SSHController.RunCofileCommand("cofile_monitor");
+			WindowMain.current?.enableConnect?.sshManager?.RunCofileCommand("cofile_monitor");
 			Thread.Sleep(500);
 			UserControls.DataBaseInfo.RefreshUi();
 		}

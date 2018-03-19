@@ -26,140 +26,88 @@ namespace CofileUI.UserControls
 	/// </summary>
 	public partial class ConfigMenu : UserControl
 	{
-		ConfigPanel servergrid = null;
-		JObject jobj_root;
-		public LinuxTreeViewItem ltvi_root { get; set; }
+		ConfigPanel configgrid = null;
+
+		public ConfigMenuButton btnFileConfig = null;
+		public ConfigMenuButton btnSamConfig = null;
+		public ConfigMenuButton btnTailConfig = null;
 
 		public ConfigMenu()
 		{
 			InitializeComponent();
-			Console.WriteLine("JHLIM_DEBUG : DataContext = " + DataContext);
-			//if(DataContext != null)
-			InitConfigTab();
-		}
-		#region Config Menu Class
-		public ConfigPanel ConvertFromJson(JObject jobj_root)
-		{
-			if(jobj_root == null)
-				return null;
-
-			servergrid = new ConfigPanel();
 			try
 			{
-				foreach(var v in jobj_root.Properties())
+				configgrid = new ConfigPanel();
+				grid.Children.Add(configgrid);
+
+				btnFileConfig = new ConfigMenuButton(configgrid, null, "File Config");
+				configgrid.Children.Add(btnFileConfig);
+				configgrid.SubPanel.Children.Add(btnFileConfig.child);
+
+				btnSamConfig = new ConfigMenuButton(configgrid, null, "Sam Config");
+				configgrid.Children.Add(btnSamConfig);
+				configgrid.SubPanel.Children.Add(btnSamConfig.child);
+
+				btnTailConfig = new ConfigMenuButton(configgrid, null, "Tail Config");
+				configgrid.Children.Add(btnTailConfig);
+				configgrid.SubPanel.Children.Add(btnTailConfig.child);
+
+				Refresh();
+			}
+			catch(Exception e)
+			{
+				Log.PrintError(e.Message, "UserControls.ConfigMenu");
+			}
+			if(configgrid?.btn_group != null && configgrid.btn_group.Count > 0)
+				configgrid.btn_group[0].IsChecked = true;
+		}
+
+		public void Refresh()
+		{
+			//string file_json = Properties.Resources.file_config_default;
+			//string sam_json = Properties.Resources.sam_config_default;
+			//string tail_json = Properties.Resources.tail_config_default;
+			//btnFileConfig.Root = JObject.Parse(file_json);
+			//btnSamConfig.Root = JObject.Parse(sam_json);
+			//btnTailConfig.Root = JObject.Parse(tail_json);
+
+			if(WindowMain.current?.enableConnect?.sshManager?.NewGetConfig(MainSettings.Path.PathDirConfigFile) == 0)
+			{
+				string file_json = FileContoller.Read(MainSettings.Path.PathDirConfigFile + "/file.json");
+				if(file_json == null || file_json.Length == 0)
+					file_json = Properties.Resources.file_config_default;
+				string sam_json = FileContoller.Read(MainSettings.Path.PathDirConfigFile + "/sam.json");
+				if(file_json == null || file_json.Length == 0)
+					file_json = Properties.Resources.sam_config_default;
+				string tail_json = FileContoller.Read(MainSettings.Path.PathDirConfigFile + "/tail.json");
+				if(file_json == null || file_json.Length == 0)
+					file_json = Properties.Resources.tail_config_default;
+
+				try
 				{
-					JObject jobj_config_root = v.Value as JObject;
-					if(jobj_config_root == null)
-						continue;
-
-					ConfigMenuButton smbtn = new ConfigMenuButton(servergrid, jobj_config_root, v.Name);
-					servergrid.Children.Add(smbtn);
-					servergrid.SubPanel.Children.Add(smbtn.child);
-
-					JObject jobj_work_group_root = jobj_config_root.GetValue("work_group") as JObject;
-					if(jobj_work_group_root == null)
-						continue;
-
-					foreach(var work in jobj_work_group_root.Properties())
-					{
-						JObject jobj_server_menu = work.Value as JObject;
-						if(jobj_server_menu == null)
-							continue;
-
-						ConfigInfoPanel ui_config_group = new ConfigInfoPanel(smbtn, jobj_config_root, work.Name);
-						ui_config_group.IsExpanded = true;
-						smbtn.child.Items.Add(ui_config_group);
-
-						JArray jarr_processes = jobj_server_menu.GetValue("processes") as JArray;
-						if(jarr_processes == null)
-							continue;
-						int i = 0;
-						foreach(var jprop_server_info in jarr_processes)
-						{
-							JObject jobj_process_info = jprop_server_info as JObject;
-							if(jobj_process_info == null)
-								continue;
-							string dir = null;
-							string daemon_yn = null;
-							if(jobj_config_root.GetValue("type").ToString() == "file")
-								dir = (jobj_process_info.GetValue("enc_option") as JObject)?.GetValue("input_dir")?.ToString();
-							else
-								dir = (jobj_process_info.GetValue("comm_option") as JObject)?.GetValue("input_dir")?.ToString();
-							ui_config_group.Items.Add(new ConfigInfoPanel(smbtn, jobj_config_root, work.Name, i.ToString(), dir));
-
-							string daemon_keyword = "dir_monitoring_yn";
-							if(jobj_config_root.GetValue("type").ToString() == "tail")
-								daemon_keyword = "daemon_yn";
-
-							JToken jcur = jobj_process_info;
-							while(jcur != null
-								&& daemon_yn == null)
-							{
-								daemon_yn = (jcur["comm_option"] as JObject)?.GetValue(daemon_keyword)?.ToString();
-								jcur = jcur.Parent;
-								while(jcur != null
-									&& jcur as JObject == null)
-									jcur = jcur.Parent;
-							}
-
-							if(daemon_yn == "True")
-							{
-								Decrypt.current?.tv_linux?.ChangeColor(dir, jobj_config_root["type"] + "-" + work.Name + "-" + i);
-							}
-							i++;
-						}
-					}
+					btnFileConfig.Root = JObject.Parse(file_json);
+					btnSamConfig.Root = JObject.Parse(sam_json);
+					btnTailConfig.Root = JObject.Parse(tail_json);
 				}
-				return servergrid;
+				catch(Exception e)
+				{
+					Console.WriteLine("JHLIM_DEBUG : ConfigMenu JObject.Parse " + e.Message);
+				}
 			}
-			catch(Exception e)
-			{
-				Log.PrintError(e.Message, "UserControls.ServerInfo.ConvertFromJson");
-			}
-			return null;
 		}
-		void InitConfigTab()
+		public void Clear()
 		{
 			try
 			{
-				//ConfigInfo.jobj_root = JObject.Parse(json);
-				jobj_root = JObject.Parse("{ \"File Config\" : " + Properties.Resources.file_config_default + ", \"Sam Config\" : " + Properties.Resources.sam_config_default + ", \"Tail Config\" : " + Properties.Resources.tail_config_default + " }");
-				ConfigPanel panel_server = ConvertFromJson(jobj_root);
-
-				grid.Children.Add(panel_server);
+				btnFileConfig.Root = null;
+				btnSamConfig.Root = null;
+				btnTailConfig.Root = null;
 			}
 			catch(Exception e)
 			{
-				Log.PrintError(e.Message, "UserControls.ConfigMenu.InitConfigtab");
+				Console.WriteLine("JHLIM_DEBUG : ConfigMenu JObject.Parse " + e.Message);
 			}
-			if(servergrid.btn_group.Count > 0)
-				servergrid.btn_group[0].IsChecked = true;
 		}
-
-		protected override void OnMouseDown(MouseButtonEventArgs e)
-		{
-			base.OnMouseDown(e);
-			Console.WriteLine("JHLIM_DEBUG : MouseDown");
-			if((Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel) == null)
-				Console.WriteLine("JHLIM_DEBUG : has no items " + Cofile.current.treeView_linux_directory1.Items[0]);
-			else
-			{
-				(Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel).IsExpanded = !(Cofile.current.treeView_linux_directory1.Items[0] as LinuxFileModel).IsExpanded;
-				Console.WriteLine("JHLIM_DEBUG : has items");
-			}
-
-			//Console.WriteLine("JHLIM_DEBUG : " + servergrid.btn_group[0]?.Root["work_group"]?["test3"]);
-
-			JObject root = JObject.Parse("{ \"File Config\" : " + servergrid.btn_group[0].Root + ", \"Sam Config\" : " + servergrid.btn_group[1].Root + ", \"Tail Config\" : " + servergrid.btn_group[2].Root + " }");
-			servergrid.btn_group.Clear();
-			ConfigPanel panel_server = ConvertFromJson(root);
-
-			grid.Children.Clear();
-			grid.Children.Add(panel_server);
-			if(servergrid.btn_group.Count > 0)
-				servergrid.btn_group[0].IsChecked = true;
-		}
-
-		#endregion
 	}
 }
+ 

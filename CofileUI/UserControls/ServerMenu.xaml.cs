@@ -25,6 +25,7 @@ namespace CofileUI.UserControls
 	/// </summary>
 	public partial class ServerMenu : UserControl
 	{
+		ServerPanel panel_server;
 		public ServerMenu()
 		{
 			InitializeComponent();
@@ -42,7 +43,7 @@ namespace CofileUI.UserControls
 				try
 				{
 					ServerInfo.jobj_root = JObject.Parse(json);
-					ServerPanel panel_server = ServerInfo.ConvertFromJson(ServerInfo.jobj_root);
+					panel_server = ServerInfo.ConvertFromJson(ServerInfo.jobj_root);
 
 					grid_server.Children.Add(panel_server);
 				}

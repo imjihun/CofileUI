@@ -1,4 +1,5 @@
 ﻿using CofileUI.Classes;
+using CofileUI.Windows;
 using Renci.SshNet.Sftp;
 using System;
 using System.Collections.ObjectModel;
@@ -36,15 +37,15 @@ namespace CofileUI.UserControls
 		private string icon = "/CofileUI;component/Resources/file.png";
 		public string Icon { get { return icon; } set { icon = value; RaisePropertyChanged("Icon"); } }
 
-		private string name = null;
-		public string Name
+		private string filename = null;
+		public string FileName
 		{
-			get { return name; }
+			get { return filename; }
 			set {
-				name = value;
+				filename = value;
 				RaisePropertyChanged("Name");
 
-				if(name != null && name.Length > 0 && name[0] == '.')
+				if(filename != null && filename.Length > 0 && filename[0] == '.')
 				{
 					Opacity = 0.5;
 				}
@@ -92,7 +93,7 @@ namespace CofileUI.UserControls
 				if(value)
 				{
 					realSelected = !realSelected;
-					Console.WriteLine("JHLIM_DEBUG : this = " + Name + " real = " + realSelected);
+					Console.WriteLine("JHLIM_DEBUG : this = " + FileName + " real = " + realSelected);
 
 					if(realSelected)
 					{
@@ -139,7 +140,7 @@ namespace CofileUI.UserControls
 				string[] IGNORE_FILENAME = new string[] {".", ".."};
 
 				SftpFile[] files;
-				files = SSHController.PullListInDirectory(Path);
+				files = WindowMain.current?.enableConnect?.sshManager?.PullListInDirectory(Path);
 				if(files == null)
 				{
 					Icon = "/CofileUI;component/Resources/directory_deny.png";
@@ -166,12 +167,12 @@ namespace CofileUI.UserControls
 					LinuxFileModel lfm_child;
 					if(file.IsDirectory)
 					{
-						lfm_child = new LinuxFileModel(viewModel) { Path = file.FullName, FileInfo = file, IsDirectory = true, Name = file.Name };
+						lfm_child = new LinuxFileModel(viewModel) { Path = file.FullName, FileInfo = file, IsDirectory = true, FileName = file.Name };
 						Children.Insert(count_have_directory++, lfm_child);
 					}
 					else
 					{
-						lfm_child = new LinuxFileModel(viewModel) { Path = file.FullName, FileInfo = file, IsDirectory = false, Name = file.Name };
+						lfm_child = new LinuxFileModel(viewModel) { Path = file.FullName, FileInfo = file, IsDirectory = false, FileName = file.Name };
 						Children.Add(lfm_child);
 					}
 					

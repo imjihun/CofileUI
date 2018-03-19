@@ -215,186 +215,230 @@ namespace CofileUI.UserControls.ConfigOptions
 			current = CreateOption(token["type"]?.ToString(), new_root);
 			return current;
 		}
+		private static string _GetOption(JObject root, string type, string option_name)
+		{
+			if(root == null || type == null || option_name == null)
+				return null;
+
+			string ret_val = null;
+
+			if(option_name == "output_dir")
+			{
+				if(root["type"]?.ToString() == "file")
+					ret_val = root["enc_option"]?[option_name]?.ToString();
+				else
+					ret_val = root["comm_option"]?[option_name]?.ToString();
+			}
+
+			return ret_val;
+		}
+		public static string GetOption(JObject root, string _work_name, string _process_index, string option_name)
+		{
+			string ret_val = null;
+
+			if(_process_index != null)
+				ret_val = _GetOption(root?["work_group"]?[_work_name]?["processes"]?[Int32.Parse(_process_index)] as JObject, root["type"]?.ToString(), option_name);
+			if(_work_name != null && ret_val == null)
+				ret_val = _GetOption(root?["work_group"]?[_work_name] as JObject, root["type"]?.ToString(), option_name);
+			if(ret_val == null)
+				ret_val = _GetOption(root as JObject, root["type"]?.ToString(), option_name);
+
+			return ret_val;
+		}
 
 		static string[] arr_json_keyword = { "comm_option", "enc_option", "dec_option", "col_var", "col_fix", "enc_inform", "work_group", "processes" };
-		public static int SaveOption()
+		public static int SaveOption(JObject root = null)
 		{
-			if(Root == null
-				|| CurRoot == null)
-				return -1;
-			JObject jobj_cur_data = null;
-			JObject jobj_par_data = null;
+			if(root == null)
+			{
+				if(Root == null
+					|| CurRoot == null)
+					return -1;
+				JObject jobj_cur_data = null;
+				JObject jobj_par_data = null;
 
-			if(work_name != null && index == null)
-			{
-				jobj_cur_data = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
-				jobj_par_data = Root.DeepClone() as JObject;
-			}
-			else if(work_name != null && index != null)
-			{
-				jobj_cur_data = ((((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject)?.GetValue("processes") as JArray)?[Int32.Parse(index)] as JObject;
-				jobj_par_data = Root.DeepClone() as JObject;
-				JObject jobj_work = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
-				foreach(var v in jobj_work.Properties())
+				if(work_name != null && index == null)
 				{
-					if(v.Value as JArray == null)
+					jobj_cur_data = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
+					jobj_par_data = Root.DeepClone() as JObject;
+				}
+				else if(work_name != null && index != null)
+				{
+					jobj_cur_data = ((((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject)?.GetValue("processes") as JArray)?[Int32.Parse(index)] as JObject;
+					jobj_par_data = Root.DeepClone() as JObject;
+					JObject jobj_work = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
+					foreach(var v in jobj_work.Properties())
 					{
-						JObject jobj_cur = jobj_par_data.GetValue(v.Name) as JObject;
-						if(jobj_cur == null)
-							continue;
-						foreach(var prop in (v.Value as JObject)?.Properties())
+						if(v.Value as JArray == null)
 						{
-							jobj_cur[prop.Name] = prop.Value;
+							JObject jobj_cur = jobj_par_data.GetValue(v.Name) as JObject;
+							if(jobj_cur == null)
+								continue;
+							foreach(var prop in (v.Value as JObject)?.Properties())
+							{
+								jobj_cur[prop.Name] = prop.Value;
+							}
+						}
+						else
+						{
+							JArray jarr_cur = jobj_par_data.GetValue(v.Name) as JArray;
+							if(jarr_cur == null)
+							{
+								jobj_par_data.Add(v.Name, new JArray());
+								int i = 0;
+								foreach(var jobj in (v.Value as JArray))
+								{
+									(jobj_par_data[v.Name] as JArray)?.Add(new JObject());
+									foreach(var prop in (jobj as JObject)?.Properties())
+									{
+										(jobj_par_data[v.Name]?[i] as JObject)?.Add(prop.Name, prop.Value);
+									}
+									i++;
+								}
+								continue;
+							}
+							int idx = 0;
+							foreach(var jobj in (v.Value as JArray))
+							{
+								foreach(var prop in (jobj as JObject)?.Properties())
+								{
+									jarr_cur[idx][prop.Name] = prop.Value;
+								}
+								idx++;
+							}
+						}
+					}
+				}
+				else if(work_name == null && index == null)
+				{
+					jobj_cur_data = Root as JObject;
+				}
+
+				if(jobj_cur_data == null)
+					return -1;
+
+				foreach(var jprop_section in (CurRoot as JObject)?.Properties())
+				{
+					int idx_keyword;
+					for(idx_keyword = 0; idx_keyword < arr_json_keyword.Length; idx_keyword++)
+					{
+						if(arr_json_keyword[idx_keyword] == jprop_section.Name)
+							break;
+					}
+					if(idx_keyword == arr_json_keyword.Length)
+						continue;
+
+					if(jprop_section.Value as JArray == null)
+					{
+						foreach(var jprop_changed in (jprop_section.Value as JObject)?.Properties())
+						{
+							if(jobj_par_data != null
+								&& (jobj_par_data[jprop_section.Name]?[jprop_changed.Name] as JValue)?.Value != null
+								&& (jobj_par_data[jprop_section.Name]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
+							{
+								jobj_cur_data[jprop_section.Name]?[jprop_changed.Name]?.Parent.Remove();
+								if(jprop_changed.Name[0] == '#')
+									jobj_cur_data[jprop_section.Name]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
+								else
+									jobj_cur_data[jprop_section.Name]?['#' + jprop_changed.Name]?.Parent?.Remove();
+
+								if(jobj_cur_data[jprop_section.Name]?.LongCount() == 0)
+									jobj_cur_data[jprop_section.Name]?.Parent.Remove();
+							}
+							else if(jobj_cur_data[jprop_section.Name] == null)
+							{
+								if(jobj_cur_data["processes"] != null)
+									jobj_cur_data["processes"]?.Parent?.AddBeforeSelf(new JProperty(jprop_section.Name, new JObject()));
+								else
+									(jobj_cur_data as JObject)?.Add(jprop_section.Name, new JObject());
+								(jobj_cur_data[jprop_section.Name] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
+							}
+							else if(jobj_cur_data[jprop_section.Name][jprop_changed.Name] == null)
+							{
+								(jobj_cur_data[jprop_section.Name] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
+								if(jprop_changed.Name[0] == '#')
+									jobj_cur_data[jprop_section.Name][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
+								else
+									jobj_cur_data[jprop_section.Name]['#' + jprop_changed.Name]?.Parent?.Remove();
+							}
+							else
+								jobj_cur_data[jprop_section.Name][jprop_changed.Name] = jprop_changed.Value;
 						}
 					}
 					else
 					{
-						JArray jarr_cur = jobj_par_data.GetValue(v.Name) as JArray;
-						if(jarr_cur == null)
-						{
-							jobj_par_data.Add(v.Name, new JArray());
-							int i = 0;
-							foreach(var jobj in (v.Value as JArray))
-							{
-								(jobj_par_data[v.Name] as JArray)?.Add(new JObject());
-								foreach(var prop in (jobj as JObject)?.Properties())
-								{
-									(jobj_par_data[v.Name]?[i] as JObject)?.Add(prop.Name, prop.Value);
-								}
-								i++;
-							}
-							continue;
-						}
 						int idx = 0;
-						foreach(var jobj in (v.Value as JArray))
+						foreach(var jarr_changed in jprop_section.Value as JArray)
 						{
-							foreach(var prop in (jobj as JObject)?.Properties())
+							foreach(var jprop_changed in (jarr_changed as JObject)?.Properties())
 							{
-								jarr_cur[idx][prop.Name] = prop.Value;
+								if(jobj_par_data != null
+									&& (jobj_par_data[jprop_section.Name]?[idx]?[jprop_changed.Name] as JValue)?.Value != null
+									&& (jobj_par_data[jprop_section.Name]?[idx]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
+								{
+									jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name]?.Parent.Remove();
+									if(jprop_changed.Name[0] == '#')
+										jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
+									else
+										jobj_cur_data[jprop_section.Name]?[idx]?['#' + jprop_changed.Name]?.Parent?.Remove();
+									int i;
+									if(jobj_cur_data[jprop_section.Name]?.LongCount() != null)
+									{
+										for(i = 0; i < jobj_cur_data[jprop_section.Name].LongCount(); i++)
+										{
+											if(jobj_cur_data[jprop_section.Name]?[idx]?.LongCount() > 0)
+												break;
+										}
+										if(jobj_cur_data[jprop_section.Name].LongCount() == i)
+											jobj_cur_data[jprop_section.Name]?.Parent.Remove();
+									}
+								}
+								else if(jobj_cur_data[jprop_section.Name] == null)
+								{
+									if(jobj_cur_data["processes"] != null)
+										jobj_cur_data["processes"]?.Parent?.AddBeforeSelf(new JProperty(jprop_section.Name, new JArray()));
+									else
+										(jobj_cur_data as JObject)?.Add(jprop_section.Name, new JArray());
+									while((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
+										(jobj_cur_data[jprop_section.Name] as JArray)?.Add(new JObject());
+									(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
+								}
+								else if((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
+								{
+									while((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
+										(jobj_cur_data[jprop_section.Name] as JArray)?.Add(new JObject());
+									(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
+								}
+								else if(jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] == null)
+								{
+									(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
+									if(jprop_changed.Name[0] == '#')
+										jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
+									else
+										jobj_cur_data[jprop_section.Name][idx]['#' + jprop_changed.Name]?.Parent?.Remove();
+								}
+								else
+									jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] = jprop_changed.Value;
 							}
 							idx++;
 						}
 					}
 				}
+
+				//Console.WriteLine("JHLIM_DEBUG : jobj_cur_data\n" + jobj_cur_data["comm_option"]);
+
+				WindowMain.current?.enableConnect?.sshManager?.UploadString(Root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + Root["type"].ToString() + ".json");
 			}
-			else if(work_name == null && index == null)
+			else
 			{
-				jobj_cur_data = Root as JObject;
+				if(root == null
+					|| root["type"] == null
+					|| WindowMain.current?.enableConnect?.sshManager?.id == null
+					|| WindowMain.current?.enableConnect?.sshManager?.EnvCoHome == null)
+					return -2;
+
+				WindowMain.current?.enableConnect?.sshManager?.UploadString(root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + root["type"].ToString() + ".json");
 			}
-
-			if(jobj_cur_data == null)
-				return -1;
-			
-			foreach(var jprop_section in (CurRoot as JObject)?.Properties())
-			{
-				int idx_keyword;
-				for(idx_keyword = 0; idx_keyword < arr_json_keyword.Length; idx_keyword++)
-				{
-					if(arr_json_keyword[idx_keyword] == jprop_section.Name)
-						break;
-				}
-				if(idx_keyword == arr_json_keyword.Length)
-					continue;
-
-				if(jprop_section.Value as JArray == null)
-				{
-					foreach(var jprop_changed in (jprop_section.Value as JObject)?.Properties())
-					{
-						if(jobj_par_data != null
-							&& (jobj_par_data[jprop_section.Name]?[jprop_changed.Name] as JValue)?.Value != null
-							&& (jobj_par_data[jprop_section.Name]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
-						{
-							jobj_cur_data[jprop_section.Name]?[jprop_changed.Name]?.Parent.Remove();
-							if(jprop_changed.Name[0] == '#')
-								jobj_cur_data[jprop_section.Name]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
-							else
-								jobj_cur_data[jprop_section.Name]?['#' + jprop_changed.Name]?.Parent?.Remove();
-
-							if(jobj_cur_data[jprop_section.Name]?.LongCount() == 0)
-								jobj_cur_data[jprop_section.Name]?.Parent.Remove();
-						}
-						else if(jobj_cur_data[jprop_section.Name] == null)
-						{
-							if(jobj_cur_data["processes"] != null)
-								jobj_cur_data["processes"]?.Parent?.AddBeforeSelf(new JProperty(jprop_section.Name, new JObject()));
-							else
-								(jobj_cur_data as JObject)?.Add(jprop_section.Name, new JObject());
-							(jobj_cur_data[jprop_section.Name] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-						}
-						else if(jobj_cur_data[jprop_section.Name][jprop_changed.Name] == null)
-						{
-							(jobj_cur_data[jprop_section.Name] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-							if(jprop_changed.Name[0] == '#')
-								jobj_cur_data[jprop_section.Name][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
-							else
-								jobj_cur_data[jprop_section.Name]['#' + jprop_changed.Name]?.Parent?.Remove();
-						}
-						else
-							jobj_cur_data[jprop_section.Name][jprop_changed.Name] = jprop_changed.Value;
-					}
-				}
-				else
-				{
-					int idx = 0;
-					foreach(var jarr_changed in jprop_section.Value as JArray)
-					{
-						foreach(var jprop_changed in (jarr_changed as JObject)?.Properties())
-						{
-							if(jobj_par_data != null
-								&& (jobj_par_data[jprop_section.Name]?[idx]?[jprop_changed.Name] as JValue)?.Value != null
-								&& (jobj_par_data[jprop_section.Name]?[idx]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
-							{
-								jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name]?.Parent.Remove();
-								if(jprop_changed.Name[0] == '#')
-									jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
-								else
-									jobj_cur_data[jprop_section.Name]?[idx]?['#' + jprop_changed.Name]?.Parent?.Remove();
-								int i;
-								if(jobj_cur_data[jprop_section.Name]?.LongCount() != null)
-								{
-									for(i = 0; i < jobj_cur_data[jprop_section.Name].LongCount(); i++)
-									{
-										if(jobj_cur_data[jprop_section.Name]?[idx]?.LongCount() > 0)
-											break;
-									}
-									if(jobj_cur_data[jprop_section.Name].LongCount() == i)
-										jobj_cur_data[jprop_section.Name]?.Parent.Remove();
-								}
-							}
-							else if(jobj_cur_data[jprop_section.Name] == null)
-							{
-								if(jobj_cur_data["processes"] != null)
-									jobj_cur_data["processes"]?.Parent?.AddBeforeSelf(new JProperty(jprop_section.Name, new JArray()));
-								else
-									(jobj_cur_data as JObject)?.Add(jprop_section.Name, new JArray());
-								while((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
-									(jobj_cur_data[jprop_section.Name] as JArray)?.Add(new JObject());
-								(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-							}
-							else if((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
-							{
-								while((jobj_cur_data[jprop_section.Name] as JArray)?.Count < idx + 1)
-									(jobj_cur_data[jprop_section.Name] as JArray)?.Add(new JObject());
-								(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-							}
-							else if(jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] == null)
-							{
-								(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-								if(jprop_changed.Name[0] == '#')
-									jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
-								else
-									jobj_cur_data[jprop_section.Name][idx]['#' + jprop_changed.Name]?.Parent?.Remove();
-							}
-							else
-								jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] = jprop_changed.Value;
-						}
-						idx++;
-					}
-				}
-			}
-
-			//Console.WriteLine("JHLIM_DEBUG : jobj_cur_data\n" + jobj_cur_data["comm_option"]);
-
 			return 0;
 		}
 

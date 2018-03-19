@@ -42,41 +42,48 @@ namespace CofileUI.UserControls
 		public static Decrypt current;
 		public bool bUpdated = false;
 
+		public ConfigMenu configMenu;
 		public LinuxTreeView tv_linux;
+
 		public Decrypt()
 		{
 			InitializeComponent();
 
 			current = this;
+
 			tv_linux = new LinuxTreeView();
 			grid_treeView_linux_directory.Children.Add(tv_linux);
+
+			configMenu = new ConfigMenu();
+			grid_config_menu.Children.Add(configMenu);
 
 			this.Loaded += (sender, e) => {
 				if(!bUpdated)
 					Decrypt.current.Refresh();
 			};
+			this.IsVisibleChanged += (sender, e) => { if(this.IsVisible && !this.bUpdated) this.Refresh(); };
+			//this.IsEnabledChanged += (sender, e) => { Console.WriteLine("JHLIM_DEBUG IsEnabledChanged"); };
 		}
 		public int Refresh()
 		{
 			if(WindowMain.current == null)
 				return -1;
 
-			tv_linux?.Items.Clear();
-
-			if(!SSHController.IsConnected)
+			if(WindowMain.current?.enableConnect?.sshManager?.IsConnected != true)
 				return -2;
 			// 추가
 			// root 의 path 는 null 로 초기화
-			string working_dir = SSHController.WorkingDirectory;
+			string working_dir = WindowMain.current?.enableConnect?.sshManager?.WorkingDirectory;
 			if(working_dir == null)
 				return -1;
 
+			configMenu.Refresh();
 			int retval = 0;
-			if((retval = tv_linux.ReLoadChild(working_dir)) < 0)
+			if((retval = tv_linux.Refresh(working_dir)) < 0)
 			{
 				return retval;
 			}
-			Cofile.current.RefreshListView(tv_linux.last_refresh);
+
 			Log.PrintLog("[refresh]", "UserControls.Cofile.Refresh");
 
 			bUpdated = true;
@@ -84,13 +91,10 @@ namespace CofileUI.UserControls
 			return 0;
 			//LinuxTreeViewItem.ReconnectServer();
 		}
+		public void Clear()
+		{
+			tv_linux.Items.Clear();
+			configMenu.Clear();
+		}
 	}
-
-
-
-
-
-
-
-	
 }

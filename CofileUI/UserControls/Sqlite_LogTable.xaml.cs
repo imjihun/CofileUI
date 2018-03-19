@@ -35,7 +35,7 @@ namespace CofileUI.UserControls
 		public static string Path;
 		//public static string LoadDataBase(string local_file_name)
 		//{
-		//	Path = SSHController.GetDataBase(AppDomain.CurrentDomain.BaseDirectory, local_file_name);
+		//	Path = WindowMain.current?.enableConnect?.sshManager?.GetDataBase(AppDomain.CurrentDomain.BaseDirectory, local_file_name);
 		//	return Path;
 		//}
 		public static bool bUpdated = false;
@@ -62,7 +62,7 @@ namespace CofileUI.UserControls
 		{
 			FileContoller.DeleteFilesInDirectory(path_root);
 			db_name = db_name + (Idx_db_name++) + ".db";
-			Path = SSHController.GetDataBase(path_root, db_name);
+			Path = WindowMain.current?.enableConnect?.sshManager?.GetDataBase(path_root, db_name);
 
 			if(Sqlite_LogTable.current != null)
 				Sqlite_LogTable.current.Refresh();
@@ -109,6 +109,7 @@ namespace CofileUI.UserControls
 				if(!DataBaseInfo.bUpdated)
 					DataBaseInfo.RefreshUi();
 			};
+			this.IsVisibleChanged += (sender, e) => { if(this.IsVisible && !DataBaseInfo.bUpdated) DataBaseInfo.RefreshUi(); };
 		}
 
 		DataTable current_table;
@@ -473,7 +474,7 @@ namespace CofileUI.UserControls
 
 		private void OnClickExport(object sender, RoutedEventArgs e)
 		{
-			if(SSHController.IsConnected)
+			if(WindowMain.current?.enableConnect?.sshManager?.IsConnected == true)
 				ConfirmExport();
 		}
 		private void ConfirmExport()

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CofileUI.Windows;
 using System.Windows.Media.Imaging;
+using Newtonsoft.Json.Linq;
 
 namespace CofileUI.UserControls
 {
@@ -90,7 +91,7 @@ namespace CofileUI.UserControls
 		public void ReLoadChild()
 		{
 			SftpFile[] files;
-			files = SSHController.PullListInDirectory("/");
+			files = WindowMain.current?.enableConnect?.sshManager?.PullListInDirectory("/");
 			if(files == null)
 			{
 				return;
@@ -99,7 +100,6 @@ namespace CofileUI.UserControls
 			this.Items.Clear();
 
 			int count_have_directory = 0;
-			LinuxTreeViewItem ltvi_cur = null;
 			foreach(var file in files)
 			{
 				int i;
@@ -124,7 +124,7 @@ namespace CofileUI.UserControls
 				}
 			}
 		}
-		public int ReLoadChild(string path)
+		public int Refresh(string path)
 		{
 			if(path == null
 				|| path.Length <= 0
@@ -162,9 +162,10 @@ namespace CofileUI.UserControls
 					}
 				}
 			}
+			RefreshConfigInfo();
 			return 0;
 		}
-		public int ChangeColor(string path, string config_path)
+		private int SetConfigInfo(string path, string config_path)
 		{
 			if(path == null
 				|| path.Length <= 0
@@ -207,6 +208,60 @@ namespace CofileUI.UserControls
 				}
 			}
 			return 0;
+		}
+		private void RefreshConfigInfo()
+		{
+			JObject root = Decrypt.current.configMenu.btnFileConfig.Root;
+			JObject jobj_work_group_root = root?["work_group"] as JObject;
+			if(jobj_work_group_root == null)
+				return;
+
+			foreach(var work in jobj_work_group_root.Properties())
+			{
+				JObject jobj_server_menu = work.Value as JObject;
+				if(jobj_server_menu == null)
+					continue;
+
+				JArray jarr_processes = jobj_server_menu?["processes"] as JArray;
+				if(jarr_processes == null)
+					continue;
+
+				int i = 0;
+				foreach(var jprop_server_info in jarr_processes)
+				{
+					JObject jobj_process_info = jprop_server_info as JObject;
+					if(jobj_process_info == null)
+						continue;
+
+					string dir = null;
+					string daemon_yn = null;
+					if(root["type"].ToString() == "file")
+						dir = (jobj_process_info["enc_option"] as JObject)?["input_dir"]?.ToString();
+					else
+						dir = (jobj_process_info["comm_option"] as JObject)?["input_dir"]?.ToString();
+
+					string daemon_keyword = "dir_monitoring_yn";
+					if(root["type"].ToString() == "tail")
+						daemon_keyword = "daemon_yn";
+
+					JToken jcur = jobj_process_info;
+					while(jcur != null
+						&& daemon_yn == null)
+					{
+						daemon_yn = (jcur["comm_option"] as JObject)?[daemon_keyword]?.ToString();
+						jcur = jcur.Parent;
+						while(jcur != null
+							&& jcur as JObject == null)
+							jcur = jcur.Parent;
+					}
+
+					if(daemon_yn == "True")
+					{
+						SetConfigInfo(dir, root["type"] + "-" + work.Name + "-" + i);
+					}
+					i++;
+				}
+			}
 		}
 	}
 	public class LinuxTreeViewItem : TreeViewItem, LinuxTree
@@ -488,7 +543,7 @@ namespace CofileUI.UserControls
 		private void _ReLoadChild()
 		{
 			SftpFile[] files;
-			files = SSHController.PullListInDirectory(this.path);
+			files = WindowMain.current?.enableConnect?.sshManager?.PullListInDirectory(this.path);
 			if(files == null)
 			{
 				this.IsExpanded = false;

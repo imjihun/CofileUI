@@ -41,14 +41,14 @@ namespace CofileUI.Windows
 		private void OnClickOkButton(object sender, RoutedEventArgs e)
 		{
 			int retval = 0;
-			if((retval = ConfigOptionManager.SaveOption()) < 0)
-				Console.WriteLine("JHLIM_DEBUG : WC " + retval);
 			try
 			{
+				if((retval = ConfigOptionManager.SaveOption()) < 0)
+					Console.WriteLine("JHLIM_DEBUG : Window_Config " + retval);
 			}
 			catch(Exception ex)
 			{
-				Console.WriteLine(ex.Message);
+				Console.WriteLine("JHLIM_DEBUG : Window_Config " + ex.Message);
 			}
 			if(IsModal)
 				this.DialogResult = true;

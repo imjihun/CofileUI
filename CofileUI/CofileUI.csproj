@@ -110,7 +110,7 @@
     <Compile Include="Classes\MainSettings.cs" />
     <Compile Include="Classes\Resources.cs" />
     <Compile Include="Classes\ReturnValue.cs" />
-    <Compile Include="Classes\SSHController.cs" />
+    <Compile Include="Classes\SSHManager.cs" />
     <Compile Include="Resources\Class1.cs" />
     <Compile Include="UserControls\Cofile.xaml.cs">
       <DependentUpon>Cofile.xaml</DependentUpon>
