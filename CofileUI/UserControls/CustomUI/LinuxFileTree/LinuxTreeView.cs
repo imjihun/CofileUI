@@ -80,7 +80,7 @@ namespace CofileUI.UserControls
 		public void ReLoadChild()
 		{
 			SftpFile[] files;
-			files = WindowMain.current?.enableConnect?.sshManager?.PullListInDirectory("/");
+			files = WindowMain.current?.EnableConnect?.SshManager?.PullListInDirectory("/");
 			if(files == null)
 			{
 				return;
@@ -156,7 +156,7 @@ namespace CofileUI.UserControls
 
 		public int SetConfigInfo()
 		{
-			if(WindowMain.current?.enableConnect?.sshManager?.GetDaemonInfo(MainSettings.Path.PathDirConfigFile) == 0)
+			if(WindowMain.current?.EnableConnect?.SshManager?.GetDaemonInfo(MainSettings.Path.PathDirConfigFile) == 0)
 			{
 				string daemon_info_json = FileContoller.Read(MainSettings.Path.PathDirConfigFile + "/daemon_info.json");
 				if(daemon_info_json == null || daemon_info_json.Length == 0)
@@ -223,6 +223,32 @@ namespace CofileUI.UserControls
 				}
 			}
 			return 0;
+		}
+
+		public LinuxTreeView()
+		{
+			this.IsVisibleChanged += (sender, e) => {
+				if(this.IsVisible)
+				{
+					if(this.Last_refresh == null)
+					{
+						string working_dir = WindowMain.current?.EnableConnect?.SshManager?.WorkingDirectory;
+						if(working_dir == null)
+							return;
+
+						this.Refresh(working_dir);
+					}
+					else
+						this.Last_refresh?.ReLoadChild();
+				}
+			};
+		}
+
+		public void Clear()
+		{
+			this.Selected_list.Clear();
+			this.Items.Clear();
+			this.Last_refresh = null;
 		}
 	}
 }

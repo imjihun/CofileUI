@@ -29,7 +29,7 @@ namespace CofileUI.Windows
 		private int port = 22;
 		public int Port { get { return port; } set { port = value; textBox_port.Text = value.ToString(); } }
 
-		public Window_AddServer(ServerInfo si = null)
+		public Window_AddServer(ServerModel si = null)
 		{
 			InitializeComponent();
 			textBox_name.Focus();

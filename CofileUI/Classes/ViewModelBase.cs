@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace CofileUI.UserControls
 {
-	class ViewModelBase : INotifyPropertyChanged
+	public class ViewModelBase : INotifyPropertyChanged
 	{
 		//basic ViewModelBase
 		internal void RaisePropertyChanged(string prop)

@@ -6,57 +6,43 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace CofileUI.UserControls.CustomUI.ConfigMenu
+namespace CofileUI.UserControls
 {
-	class ConfigMenuModel : INotifyPropertyChanged
+	public class ConfigMenuModel : ModelBase
 	{
-		JObject configRoot;
-		public JObject ConfigRoot { get { return configRoot; } set { configRoot = value; RaisePropertyChanged("ConfigRoot"); } }
+		JObject jobjRoot;
+		public JObject JobjRoot { get { return jobjRoot; } }
+		public string Type { get { return this.jobjRoot?["type"]?.ToString(); } }
+		public JProperty JPropInputDir
+		{
+			get
+			{
+				if(WorkName != null && ProcessIndex != null)
+				{
+					if(this.Type == "file")
+						return (this.JobjRoot["work_group"]?[WorkName]?["processes"]?[Int32.Parse(ProcessIndex)]?["enc_option"] as JObject)?["input_dir"]?.Parent as JProperty;
+					else if(this.Type == "sam" || this.Type == "tail")
+						return (this.JobjRoot["work_group"]?[WorkName]?["processes"]?[Int32.Parse(ProcessIndex)]?["comm_option"] as JObject)?["input_dir"]?.Parent as JProperty;
+				}
+				return null;
+			}
+		}
+		public string Path
+		{
+			get
+			{
+				return JPropInputDir?.Value?.ToString();
+			}
+		}
 
-		string workGroupName;
-		public string WorkGroupName { get { return workGroupName; } set { workGroupName = value; RaisePropertyChanged("WorkGroupName"); } }
-
+		string workName;
+		public string WorkName { get { return workName; } set { workName = value; RaisePropertyChanged("WorkName"); } }
 		string processIndex;
 		public string ProcessIndex { get { return processIndex; } set { processIndex = value; RaisePropertyChanged("ProcessIndex"); } }
 
-		private ObservableCollection<ConfigMenuModel> children = new ObservableCollection<ConfigMenuModel>();
-		public ObservableCollection<ConfigMenuModel> Children { get { return children; } set { children = value; RaisePropertyChanged("Children"); } }
-
-		public ConfigMenuModel(JObject _configRoot, string _workGroupName = null, string _processIndex = null)
+		public ConfigMenuModel(JObject _root)
 		{
-			ConfigRoot = _configRoot;
-			WorkGroupName = _workGroupName;
-			ProcessIndex = _processIndex;
-
-			if(WorkGroupName == null)
-			{
-				JObject jobj_work_group_root = ConfigRoot["work_group"] as JObject;
-				if(jobj_work_group_root != null)
-				{
-					foreach(JProperty jprop_work_group in jobj_work_group_root.Properties())
-					{
-						this.Children.Add(new ConfigMenuModel(ConfigRoot, jprop_work_group.Name));
-					}
-				}
-			}
-			else if(ProcessIndex == null)
-			{
-				JArray jarr_processes_root = ConfigRoot["work_group"]?["processes"] as JArray;
-				if(jarr_processes_root != null)
-				{
-					int process_index = 0;
-					foreach(JObject jobj_process in jarr_processes_root)
-					{
-						this.Children.Add(new ConfigMenuModel(ConfigRoot, WorkGroupName, process_index++.ToString()));
-					}
-				}
-			}
+			jobjRoot = _root;
 		}
-
-		void RaisePropertyChanged(string prop)
-		{
-			if(PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
-		}
-		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

@@ -20,125 +20,85 @@ namespace CofileUI.UserControls
 	
 	public class ConfigMenuRootPanel : Grid
 	{
-		public ConfigMenuButton btnFileConfig = null;
-		public ConfigMenuButton btnSamConfig = null;
-		public ConfigMenuButton btnTailConfig = null;
-
-		public ConfigMenuButton btn_selected = null;
-		public List<ConfigMenuButton> btn_group = new List<ConfigMenuButton>();
-		
-		public Grid SubPanel;
-		RelayCommand AddConfigWorkGroupCommand;
-
-		void AddConfigWorkGroup(object parameter)
-		{
-			Window_AddConfigWorkGroup wms = new Window_AddConfigWorkGroup();
-			Point pt = this.PointToScreen(new Point(0, 0));
-			wms.Left = pt.X;
-			wms.Top = pt.Y;
-			if(wms.ShowDialog() == true)
-			{
-				try
-				{
-					if(this.btn_selected == null
-					|| this.btn_selected.Root?["work_group"] as JObject == null)
-						return;
-
-					string work_group_name = wms.textBox_name.Text;
-					(this.btn_selected.Root?["work_group"] as JObject)?.Add(new JProperty(work_group_name, new JObject(new JProperty("processes", new JArray()))));
-					ConfigOptionManager.SaveOption(this.btn_selected.Root);
-
-					ConfigMenuTreeViewItem ui_config_group = new ConfigMenuTreeViewItem(this.btn_selected, this.btn_selected.Root, work_group_name);
-					ui_config_group.IsExpanded = true;
-					this.btn_selected.child.Items.Add(ui_config_group);
-				}
-				catch(Exception ex)
-				{
-					Log.ErrorIntoUI("config 그룹명이 중복됩니다.\r", "Add Config Group Name", Status.current.richTextBox_status);
-					Log.PrintError(ex.Message, "UserControls.ConfigOptions.ConfigPanel.ConfigInfoPanel");
-				}
-			}
-		}
+		private ConfigMenuPanel panFileConfig = null;
+		private ConfigMenuPanel panSamConfig = null;
+		private ConfigMenuPanel panTailConfig = null;
 
 		public ConfigMenuRootPanel()
 		{
 			this.Background = null;
 
-			SubPanel = new Grid();
-			SubPanel.Background = Brushes.White;
-			AddConfigWorkGroupCommand = new RelayCommand(AddConfigWorkGroup);
-			SubPanel.ContextMenu = new ContextMenu();
-			MenuItem item;
+			panFileConfig = new ConfigMenuPanel() { Header = "File Config" };
+			this.Children.Add(panFileConfig);
 
-			item = new MenuItem();
-			item.Command = AddConfigWorkGroupCommand;
-			item.Header = "Add Config Work Group";
-			item.Icon = new PackIconMaterial()
+			panSamConfig = new ConfigMenuPanel() { Header = "Sam Config" };
+			this.Children.Add(panSamConfig);
+
+			panTailConfig = new ConfigMenuPanel() { Header = "Tail Config" };
+			this.Children.Add(panTailConfig);
+
+			for(int i = 0; i < this.Children.Count; i++)
 			{
-				Kind = PackIconMaterialKind.FolderPlus,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			SubPanel.ContextMenu.Items.Add(item);
-			this.Children.Add(SubPanel);
+				ConfigMenuPanel btn = this.Children[i] as ConfigMenuPanel;
+				if(btn != null)
+					btn.Margin = new Thickness(0, i * ConfigMenuPanel.HEIGHT, 0, (this.Children.Count - (i + 1)) * ConfigMenuPanel.HEIGHT);
+			}
 
+			if(this?.Children != null && this.Children.Count > 0
+				&& (this.Children[0] as ConfigMenuPanel) != null)
+				(this.Children[0] as ConfigMenuPanel).IsChecked = true;
 
-
-			btnFileConfig = new ConfigMenuButton(this, null, "File Config");
-			this.Children.Add(btnFileConfig);
-			this.SubPanel.Children.Add(btnFileConfig.child);
-
-			btnSamConfig = new ConfigMenuButton(this, null, "Sam Config");
-			this.Children.Add(btnSamConfig);
-			this.SubPanel.Children.Add(btnSamConfig.child);
-
-			btnTailConfig = new ConfigMenuButton(this, null, "Tail Config");
-			this.Children.Add(btnTailConfig);
-			this.SubPanel.Children.Add(btnTailConfig.child);
-
-			if(this?.btn_group != null && this.btn_group.Count > 0)
-				this.btn_group[0].IsChecked = true;
+			//this.IsVisibleChanged += (sender, e) =>
+			//{
+			//	if(this.IsVisible)
+			//		Refresh();
+			//};
 		}
 
 		public int Refresh()
 		{
-			if(WindowMain.current?.enableConnect?.Name == null
-				|| WindowMain.current?.enableConnect?.sshManager?.id == null)
+			if(WindowMain.current?.EnableConnect?.Name == null
+				|| WindowMain.current?.EnableConnect?.Id == null)
 				return -1;
 
-			string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.enableConnect.Name  + "\\" + WindowMain.current.enableConnect.sshManager.id;
-			if(WindowMain.current?.enableConnect?.sshManager?.GetConfig(local_dir) == 0)
+			string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.EnableConnect.Name  + "\\" + WindowMain.current.EnableConnect.Id;
+			
+			if(WindowMain.current?.EnableConnect?.SshManager?.GetConfig(local_dir) != 0)
 			{
-				string file_json = FileContoller.Read(local_dir + "/file.json");
-				if(file_json == null || file_json.Length == 0)
-					file_json = Properties.Resources.file_config_default;
-				string sam_json = FileContoller.Read(local_dir + "/sam.json");
-				if(file_json == null || file_json.Length == 0)
-					file_json = Properties.Resources.sam_config_default;
-				string tail_json = FileContoller.Read(local_dir + "/tail.json");
-				if(file_json == null || file_json.Length == 0)
-					file_json = Properties.Resources.tail_config_default;
-
-				try
-				{
-					btnFileConfig.Root = JObject.Parse(file_json);
-					btnSamConfig.Root = JObject.Parse(sam_json);
-					btnTailConfig.Root = JObject.Parse(tail_json);
-				}
-				catch(Exception e)
-				{
-					Console.WriteLine("JHLIM_DEBUG : ConfigMenu JObject.Parse " + e.Message);
-					return -2;
-				}
-				return 0;
+				FileContoller.Write(local_dir + "/file.json", Properties.Resources.file_config_default);
+				FileContoller.Write(local_dir + "/sam.json", Properties.Resources.file_config_default);
+				FileContoller.Write(local_dir + "/tail.json", Properties.Resources.file_config_default);
 			}
-			return -1;
+			string file_json = FileContoller.Read(local_dir + "/file.json");
+			string sam_json = FileContoller.Read(local_dir + "/sam.json");
+			string tail_json = FileContoller.Read(local_dir + "/tail.json");
+
+			if(file_json == null || file_json.Length == 0
+				|| sam_json == null || sam_json.Length == 0
+				|| tail_json == null || tail_json.Length == 0)
+				return -3;
+
+			try
+			{
+				if(file_json != null && file_json.Length > 0)
+					panFileConfig.Root = JObject.Parse(file_json);
+				if(sam_json != null && sam_json.Length > 0)
+					panSamConfig.Root = JObject.Parse(sam_json);
+				if(tail_json != null && tail_json.Length > 0)
+					panTailConfig.Root = JObject.Parse(tail_json);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine("JHLIM_DEBUG : ConfigMenu JObject.Parse " + e.Message);
+				return -2;
+			}
+			return 0;
 		}
 		public void Clear()
 		{
-			btnFileConfig.Root = null;
-			btnSamConfig.Root = null;
-			btnTailConfig.Root = null;
+			panFileConfig.Root = null;
+			panSamConfig.Root = null;
+			panTailConfig.Root = null;
 		}
 	}
 }

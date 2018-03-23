@@ -7,35 +7,52 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace CofileUI.UserControls.CustomUI.ConfigMenu
+namespace CofileUI.UserControls
 {
 	class ConfigMenuViewModel : ViewModelBase
 	{
-		ConfigMenuModel fileConfig;
-		public ConfigMenuModel FileConfig { get { return fileConfig; } set { fileConfig = value; RaisePropertyChanged("FileConfig"); } }
+		JObject jobjFileRoot;
+		public JObject JobjFileRoot { get { return jobjFileRoot; } set { jobjFileRoot = value; RaisePropertyChanged("JobjFileRoot"); } }
+		JObject jobjSamRoot;
+		public JObject JobjSamRoot { get { return jobjSamRoot; } set { jobjSamRoot = value; RaisePropertyChanged("JobjSamRoot"); } }
+		JObject jobjTailRoot;
+		public JObject JobjTailRoot { get { return jobjTailRoot; } set { jobjTailRoot = value; RaisePropertyChanged("JobjTailRoot"); } }
 
-		ConfigMenuModel samConfig;
-		public ConfigMenuModel SamConfig { get { return samConfig; } set { samConfig = value; RaisePropertyChanged("SamConfig"); } }
-
-		ConfigMenuModel tailConfig;
-		public ConfigMenuModel TailConfig { get { return tailConfig; } set { tailConfig = value; RaisePropertyChanged("TailConfig"); } }
+		//ObservableCollection<ConfigMenuModel> fileConfig = new ObservableCollection<ConfigMenuModel>();
+		//public ObservableCollection<ConfigMenuModel> FileConfig { get { return fileConfig; } set { fileConfig = value; RaisePropertyChanged("FileConfig"); } }
+		//ObservableCollection<ConfigMenuModel> samConfig = new ObservableCollection<ConfigMenuModel>();
+		//public ObservableCollection<ConfigMenuModel> SamConfig { get { return samConfig; } set { samConfig = value; RaisePropertyChanged("SamConfig"); } }
+		//ObservableCollection<ConfigMenuModel> tailConfig = new ObservableCollection<ConfigMenuModel>();
+		//public ObservableCollection<ConfigMenuModel> TailConfig { get { return tailConfig; } set { tailConfig = value; RaisePropertyChanged("TailConfig"); } }
 
 		public ConfigMenuViewModel()
 		{
-			string local_dir = MainSettings.Path.PathDirConfigFile + "\\" + WindowMain.current.enableConnect.sshManager.name + "\\" + WindowMain.current.enableConnect.sshManager.id;
-			WindowMain.current.enableConnect.sshManager.GetConfig(local_dir);
+			Refresh();
+		}
+		public void Refresh()
+		{
+			if(WindowMain.current?.EnableConnect?.SshManager == null)
+				return;
+
+			string local_dir = MainSettings.Path.PathDirConfigFile + "\\" + WindowMain.current.EnableConnect.Name + "\\" + WindowMain.current.EnableConnect.Id;
+			WindowMain.current.EnableConnect.SshManager.GetConfig(local_dir);
 
 			string file_json = FileContoller.Read(local_dir + "\\" + "file.json");
 			string sam_json = FileContoller.Read(local_dir + "\\" + "sam.json");
 			string tail_json = FileContoller.Read(local_dir + "\\" + "tail.json");
 
-			JObject obj_file_root = JObject.Parse(file_json);
-			JObject obj_sam_root = JObject.Parse(sam_json);
-			JObject obj_tail_root = JObject.Parse(tail_json);
+			jobjFileRoot = JObject.Parse(file_json);
+			jobjSamRoot = JObject.Parse(sam_json);
+			jobjTailRoot = JObject.Parse(tail_json);
 
-			FileConfig = new ConfigMenuModel(obj_file_root);
-			SamConfig = new ConfigMenuModel(obj_sam_root);
-			TailConfig = new ConfigMenuModel(obj_tail_root);
+			//JObject jobj_work_group_root = jobjFileRoot["work_group"] as JObject;
+			//if(jobj_work_group_root != null)
+			//{
+			//	foreach(JProperty jprop_work_group in jobj_work_group_root.Properties())
+			//	{
+			//		this.FileConfig.Add(new ConfigMenuModel(jobjFileRoot, jprop_work_group.Name));
+			//	}
+			//}
 		}
 	}
 }

@@ -41,59 +41,57 @@ namespace CofileUI.UserControls
 	{
 		public static DecryptTab current;
 		public bool bUpdated = false;
-
-		public ConfigMenuRootPanel configMenu;
-		public LinuxTreeView tv_linux;
+		ConfigMenuRootPanel configMenu = new ConfigMenuRootPanel();
 
 		public DecryptTab()
 		{
 			InitializeComponent();
 
 			current = this;
-
-			tv_linux = new LinuxTreeView();
-			grid_treeView_linux_directory.Children.Add(tv_linux);
-
-			configMenu = new ConfigMenuRootPanel();
-			grid_config_menu.Children.Add(configMenu);
-
+			
 			this.Loaded += (sender, e) => {
 				if(!bUpdated)
 					DecryptTab.current.Refresh();
 			};
-			this.IsVisibleChanged += (sender, e) => { if(this.IsVisible && !this.bUpdated) this.Refresh(); };
-			//this.IsEnabledChanged += (sender, e) => { Console.WriteLine("JHLIM_DEBUG IsEnabledChanged"); };
+			this.IsVisibleChanged += (sender, e) =>
+			{
+				if(this.IsVisible)
+				{
+					if(this.bUpdated)
+						configMenu.Refresh();
+					else
+						this.Refresh();
+				}
+			};
+			grid_config_menu.Children.Add(configMenu);
 		}
 		public int Refresh()
 		{
 			if(WindowMain.current == null)
 				return -1;
 
-			if(WindowMain.current?.enableConnect?.sshManager?.IsConnected != true)
+			if(WindowMain.current?.EnableConnect?.SshManager?.IsConnected != true)
 				return -2;
-			// 추가
-			// root 의 path 는 null 로 초기화
-			string working_dir = WindowMain.current?.enableConnect?.sshManager?.WorkingDirectory;
-			if(working_dir == null)
-				return -1;
 
-			int retval = 0;
-			if((retval = configMenu.Refresh()) < 0)
-				return retval;
-			if((retval = tv_linux.Refresh(working_dir)) < 0)
-				return retval;
+			if(WindowMain.current?.EnableConnect?.DecFileTree == null)
+				return -3;
+
+			grid_treeView_linux_directory.Children.Clear();
+			grid_treeView_linux_directory.Children.Add(WindowMain.current?.EnableConnect?.DecFileTree);
+			configMenu.Refresh();
 
 			Log.PrintLog("[refresh]", "UserControls.Cofile.Refresh");
 
 			bUpdated = true;
 
 			return 0;
-			//LinuxTreeViewItem.ReconnectServer();
 		}
 		public void Clear()
 		{
-			tv_linux.Items.Clear();
 			configMenu.Clear();
+
+			WindowMain.current?.EnableConnect?.DecFileTree?.Clear();
+			grid_treeView_linux_directory.Children.Clear();
 		}
 	}
 }

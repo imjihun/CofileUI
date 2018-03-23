@@ -4,7 +4,6 @@ using MahApps.Metro.IconPacks;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,16 +25,57 @@ namespace CofileUI.UserControls
 	/// </summary>
 	public partial class ServerMenu : UserControl
 	{
-		ServerGroupRootPanel panel_server;
-		
+		ServerPanel panel_server;
 		public ServerMenu()
 		{
 			InitializeComponent();
+			InitServerTab();
+			InitContextMenu();
+		}
+		#region Server Menu Class
+		void InitServerTab()
+		{
+			// serverinfo.json 파일 로드
+			FileInfo fi = new FileInfo(ServerInfo.PATH);
+			if(fi.Exists)
+			{
+				string json = FileContoller.Read(ServerInfo.PATH);
+				try
+				{
+					ServerInfo.jobj_root = JObject.Parse(json);
+					panel_server = ServerInfo.ConvertFromJson(ServerInfo.jobj_root);
 
-			DataContext = new ServerViewModel();
-			panel_server = new ServerGroupRootPanel();
-			grid_server.Children.Add(panel_server);
+					grid_server.Children.Add(panel_server);
+				}
+				catch(Exception e)
+				{
+					Log.PrintError(e.Message, "UserControls.ServerMenu.InitServertab");
+				}
+			}
+			else
+			{
+				try
+				{
+					ServerInfo.jobj_root = new JObject(new JProperty("Server", new JObject()));
+					ServerPanel panel_server = ServerInfo.ConvertFromJson(ServerInfo.jobj_root);
 
+					grid_server.Children.Add(panel_server);
+				}
+				catch(Exception e)
+				{
+					Log.PrintError(e.Message, "UserControls.ServerMenu.InitServertab");
+
+				}
+			}
+
+			if(ServerMenuButton.group.Count > 0)
+				ServerMenuButton.group[0].IsChecked = true;
+		}
+
+		#endregion
+
+		private void InitContextMenu()
+		{
 			this.ContextMenu = new ContextMenu();
 			MenuItem item;
 
@@ -50,7 +90,6 @@ namespace CofileUI.UserControls
 			};
 			this.ContextMenu.Items.Add(item);
 		}
-
 		private void BtnAddServerMenu_Click(object sender, RoutedEventArgs e)
 		{
 			Window_AddServerMenu wms = new Window_AddServerMenu();
@@ -61,11 +100,12 @@ namespace CofileUI.UserControls
 			{
 				string server_menu_name = wms.textBox_name.Text;
 				
-				if(panel_server.ServerViewModel.AddServerGroup(server_menu_name) != 0)
+				if(ServerInfo.AddServerGroup(server_menu_name) != 0)
 					return;
 
-				ServerGroupPanel sgp = new ServerGroupPanel() { Content = server_menu_name };
-				panel_server.AddChild(sgp);
+				ServerMenuButton smbtn = new ServerMenuButton(server_menu_name);
+				ServerPanel.current.Children.Add(smbtn);
+				ServerPanel.SubPanel.Children.Add(smbtn.child);
 			}
 		}
 	}

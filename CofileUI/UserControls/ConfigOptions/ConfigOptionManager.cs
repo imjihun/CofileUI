@@ -166,10 +166,10 @@ namespace CofileUI.UserControls.ConfigOptions
 					}
 				}
 			}
-			if(_index != null)
+			if(_work_name != null && _index != null)
 			{
 				JObject jobj_process = ((((token as JObject)?.GetValue("work_group") as JObject)?.GetValue(_work_name) as JObject)?.GetValue("processes") as JArray)?[Int32.Parse(_index)] as JObject;
-				foreach(var v in jobj_process.Properties())
+				foreach(var v in jobj_process?.Properties())
 				{
 					if(v.Value as JArray == null)
 					{
@@ -420,32 +420,34 @@ namespace CofileUI.UserControls.ConfigOptions
 					}
 				}
 				//WindowMain.current?.enableConnect?.sshManager?.UploadString(Root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + Root["type"].ToString() + ".json");
-				if(WindowMain.current?.enableConnect?.Name == null
-					|| WindowMain.current?.enableConnect?.sshManager?.id == null)
+				if(WindowMain.current?.EnableConnect?.Name == null
+					|| WindowMain.current?.EnableConnect?.Id == null)
 					return -1;
 
-				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.enableConnect.Name  + "\\" + WindowMain.current.enableConnect.sshManager.id;
+				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.EnableConnect.Name  + "\\" + WindowMain.current.EnableConnect.Id;
 
 				FileContoller.Write(local_dir + "\\" + Root["type"].ToString() + ".json", Root.ToString());
-				WindowMain.current?.enableConnect?.sshManager?.SetConfig(local_dir);
+				if(WindowMain.current?.EnableConnect?.SshManager?.SetConfig(local_dir) != 0)
+					return -5;
 			}
 			else
 			{
 				if(root == null
 					|| root["type"] == null
-					|| WindowMain.current?.enableConnect?.sshManager?.id == null
-					|| WindowMain.current?.enableConnect?.sshManager?.EnvCoHome == null)
+					|| WindowMain.current?.EnableConnect?.Id == null
+					|| WindowMain.current?.EnableConnect?.SshManager?.EnvCoHome == null)
 					return -2;
 
 				//WindowMain.current?.enableConnect?.sshManager?.UploadString(root.ToString(), WindowMain.current.enableConnect.sshManager.EnvCoHome + "/var/conf/" + WindowMain.current.enableConnect.sshManager.id + "/" + root["type"].ToString() + ".json");
-				if(WindowMain.current?.enableConnect?.Name == null
-					|| WindowMain.current?.enableConnect?.sshManager?.id == null)
+				if(WindowMain.current?.EnableConnect?.Name == null
+					|| WindowMain.current?.EnableConnect?.Id == null)
 					return -1;
 
-				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.enableConnect.Name + "\\" + WindowMain.current.enableConnect.sshManager.id;
+				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.EnableConnect.Name + "\\" + WindowMain.current.EnableConnect.Id;
 
 				FileContoller.Write(local_dir + "\\" + root["type"].ToString() + ".json", root.ToString());
-				WindowMain.current?.enableConnect?.sshManager?.SetConfig(local_dir);
+				if(WindowMain.current?.EnableConnect?.SshManager?.SetConfig(local_dir) != 0)
+					return -5;
 			}
 			return 0;
 		}

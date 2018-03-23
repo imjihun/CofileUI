@@ -50,12 +50,12 @@ namespace CofileUI.UserControls
 		{
 			//TextRange rangeOfWord = new TextRange(richTextBox_serverLog.Document.ContentStart, richTextBox_serverLog.Document.ContentEnd);
 			//rangeOfWord.Text = WindowMain.current?.enableConnect?.sshManager?.GetEventLog();
-			textBox_serverLog.Text = WindowMain.current?.enableConnect?.sshManager?.GetEventLog((int)numericUpDown_count.Value);
+			textBox_serverLog.Text = WindowMain.current?.EnableConnect?.SshManager?.GetEventLog((int)numericUpDown_count.Value);
 			//rangeOfWord.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
 		}
 		private void OnKeyDownNumericUpDown(object sender, KeyEventArgs e)
 		{
-			textBox_serverLog.Text = WindowMain.current?.enableConnect?.sshManager?.GetEventLog((int)numericUpDown_count.Value);
+			textBox_serverLog.Text = WindowMain.current?.EnableConnect?.SshManager?.GetEventLog((int)numericUpDown_count.Value);
 		}
 
 		const int MAX = 5000;

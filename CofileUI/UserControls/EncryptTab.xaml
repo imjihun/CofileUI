@@ -21,7 +21,7 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<Grid>
+	<Grid Margin="2,2,2,2">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
@@ -29,7 +29,6 @@
 		<Grid Grid.Column="0" x:Name="grid_treeView_linux_directory">
 		</Grid>
 		<Grid Grid.Column="1" x:Name="grid_config_menu">
-			<!--<UserControls:ConfigMenu DataContext="{Binding}" />-->
 		</Grid>
 
 		<GridSplitter Background="Gray"

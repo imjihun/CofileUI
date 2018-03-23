@@ -43,7 +43,7 @@ namespace CofileUI.Windows
 			int retval = 0;
 			try
 			{
-				if((retval = ConfigOptionManager.SaveOption()) < 0)
+				if((retval = ConfigOptionManager.SaveOption()) != 0)
 					Console.WriteLine("JHLIM_DEBUG : Window_Config " + retval);
 			}
 			catch(Exception ex)
@@ -51,7 +51,12 @@ namespace CofileUI.Windows
 				Console.WriteLine("JHLIM_DEBUG : Window_Config " + ex.Message);
 			}
 			if(IsModal)
-				this.DialogResult = true;
+			{
+				if(retval == 0)
+					this.DialogResult = true;
+				else
+					this.DialogResult = false;
+			}
 			this.Close();
 		}
 		private void OnClickCancelButton(object sender, RoutedEventArgs e)

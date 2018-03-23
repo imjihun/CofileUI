@@ -296,7 +296,7 @@ namespace CofileUI.UserControls
 		private void _ReLoadChild()
 		{
 			SftpFile[] files;
-			files = WindowMain.current?.enableConnect?.sshManager?.PullListInDirectory(this.path);
+			files = WindowMain.current?.EnableConnect?.SshManager?.PullListInDirectory(this.path);
 			if(files == null)
 			{
 				this.IsExpanded = false;
@@ -338,6 +338,7 @@ namespace CofileUI.UserControls
 		}
 		public void ReLoadChild()
 		{
+			IsExpanded = false;
 			IsExpanded = true;
 		}
 		#endregion

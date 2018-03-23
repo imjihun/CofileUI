@@ -108,16 +108,27 @@
     <Compile Include="Classes\JsonController.cs" />
     <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\MainSettings.cs" />
+    <Compile Include="Classes\ModelBase.cs" />
     <Compile Include="Classes\Resources.cs" />
     <Compile Include="Classes\ReturnValue.cs" />
     <Compile Include="Classes\SSHManager.cs" />
     <Compile Include="Resources\Class1.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuButton.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuModel.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuPanel.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeView.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeViewItem.cs" />
-    <Compile Include="UserControls\CustomUI\ConfigMenu\RealayCommand.cs" />
+    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuViewModel.cs" />
+    <Compile Include="Classes\RealayCommand.cs" />
+    <Compile Include="Classes\ViewModelBase.cs" />
     <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxFileModel2.cs" />
     <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxTreeView.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerGroupPanel.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerListBoxItem.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerListBox.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerGroupButton.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerGroupRootPanel.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerViewModel.cs" />
     <Compile Include="UserControls\EncryptTab.xaml.cs">
       <DependentUpon>EncryptTab.xaml</DependentUpon>
     </Compile>
@@ -163,7 +174,7 @@
       <DependentUpon>TailOptions.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxTreeViewItem.cs" />
-    <Compile Include="UserControls\CustomUI\ServerMenu\ServerInfo.cs" />
+    <Compile Include="UserControls\CustomUI\ServerMenu\ServerModel.cs" />
     <Compile Include="UserControls\DecryptTab.xaml.cs">
       <DependentUpon>DecryptTab.xaml</DependentUpon>
     </Compile>

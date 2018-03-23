@@ -62,7 +62,7 @@ namespace CofileUI.UserControls
 		{
 			FileContoller.DeleteFilesInDirectory(path_root);
 			db_name = db_name + (Idx_db_name++) + ".db";
-			Path = WindowMain.current?.enableConnect?.sshManager?.GetDataBase(path_root, db_name);
+			Path = WindowMain.current?.EnableConnect?.SshManager?.GetDataBase(path_root, db_name);
 
 			if(Sqlite_LogTable.current != null)
 				Sqlite_LogTable.current.Refresh();
@@ -469,12 +469,12 @@ namespace CofileUI.UserControls
 		}
 		private void OnClickRefresh(object sender, RoutedEventArgs e)
 		{
-			UserControls.DataBaseInfo.RefreshUi();
+			DataBaseInfo.RefreshUi();
 		}
 
 		private void OnClickExport(object sender, RoutedEventArgs e)
 		{
-			if(WindowMain.current?.enableConnect?.sshManager?.IsConnected == true)
+			if(WindowMain.current?.EnableConnect?.SshManager?.IsConnected == true)
 				ConfirmExport();
 		}
 		private void ConfirmExport()

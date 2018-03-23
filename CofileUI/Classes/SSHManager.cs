@@ -14,18 +14,20 @@ using System.Windows.Threading;
 
 namespace CofileUI.Classes
 {
-	public class SSHManager
+	public class SSHManager : ModelBase
 	{
 		private const int NO_TIMEOUT = -1;
 		private const double SECOND_TIMEOUT_READ = 2;
 
-		public SshClient ssh;
-		public SftpClient sftp;
-		public ShellStream shell_stream;
-		public StreamReader shell_stream_reader;
-		public StreamWriter shell_stream_writer;
-		public DispatcherTimer shell_stream_read_timer;
-		int timeout_connect_ms = NO_TIMEOUT;
+		private SshClient ssh;
+		private SftpClient sftp;
+		private ShellStream shellStream;
+		private StreamReader shellStreamReader;
+		private StreamWriter shellStreamWriter;
+		private DispatcherTimer shellStreamReadTimer;
+		private DispatcherTimer disconnectTimer;
+		private int timeout_connect_ms = NO_TIMEOUT;
+		private ServerModel parent;
 		private string envCoHome = null;
 		public string EnvCoHome
 		{
@@ -40,12 +42,10 @@ namespace CofileUI.Classes
 				return envCoHome;
 			}
 		}
-
-		public string name;
-		public string ip;
-		public int port;
-		public string id = null;
-
+		
+		private DateTime lastAccessTime = DateTime.Now;
+		public DateTime LastAccessTime { get { return lastAccessTime; } set { lastAccessTime = value; } }
+		
 		public bool IsConnected
 		{
 			get
@@ -58,12 +58,33 @@ namespace CofileUI.Classes
 			}
 		}
 
-		public SSHManager(string _name, string _ip, int _port, string _id = null)
+		public SSHManager(ServerModel _parent)
 		{
-			name = _name;
-			ip = _ip;
-			port = _port;
-			id = _id;
+			shellStreamReadTimer = new DispatcherTimer();
+			shellStreamReadTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+			shellStreamReadTimer.Tick += (sender, e) =>
+			{
+				if(shellStreamReader != null)
+				{
+					ReadTick();
+				}
+			};
+
+			disconnectTimer = new DispatcherTimer();
+			disconnectTimer.Interval = new TimeSpan(0, 0, 0, 5);
+			disconnectTimer.Tick += (sender, e) =>
+			{
+				if(MainSettings.IsTimeOut && this.IsConnected == true
+					&& this.LastAccessTime.AddMinutes(MainSettings.SessionTimeOut) < DateTime.Now)
+				{
+					WindowMain.current.ShowMessageDialog(
+						"Session Timeout",
+						this.parent.Name + " 의 서버가\n" + MainSettings.SessionTimeOut + "분 간 입력이 없어 연결이 종료됩니다.",
+						MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative,
+						() => { this.DisConnect(); });
+				}
+			};
+			parent = _parent;
 		}
 
 		#region Connect
@@ -98,7 +119,7 @@ namespace CofileUI.Classes
 			if(wl.ShowDialog() != true)
 				return false;
 
-			id = wl.Id;
+			parent.Id = wl.Id;
 			timeout_connect_ms = timeout_ms;
 			string password = wl.Password;
 
@@ -134,24 +155,24 @@ namespace CofileUI.Classes
 			{
 				try
 				{
-					ssh = new SshClient(ip, port, id, password);
+					ssh = new SshClient(ip, port, parent.Id, password);
 					if(timeout_connect_ms != NO_TIMEOUT)
 						ssh.ConnectionInfo.Timeout = new TimeSpan(0, 0, 0, 0, timeout_connect_ms);
 					ssh.Connect();
-					sftp = new SftpClient(ip, port, id, password);
+					sftp = new SftpClient(ip, port, parent.Id, password);
 					if(timeout_connect_ms != NO_TIMEOUT)
 						sftp.ConnectionInfo.Timeout = new TimeSpan(0, 0, 0, 0, timeout_connect_ms);
 					sftp.Connect();
 
 					if(ssh.IsConnected)
 					{
-						shell_stream = ssh.CreateShellStream("customCommand", 80, 24, 800, 600, 4096);
-						shell_stream_reader = new StreamReader(shell_stream);
-						shell_stream_writer = new StreamWriter(shell_stream);
+						shellStream = ssh.CreateShellStream("customCommand", 80, 24, 800, 600, 4096);
+						shellStreamReader = new StreamReader(shellStream);
+						shellStreamWriter = new StreamWriter(shellStream);
 					}
 
 					Log.PrintLog("ip = " + ip + ", port = " + port, "Classes.SSHManager.Connect.bw_connect");
-					Log.PrintConsole("id = " + id, "Classes.SSHManager.Connect.bw_connect");
+					Log.PrintConsole("id = " + parent.Id, "Classes.SSHManager.Connect.bw_connect");
 				}
 				catch(Exception ex)
 				{
@@ -193,31 +214,30 @@ namespace CofileUI.Classes
 
 		private bool InitConnecting()
 		{
-			if(shell_stream_read_timer != null)
-				shell_stream_read_timer.Stop();
+			if(shellStreamReadTimer != null)
+				shellStreamReadTimer.Stop();
 
 			envCoHome = null;
 			return true;
 		}
 		private bool InitConnected()
 		{
-			if(shell_stream_read_timer == null)
-			{
-				shell_stream_read_timer = new DispatcherTimer();
-				shell_stream_read_timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-				shell_stream_read_timer.Tick += Shell_stream_read_timer_Tick;
-			}
-
 			ReadDummyMessageBlocking();
 
-			if(shell_stream_read_timer != null)
-				shell_stream_read_timer.Start();
+			if(shellStreamReadTimer != null
+				&& !shellStreamReadTimer.IsEnabled)
+				shellStreamReadTimer.Start();
+
+			if(disconnectTimer != null
+				&& !disconnectTimer.IsEnabled)
+				disconnectTimer.Start();
 
 			if(WindowMain.current != null)
 			{
 				WindowMain.current.Clear();
-				WindowMain.current.ConnectedServerName = name;
+				WindowMain.current.ConnectedServerName = this.parent.Name;
 				WindowMain.current.bUpdateInit(false);
+				RaisePropertyChanged("IsConnected");
 			}
 
 
@@ -257,12 +277,12 @@ namespace CofileUI.Classes
 			//if(serverinfo == null)
 			//	return false;
 
-			if(!CheckConnection(ip, port))
+			if(!CheckConnection(parent.Ip, parent.Port))
 			{
 				if(!InitConnecting())
 					return false;
 
-				retval = Connect(ip, port, timeout_ms);
+				retval = Connect(parent.Ip, parent.Port, timeout_ms);
 
 				if(!IsConnected || !InitConnected())
 				{
@@ -273,6 +293,11 @@ namespace CofileUI.Classes
 		}
 		public bool DisConnect()
 		{
+			if(shellStreamReadTimer != null)
+				shellStreamReadTimer.Stop();
+			if(disconnectTimer != null)
+				disconnectTimer.Stop();
+
 			envCoHome = null;
 			if(ssh != null)
 				ssh.Disconnect();
@@ -280,6 +305,9 @@ namespace CofileUI.Classes
 				sftp.Disconnect();
 			if(WindowMain.current != null)
 				WindowMain.current.Clear();
+
+			RaisePropertyChanged("IsConnected");
+
 			return true;
 		}
 		#endregion
@@ -293,11 +321,11 @@ namespace CofileUI.Classes
 			try
 			{
 				// send
-				if(shell_stream_reader != null)
+				if(shellStreamReader != null)
 				{
-					shell_stream_writer.Write(command);
-					shell_stream_writer.Write("\n");
-					shell_stream_writer.Flush();
+					shellStreamWriter.Write(command);
+					shellStreamWriter.Write("\n");
+					shellStreamWriter.Flush();
 					Log.PrintLog(command, "Classes.SSHManager.sendCommand");
 
 					return 0;
@@ -321,7 +349,7 @@ namespace CofileUI.Classes
 			string _read = "";
 			try
 			{
-				int cnt = shell_stream_reader.Read(buffer, 0, size_buffer);
+				int cnt = shellStreamReader.Read(buffer, 0, size_buffer);
 
 				_read = new string(buffer, 0, cnt);
 				read_line_ssh += _read;/* Encoding.UTF8.GetString(buffer, 0, cnt);*/
@@ -360,7 +388,7 @@ namespace CofileUI.Classes
 			DateTime end = DateTime.Now.AddMilliseconds(3000);
 			for(int i = 0; end > DateTime.Now; i++)
 			{
-				int cnt = shell_stream_reader.Read(buffer, 0, size_buffer);
+				int cnt = shellStreamReader.Read(buffer, 0, size_buffer);
 			}
 			return;
 		}
@@ -384,7 +412,7 @@ namespace CofileUI.Classes
 					// cnt_read_line + 2 => cmd (newLine) 아웃풋 (newLine) [asd@local]$
 					|| str_read.Split(newLine).Length < cnt_read_outputline + 2))
 				{
-					int cnt = shell_stream_reader.Read(buffer, 0, size_buffer);
+					int cnt = shellStreamReader.Read(buffer, 0, size_buffer);
 					if(cnt > 0)
 					{
 						string _read = new string(buffer, 0, cnt);
@@ -424,27 +452,20 @@ namespace CofileUI.Classes
 			}
 			return null;
 		}
-
-		private void Shell_stream_read_timer_Tick(object sender, EventArgs e)
-		{
-			if(shell_stream_reader != null)
-			{
-				ReadTick();
-			}
-		}
+		
 		public string SendNReadBlocking(string command, int count_read_outputline, double sec_timeout_read = SECOND_TIMEOUT_READ)
 		{
 			string retval = null;
-			if(shell_stream_read_timer != null)
-				shell_stream_read_timer.Stop();
+			if(shellStreamReadTimer != null)
+				shellStreamReadTimer.Stop();
 
 			if(SendCommand(command) == 0)
 			{
 				retval = ReadLinesBlocking(command, count_read_outputline, sec_timeout_read);
 			}
 
-			if(shell_stream_read_timer != null)
-				shell_stream_read_timer.Start();
+			if(shellStreamReadTimer != null)
+				shellStreamReadTimer.Start();
 			return retval;
 		}
 		public bool RunCofileCommand(string command)
@@ -513,11 +534,11 @@ namespace CofileUI.Classes
 					_path += split[i] + "/";
 					if(!sftp.Exists(_path))
 					{
-						string com = "mkdir '" + _path + "'";
-						//SendCommand(com);
-						ssh.RunCommand(com);
+						//string com = "mkdir '" + _path + "'";
+						////SendCommand(com);
+						//ssh.RunCommand(com);
+						sftp.CreateDirectory(_path);
 					}
-					//sftp.CreateDirectory(_path);
 				}
 				return true;
 			}
@@ -525,6 +546,7 @@ namespace CofileUI.Classes
 			{
 				Log.PrintError(ex.Message + "/ path = " + _path, "Classes.SSHManager.CreateRemoteDirectory");
 				Log.ErrorIntoUI(ex.Message + "/ path = " + _path, "CreateRemoteDirectory", Status.current.richTextBox_status);
+				WindowMain.current.ShowMessageDialog("Create Directory", "Fail : " + ex.Message, MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative);
 				return false;
 			}
 		}
@@ -694,17 +716,18 @@ namespace CofileUI.Classes
 				if(!FileContoller.CreateDirectory(local_path_folder))
 					return false;
 
-				FileStream fs = new FileStream(local, FileMode.Create);
 				if(sftp.Exists(remote_path_file))
 				{
+					FileStream fs = new FileStream(local, FileMode.Create);
 					sftp.DownloadFile(remote_path_file, fs);
 					Log.PrintLog(remote_path_file + " => " + local, "Classes.SSHManager.DownloadFile");
+					fs.Close();
 				}
 				else
 				{
 					Log.PrintLog("Not found file " + remote_path_file, "Classes.SSHManager.DownloadFile");
+					return false;
 				}
-				fs.Close();
 			}
 			catch(Exception e)
 			{
@@ -844,7 +867,7 @@ namespace CofileUI.Classes
 			int i;
 			for(i = 0; i < filenames.Length; i++)
 			{
-				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + id + "/" + filenames[i], filenames[i], filenames[i]))
+				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + parent.Id + "/" + filenames[i], filenames[i], filenames[i]))
 					break;
 			}
 			if(i != filenames.Length)
@@ -861,7 +884,7 @@ namespace CofileUI.Classes
 			int i;
 			for(i = 0; i < filenames.Length; i++)
 			{
-				if(null == UploadFile(local_dir + "\\" + filenames[i], EnvCoHome + "/var/conf/" + id))
+				if(null == UploadFile(local_dir + "\\" + filenames[i], EnvCoHome + "/var/conf/" + parent.Id))
 					break;
 			}
 			if(i != filenames.Length)
@@ -886,7 +909,7 @@ namespace CofileUI.Classes
 			int i;
 			for(i = 0; i < filenames.Length; i++)
 			{
-				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + id + "/" + filenames[i], filenames[i], filenames[i]))
+				if(!DownloadFile(local_dir, EnvCoHome + "/var/conf/" + parent.Id + "/" + filenames[i], filenames[i], filenames[i]))
 					break;
 			}
 			if(i != filenames.Length)

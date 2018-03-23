@@ -25,9 +25,8 @@
 	</Controls:MetroWindow.RightWindowCommands>
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="50"/>
+			<RowDefinition Height="42"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="3"/>
 		</Grid.RowDefinitions>
 		<Grid Grid.Row="1">
 			<Grid.ColumnDefinitions>
@@ -38,13 +37,14 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="0"/>
 			</Grid.RowDefinitions>
-			<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch">
-				<UserControls:ServerMenu DataContext="{Binding}"/>
+			<Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch"
+				  Margin="0,0,2,0">
+				<UserControls:ServerMenu />
 				<!--<Border BorderBrush="Black" BorderThickness="1"/>-->
 			</Grid>
 
 			<Grid x:Name="grid_root_view" Grid.Column="1" Grid.Row="0" Background="White"
-				  Margin="3,2,2,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				  Margin="2,3,0,3">
 				<!--<Border BorderBrush="Black" BorderThickness="1"/>-->
 			</Grid>
 			<Grid Grid.Column="1" Grid.Row="1" Margin="3,2,2,2">
@@ -64,31 +64,43 @@
 			<GridSplitter Background="Gray"
 						  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
 						  HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="2"/>
-			<GridSplitter Background="Gray"
+			<!--<GridSplitter Background="Gray"
 						  Grid.Column="1" Grid.Row="0"
-						  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="2"/>
+						  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="2"/>-->
 		</Grid>
-		<Grid Grid.Row="0" Grid.RowSpan="3">
+		<Grid Grid.Row="0" Grid.RowSpan="2">
 			<Controls:MetroAnimatedTabControl x:Name="tabControl" Grid.ColumnSpan = "2" Background="{x:Null}" 
 											  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 											  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel">
 				<TabItem Header="{StaticResource MainTab.Cofile}">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" 
+						  Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" 
+						  Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}"
+						  Margin="{Binding Margin, ElementName=grid_root_view, Mode=OneWay}">
 						<UserControls:EncryptTab DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
 				<TabItem Header="{StaticResource MainTab.Decrypt}">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" 
+						  Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" 
+						  Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}"
+						  Margin="{Binding Margin, ElementName=grid_root_view, Mode=OneWay}">
 						<UserControls:DecryptTab DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
 				<TabItem Header="{StaticResource MainTab.Log}">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" 
+						  Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" 
+						  Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}"
+						  Margin="{Binding Margin, ElementName=grid_root_view, Mode=OneWay}">
 						<UserControls:Sqlite_LogTable DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>
 				<TabItem Header="{StaticResource MainTab.Monitor}">
-					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Top" 
+						  Width="{Binding ActualWidth, ElementName=grid_root_view, Mode=OneWay}" 
+						  Height="{Binding ActualHeight, ElementName=grid_root_view, Mode=OneWay}"
+						  Margin="{Binding Margin, ElementName=grid_root_view, Mode=OneWay}">
 						<UserControls:Sqlite_StatusTable DataContext="{Binding}"/>
 					</Grid>
 				</TabItem>

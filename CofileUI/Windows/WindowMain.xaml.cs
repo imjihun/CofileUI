@@ -40,7 +40,8 @@ namespace CofileUI.Windows
 	public partial class WindowMain : MetroWindow
 	{
 		public static WindowMain current;
-		public ServerInfo enableConnect;
+		ServerModel enableConnect;
+		public ServerModel EnableConnect { get { return enableConnect; } set { enableConnect = value; } }
 		public WindowMain()
 		{
 			//string[] dll_path = new string[] { @"bin\EntityFramework.dll"
@@ -61,39 +62,22 @@ namespace CofileUI.Windows
 			this.PreviewKeyDown += WindowMain_PreviewKeyDown;
 			this.PreviewMouseDown += WindowMain_PreviewMouseDown;
 			this.PreviewMouseWheel += WindowMain_PreviewMouseWheel;
-			DispatcherTimer DisconnectTimeout = new DispatcherTimer();
-			DisconnectTimeout.Interval = new TimeSpan(0, 0, 0, 5);
-			DisconnectTimeout.Tick += DisconnectTimeout_Tick;
-			DisconnectTimeout.Start();
 		}
 		
-		static DateTime LastInputTime = DateTime.Now;
 		private void WindowMain_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			LastInputTime = DateTime.Now;
+			if(this.enableConnect?.SshManager?.LastAccessTime != null)
+				this.enableConnect.SshManager.LastAccessTime = DateTime.Now;
 		}
 		private void WindowMain_PreviewMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			LastInputTime = DateTime.Now;
+			if(this.enableConnect?.SshManager?.LastAccessTime != null)
+				this.enableConnect.SshManager.LastAccessTime = DateTime.Now;
 		}
 		private void WindowMain_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			LastInputTime = DateTime.Now;
-		}
-		
-		private void DisconnectTimeout_Tick(object sender, EventArgs e)
-		{
-			if(MainSettings.IsTimeOut && enableConnect?.sshManager?.IsConnected == true
-				&& LastInputTime.AddMinutes(MainSettings.SessionTimeOut) < DateTime.Now)
-			//&& LastInputTime.AddSeconds(5) < DateTime.Now)
-			{
-				WindowMain.current.ShowMessageDialog("Session Timeout", MainSettings.SessionTimeOut + "분 간 입력이 없어 연결이 종료됩니다.", MessageDialogStyle.Affirmative, DisconnectTimeout);
-			}
-			//Console.WriteLine("LastInputTime = " + LastInputTime);
-		}
-		private void DisconnectTimeout()
-		{
-			enableConnect?.sshManager?.DisConnect();
+			if(this.enableConnect?.SshManager?.LastAccessTime != null)
+				this.enableConnect.SshManager.LastAccessTime = DateTime.Now;
 		}
 
 		public static bool bCtrl = false;
@@ -140,24 +124,24 @@ namespace CofileUI.Windows
 				}
 				else
 				{
-					label_serverinfo.Content = "[ " + connectedServerName + " ] is Connected from [ " + enableConnect?.sshManager?.id + " ]";
+					label_serverinfo.Content = "[ " + connectedServerName + " ] is Connected from [ " + EnableConnect?.Id + " ]";
 				}
 			}
 		}
 		
 		// 서버메뉴리스트에서 서버를 컨넥팅 동작을 할 때 작동
-		public void Refresh(ServerInfo si)
+		public void Refresh(ServerModel si)
 		{
-			this.enableConnect = si;
+			this.EnableConnect = si;
 
 			if(tabControl.SelectedIndex == 0) EncryptTab.current.Refresh();
 			else if(tabControl.SelectedIndex == 1) DecryptTab.current.Refresh();
 			else if(tabControl.SelectedIndex == 2) DataBaseInfo.RefreshUi();
 			else if(tabControl.SelectedIndex == 3) DataBaseInfo.RefreshUi();
 
-			if(this.enableConnect?.sshManager?.IsConnected == true)
+			if(this.EnableConnect?.SshManager?.IsConnected == true)
 			{
-				ConnectedServerName = this.enableConnect?.sshManager?.name;
+				ConnectedServerName = this.EnableConnect?.Name;
 			}
 		}
 		public void Clear()
