@@ -139,7 +139,7 @@ namespace CofileUI.UserControls
 			this.ContextMenu.Items.Add(item_disconect);
 
 			item_modify = new MenuItem();
-			item_modify.Command = DisConnectServerCommand;
+			item_modify.Command = ModifyServerCommand;
 			item_modify.Header = "Modify Server";
 			item_modify.Icon = new PackIconMaterial()
 			{

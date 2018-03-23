@@ -41,12 +41,12 @@ namespace CofileUI.UserControls
 		}
 		public string Ip
 		{
-			get { return JpropData?["ip"]?.ToString(); }
+			get { return JpropData?.Value?["ip"]?.ToString(); }
 		}
 		public int Port
 		{
 			get {
-				var v = JpropData?["port"];
+				var v = JpropData?.Value?["port"];
 				int retval = -1;
 				if(v != null)
 					retval = Int32.Parse(v.ToString());
