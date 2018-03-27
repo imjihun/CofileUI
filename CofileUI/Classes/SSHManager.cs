@@ -1,4 +1,5 @@
-﻿using CofileUI.UserControls;
+﻿
+using CofileUI.UserControls;
 using CofileUI.Windows;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
@@ -216,6 +217,8 @@ namespace CofileUI.Classes
 		{
 			if(shellStreamReadTimer != null)
 				shellStreamReadTimer.Stop();
+			if(disconnectTimer != null)
+				disconnectTimer.Stop();
 
 			envCoHome = null;
 			return true;
@@ -249,7 +252,7 @@ namespace CofileUI.Classes
 			//}
 
 
-			if(LoadEnvCoHome() == ReturnValue.Fail.LOAD_CO_HOME)
+			if(LoadEnvCoHome() < 0)
 				;//return false;
 
 			EditCoHome();
@@ -550,7 +553,7 @@ namespace CofileUI.Classes
 				return false;
 			}
 		}
-		public string UploadFile(string local_path, string remote_directory, string remote_backup_dir = null)
+		private string UploadFile(string local_path, string remote_directory, string remote_backup_dir = null)
 		{
 			//LinuxTreeViewItem.ReconnectServer();
 			//LinuxTreeViewItem.ReConnect();
@@ -630,7 +633,7 @@ namespace CofileUI.Classes
 			}
 			return remote_file_path;
 		}
-		public string UploadString(string str, string remote_file_path, string remote_backup_dir = null)
+		private string UploadString(string str, string remote_file_path, string remote_backup_dir = null)
 		{
 			//LinuxTreeViewItem.ReconnectServer();
 			//LinuxTreeViewItem.ReConnect();
@@ -691,7 +694,7 @@ namespace CofileUI.Classes
 			}
 			return remote_file_path;
 		}
-		public bool DownloadFile(string local_path_folder, string remote_path_file, string local_file_name = null, string remote_filename = null, bool bLog = true)
+		private bool DownloadFile(string local_path_folder, string remote_path_file, string local_file_name = null, string remote_filename = null, bool bLog = true)
 		{
 			//LinuxTreeViewItem.ReconnectServer();
 			//LinuxTreeViewItem.ReConnect();
@@ -740,7 +743,7 @@ namespace CofileUI.Classes
 			}
 			return true;
 		}
-		public bool MoveFileToLocal(string local_path_folder, string remote_path_file, string local_file_name, double try_time_out_ms)
+		private bool MoveFileToLocal(string local_path_folder, string remote_path_file, string local_file_name, double try_time_out_ms)
 		{
 			if(!IsConnected)
 				return false;
@@ -779,7 +782,7 @@ namespace CofileUI.Classes
 			}
 
 		}
-		public bool DownloadDirectory(string local_folder_path, string remote_directory_path, Regex filter_file = null, Regex filter_except_dir = null)
+		private bool DownloadDirectory(string local_folder_path, string remote_directory_path, Regex filter_file = null, Regex filter_except_dir = null)
 		{
 			//LinuxTreeViewItem.ReconnectServer();
 			//LinuxTreeViewItem.ReConnect();
@@ -832,7 +835,7 @@ namespace CofileUI.Classes
 			{
 				Log.ErrorIntoUI("not defined $CO_HOME\r", "load $CO_HOME", Status.current.richTextBox_status);
 				Log.PrintError("not defined $CO_HOME", "Classes.SSHManager._LoadEnvCoHome");
-				return ReturnValue.Fail.LOAD_CO_HOME;
+				return -1;
 			}
 			envCoHome = co_home;
 			Log.PrintLog("$CO_HOME = " + co_home, "Classes.SSHManager._LoadEnvCoHome");

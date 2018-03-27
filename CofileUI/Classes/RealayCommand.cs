@@ -4,32 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace CofileUI.UserControls
+namespace CofileUI.Classes
 {
 
 	public class RelayCommand : ICommand
 	{
 		#region Fields
 
-		readonly Action<object> _execute;
-		readonly Predicate<object> _canExecute;
+		readonly Action<object> execute;
+		readonly Predicate<object> canExecute;
 
 		#endregion // Fields
 
 		#region Constructors
 
-		public RelayCommand(Action<object> execute)
-			: this(execute, null)
+		public RelayCommand(Action<object> _execute)
+			: this(_execute, null)
 		{
 		}
 
-		public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+		public RelayCommand(Action<object> _execute, Predicate<object> _canExecute)
 		{
-			if(execute == null)
+			if(_execute == null)
 				throw new ArgumentNullException("execute");
 
-			_execute = execute;
-			_canExecute = canExecute;
+			execute = _execute;
+			canExecute = _canExecute;
 		}
 		#endregion // Constructors
 
@@ -37,7 +37,7 @@ namespace CofileUI.UserControls
 
 		public bool CanExecute(object parameter)
 		{
-			return _canExecute == null ? true : _canExecute(parameter);
+			return canExecute == null ? true : canExecute(parameter);
 		}
 
 		public event EventHandler CanExecuteChanged
@@ -48,7 +48,7 @@ namespace CofileUI.UserControls
 
 		public void Execute(object parameter)
 		{
-			_execute(parameter);
+			execute(parameter);
 		}
 
 		#endregion // ICommand Members

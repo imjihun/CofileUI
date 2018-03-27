@@ -108,7 +108,7 @@ namespace CofileUI.UserControls
 				if(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.AddServer(this.Content.ToString(), name, ip, port) != 0)
 					return;
 				
-				ServerListBoxItem si = new ServerListBoxItem() { Serverinfo = new ServerModel(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.JobjRoot?[this.Content]?[name]?.Parent as JProperty) };
+				ServerListBoxItem si = new ServerListBoxItem() { ServerModel = new ServerModel(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.JobjRoot?[this.Content]?[name]?.Parent as JProperty) };
 				(this.Parent as ServerGroupPanel)?.slb.Items.Add(si);
 			}
 		}

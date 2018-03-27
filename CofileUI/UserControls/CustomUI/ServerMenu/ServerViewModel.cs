@@ -10,15 +10,9 @@ using System.Text;
 
 namespace CofileUI.UserControls
 {
-	public class ServerGroupModel : ModelBase
-	{
-		string groupName;
-		public string GroupName { get { return groupName; } set { groupName = value; RaisePropertyChanged("GroupName"); } }
-		ObservableCollection<ServerModel> servers = new ObservableCollection<ServerModel>();
-		public ObservableCollection<ServerModel> Servers { get { return servers; } set { servers = value; RaisePropertyChanged("Servers"); } }
-	}
 	public class ServerViewModel : ViewModelBase
 	{
+		public static string PATH = MainSettings.Path.PathDirServerInfo + MainSettings.Path.FileNameServerInfo;
 		private JObject jobjRoot = new JObject();
 		public JObject JobjRoot
 		{
@@ -29,41 +23,21 @@ namespace CofileUI.UserControls
 			}
 		}
 
-
-		public ObservableCollection<ServerGroupModel> serverGroups = new ObservableCollection<ServerGroupModel>();
-		public ObservableCollection<ServerGroupModel> ServerGroups { get { return serverGroups; } set { serverGroups = value;  RaisePropertyChanged("ServerGroups"); } }
-
 		public ServerViewModel()
 		{
 			// serverinfo.json 파일 로드
-			FileInfo fi = new FileInfo(ServerModel.PATH);
+			FileInfo fi = new FileInfo(ServerViewModel.PATH);
 
 			try
 			{
 				if(fi.Exists)
 				{
-					string json = FileContoller.Read(ServerModel.PATH);
+					string json = FileContoller.Read(ServerViewModel.PATH);
 					this.JobjRoot = JObject.Parse(json);
 				}
 				else
 					this.JobjRoot = new JObject(new JProperty("Server", new JObject()));
 
-
-				foreach(var jprop_server_group in this.JobjRoot.Properties())
-				{
-					JObject jobj_server_menu = jprop_server_group.Value as JObject;
-					if(jobj_server_menu == null)
-						continue;
-
-					ServerGroupModel sgm = new ServerGroupModel() { GroupName = jprop_server_group.Name };
-					ServerGroups.Add(sgm);
-
-					foreach(var jprop_server in jobj_server_menu.Properties())
-					{
-						ServerModel serverinfo = new ServerModel(jprop_server);
-						sgm.Servers.Add(serverinfo);
-					}
-				}
 			}
 			catch(Exception e)
 			{
@@ -74,7 +48,7 @@ namespace CofileUI.UserControls
 
 		public bool Save()
 		{
-			if(!FileContoller.Write(ServerModel.PATH, this.JobjRoot.ToString()))
+			if(!FileContoller.Write(ServerViewModel.PATH, this.JobjRoot.ToString()))
 			{
 				string caption = "save error";
 				string message = "serverinfo.json 파일을 저장하는데 문제가 생겼습니다.";

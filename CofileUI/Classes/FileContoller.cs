@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CofileUI.Classes
 {
-	class FileContoller
+	static class FileContoller
 	{
 		const int MAX_BUFFER = 4096;
 		public static bool CreateDirectory(string path)

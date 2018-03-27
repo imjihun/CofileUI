@@ -21,7 +21,6 @@ namespace CofileUI.UserControls
 {
 	public class ServerGroupRootPanel : Grid
 	{
-		public static ServerGroupRootPanel current;
 		public ServerViewModel serverViewModel;
 		public ServerViewModel ServerViewModel {
 			get { return serverViewModel; }
@@ -44,7 +43,7 @@ namespace CofileUI.UserControls
 						foreach(var jprop_server in jobj_server_menu.Properties())
 						{
 							ServerModel serverinfo = new ServerModel(jprop_server);
-							sgp.slb.Items.Add(new ServerListBoxItem() { Serverinfo = serverinfo });
+							sgp.slb.Items.Add(new ServerListBoxItem() { ServerModel = serverinfo });
 						}
 					}
 				}
@@ -57,7 +56,6 @@ namespace CofileUI.UserControls
 
 		public ServerGroupRootPanel()
 		{
-			current = this;
 			this.Background = null;
 
 			ServerViewModel = new ServerViewModel();

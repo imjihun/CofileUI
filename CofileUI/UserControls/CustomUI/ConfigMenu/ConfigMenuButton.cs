@@ -19,7 +19,6 @@ namespace CofileUI.UserControls
 
 		public const double HEIGHT = 30;
 		public const double FONTSIZE = 13;
-		public ConfigMenuTreeView child;
 		private void InitStyle()
 		{
 			Style style = new Style(typeof(ConfigMenuButton), (Style)App.Current.Resources["MetroToggleButton"]);
@@ -63,7 +62,6 @@ namespace CofileUI.UserControls
 					(this.Root?["work_group"] as JObject)?.Add(jprop_new);
 
 					ConfigMenuTreeViewItem ui_config_group = new ConfigMenuTreeViewItem() {
-						TreeRoot = (this.Parent as ConfigMenuPanel)?.DetailView,
 						ConfigIdx = new ConfigMenuModel(this.Root) { WorkName = work_group_name }
 					};
 					ui_config_group.IsExpanded = true;
@@ -86,56 +84,7 @@ namespace CofileUI.UserControls
 			this.HorizontalAlignment = HorizontalAlignment.Stretch;
 			this.VerticalAlignment = VerticalAlignment.Bottom;
 			this.FontSize = FONTSIZE;
-
-			this.child = new ConfigMenuTreeView();
-			this.child.Visibility = Visibility.Collapsed;
-			this.child.VerticalAlignment = VerticalAlignment.Top;
-			this.child.parent = this;
 			
-			AddConfigWorkGroupCommand = new RelayCommand(AddConfigWorkGroup);
-			this.ContextMenu = new ContextMenu();
-			MenuItem item;
-
-			item = new MenuItem();
-			item.Command = AddConfigWorkGroupCommand;
-			item.Header = "Add Config Work Group";
-			item.Icon = new PackIconMaterial()
-			{
-				Kind = PackIconMaterialKind.FolderPlus,
-				VerticalAlignment = VerticalAlignment.Center,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			this.ContextMenu.Items.Add(item);
-		}
-		public ConfigMenuButton(ConfigMenuRootPanel _pan_parent, JObject _Root, string header)
-		{
-			Root = _Root;
-			this.InitStyle();
-
-			this.Content = header;
-			//this.Background = Brushes.White;
-			this.Height = HEIGHT;
-			this.HorizontalAlignment = HorizontalAlignment.Stretch;
-			this.VerticalAlignment = VerticalAlignment.Bottom;
-			this.FontSize = FONTSIZE;
-
-			this.child = new ConfigMenuTreeView();
-			this.child.Visibility = Visibility.Collapsed;
-			this.child.VerticalAlignment = VerticalAlignment.Top;
-			this.child.parent = this;
-			_pan_parent.Children.Add(this.child);
-
-			//this.ParentPanel?.btn_group.Add(this);
-			if(_pan_parent != null)
-			{
-				for(int i = 0; i < _pan_parent.Children.Count; i++)
-				{
-					ConfigMenuButton btn = _pan_parent.Children[i] as ConfigMenuButton;
-					if(btn != null)
-						btn.Margin = new Thickness(0, i * HEIGHT, 0, (_pan_parent.Children.Count - (i + 1)) * HEIGHT);
-				}
-			}
-
 			AddConfigWorkGroupCommand = new RelayCommand(AddConfigWorkGroup);
 			this.ContextMenu = new ContextMenu();
 			MenuItem item;
@@ -229,10 +178,6 @@ namespace CofileUI.UserControls
 				wc.Show();
 			}
 			e.Handled = true;
-		}
-		protected override void OnClick()
-		{
-			base.OnClick();
 		}
 	}
 

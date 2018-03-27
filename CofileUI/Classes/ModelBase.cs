@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace CofileUI
+namespace CofileUI.Classes
 {
 	public class ModelBase : INotifyPropertyChanged
 	{

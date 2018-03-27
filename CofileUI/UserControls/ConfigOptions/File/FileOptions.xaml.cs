@@ -26,7 +26,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 		public FileOptions()
 		{
 			InitializeComponent();
-			ConfigOptionManager.bChanged = false;
+			ConfigOptionManager.IsChanged = false;
 
 			this.Loaded += FileOptions_Loaded;
 		}

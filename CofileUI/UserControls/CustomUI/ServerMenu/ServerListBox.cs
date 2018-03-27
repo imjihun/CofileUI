@@ -25,10 +25,10 @@ namespace CofileUI.UserControls
 		MenuItem item_disconect;
 		MenuItem item_modify;
 
-		RelayCommand DeleteServerCommand;
-		RelayCommand ConnectServerCommand;
-		RelayCommand DisConnectServerCommand;
-		RelayCommand ModifyServerCommand;
+		RelayCommand deleteServerCommand;
+		RelayCommand connectServerCommand;
+		RelayCommand disConnectServerCommand;
+		RelayCommand modifyServerCommand;
 
 		private void DeleteServer(object parameter)
 		{
@@ -40,7 +40,7 @@ namespace CofileUI.UserControls
 					ServerListBoxItem slbi = this.SelectedItem as ServerListBoxItem;
 					if(slbi == null)
 						return;
-					if(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.DeleteServer((this.Parent as ServerGroupPanel)?.Content.ToString(), slbi.Serverinfo.Name) != 0)
+					if(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.DeleteServer((this.Parent as ServerGroupPanel)?.Content.ToString(), slbi.ServerModel.Name) != 0)
 						return;
 
 					this.Items.Remove(slbi);
@@ -52,10 +52,10 @@ namespace CofileUI.UserControls
 			if(sip == null)
 				return;
 
-			if(sip.Serverinfo.SshManager?.ReConnect() == true)
+			if(sip.ServerModel.SshManager?.ReConnect() == true)
 				;
 
-			WindowMain.current.Refresh(sip.Serverinfo);
+			WindowMain.current.Refresh(sip.ServerModel);
 		}
 		private void DisConnectServer(object parameter)
 		{
@@ -63,7 +63,7 @@ namespace CofileUI.UserControls
 			if(sip == null)
 				return;
 
-			sip.Serverinfo.SshManager?.DisConnect();
+			sip.ServerModel.SshManager?.DisConnect();
 
 			if(WindowMain.current != null)
 				WindowMain.current.Clear();
@@ -74,7 +74,7 @@ namespace CofileUI.UserControls
 			if(sip == null)
 				return;
 
-			Window_AddServer wms = new Window_AddServer(sip.Serverinfo);
+			Window_AddServer wms = new Window_AddServer(sip.ServerModel);
 			//wms.textBox_password.Password = sitb.serverinfo.password;
 
 			Point pt = this.PointToScreen(new Point(0, 0));
@@ -86,7 +86,7 @@ namespace CofileUI.UserControls
 				string ip = wms.Ip;
 				int port = wms.Port;
 
-				if(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.ModifyServer(sip.Serverinfo, (this.Parent as ServerGroupPanel)?.Content.ToString(), name, ip, port) != 0)
+				if(((this.Parent as ServerGroupPanel)?.Parent as ServerGroupRootPanel)?.ServerViewModel.ModifyServer(sip.ServerModel, (this.Parent as ServerGroupPanel)?.Content.ToString(), name, ip, port) != 0)
 					return;
 			}
 		}
@@ -98,15 +98,15 @@ namespace CofileUI.UserControls
 
 			this.Visibility = Visibility.Collapsed;
 
-			DeleteServerCommand = new RelayCommand(DeleteServer);
-			ConnectServerCommand = new RelayCommand(ConnectServer);
-			DisConnectServerCommand = new RelayCommand(DisConnectServer);
-			ModifyServerCommand = new RelayCommand(ModifyServer);
+			deleteServerCommand = new RelayCommand(DeleteServer);
+			connectServerCommand = new RelayCommand(ConnectServer);
+			disConnectServerCommand = new RelayCommand(DisConnectServer);
+			modifyServerCommand = new RelayCommand(ModifyServer);
 
 			this.ContextMenu = new ContextMenu();
 
 			item_delete = new MenuItem();
-			item_delete.Command = DeleteServerCommand;
+			item_delete.Command = deleteServerCommand;
 			item_delete.Header = "Delete Server";
 			item_delete.Icon = new PackIconMaterial()
 			{
@@ -117,7 +117,7 @@ namespace CofileUI.UserControls
 			this.ContextMenu.Items.Add(item_delete);
 
 			item_connect = new MenuItem();
-			item_connect.Command = ConnectServerCommand;
+			item_connect.Command = connectServerCommand;
 			item_connect.Header = "Connect Server";
 			item_connect.Icon = new PackIconModern()
 			{
@@ -128,7 +128,7 @@ namespace CofileUI.UserControls
 			this.ContextMenu.Items.Add(item_connect);
 
 			item_disconect = new MenuItem();
-			item_disconect.Command = DisConnectServerCommand;
+			item_disconect.Command = disConnectServerCommand;
 			item_disconect.Header = "DisConnect Server";
 			item_disconect.Icon = new PackIconModern()
 			{
@@ -139,7 +139,7 @@ namespace CofileUI.UserControls
 			this.ContextMenu.Items.Add(item_disconect);
 
 			item_modify = new MenuItem();
-			item_modify.Command = ModifyServerCommand;
+			item_modify.Command = modifyServerCommand;
 			item_modify.Header = "Modify Server";
 			item_modify.Icon = new PackIconMaterial()
 			{
@@ -178,7 +178,7 @@ namespace CofileUI.UserControls
 			base.OnMouseDoubleClick(e);
 			if(e.ChangedButton == MouseButton.Left)
 			{
-				this.ConnectServerCommand.Execute(null);
+				this.connectServerCommand.Execute(null);
 			}
 		}
 	}

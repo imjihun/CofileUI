@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace CofileUI.UserControls
+namespace CofileUI.Classes
 {
 	public class ViewModelBase : INotifyPropertyChanged
 	{

@@ -45,8 +45,6 @@ namespace CofileUI.UserControls
 		}
 		public string WorkName { get { return this.ConfigIdx?.WorkName; } }
 		public string ProcessIndex { get { return this.ConfigIdx?.ProcessIndex; } }
-		ConfigMenuTreeView treeRoot;
-		public ConfigMenuTreeView TreeRoot { get { return treeRoot; } set { treeRoot = value; } }
 		
 		private string strEnc = "";
 		private string cofileEnc = "";
@@ -80,18 +78,8 @@ namespace CofileUI.UserControls
 							return;
 
 						this.ConfigIdx?.JobjRoot["work_group"]?[WorkName]?.Parent?.Remove();
-
-						int? _cnt = this.TreeRoot?.Items.Count;
-						int cnt = _cnt == null ? 0 : _cnt.Value;
-						for(int i = 0; i < cnt; i++)
-						{
-							if(WorkName != null
-							&& (this.TreeRoot.Items[i] as ConfigMenuTreeViewItem)?.tb_title.Text == WorkName)
-							{
-								this.TreeRoot.Items.RemoveAt(i);
-								break;
-							}
-						}
+						
+						(this.Parent as ItemsControl)?.Items.Remove(this);
 					}
 					catch(Exception ex)
 					{
@@ -116,30 +104,8 @@ namespace CofileUI.UserControls
 							return;
 
 						this.ConfigIdx?.JobjRoot["work_group"]?[WorkName]?["processes"]?[Int32.Parse(ProcessIndex)]?.Remove();
-
-						int? _cnt = this.TreeRoot.Items.Count;
-						int cnt = _cnt == null ? 0 : _cnt.Value;
-						for(int i = 0; i < cnt; i++)
-						{
-							if(WorkName != null
-							&& (this.TreeRoot.Items[i] as ConfigMenuTreeViewItem)?.tb_title.Text == WorkName)
-							{
-								int? _cnt2 = (this.TreeRoot.Items[i] as ConfigMenuTreeViewItem)?.Items.Count;
-								int cnt2 = _cnt2 == null ? 0 : _cnt2.Value;
-								int j;
-								for(j = 0; j < cnt2; j++)
-								{
-									if(ProcessIndex != null
-									&& ((this.TreeRoot.Items[i] as ConfigMenuTreeViewItem)?.Items[j] as ConfigMenuTreeViewItem)?.tb_title.Text == ProcessIndex)
-									{
-										(this.TreeRoot.Items[i] as ConfigMenuTreeViewItem)?.Items.RemoveAt(j);
-										break;
-									}
-								}
-								if(j != cnt2)
-									break;
-							}
-						}
+						
+						(this.Parent as ItemsControl)?.Items.Remove(this);
 					}
 					catch(Exception ex)
 					{
@@ -349,7 +315,6 @@ namespace CofileUI.UserControls
 							{
 								(this.ConfigIdx?.JobjRoot["work_group"]?[WorkName]?["processes"] as JArray)?.Add(jobj);
 								ConfigMenuTreeViewItem new_cip = new ConfigMenuTreeViewItem() {
-									TreeRoot = this.TreeRoot,
 									ConfigIdx = new ConfigMenuModel(this.ConfigIdx?.JobjRoot) { WorkName = this.WorkName, ProcessIndex = tmp_index }
 								};
 								this.Items.Add(new_cip);

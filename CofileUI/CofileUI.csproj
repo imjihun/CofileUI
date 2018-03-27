@@ -108,23 +108,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\FileContoller.cs" />
-    <Compile Include="Classes\JsonController.cs" />
     <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\MainSettings.cs" />
     <Compile Include="Classes\ModelBase.cs" />
-    <Compile Include="Classes\Resources.cs" />
-    <Compile Include="Classes\ReturnValue.cs" />
     <Compile Include="Classes\SSHManager.cs" />
-    <Compile Include="Resources\Class1.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuButton.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuModel.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuPanel.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeView.cs" />
     <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuTreeViewItem.cs" />
-    <Compile Include="UserControls\CustomUI\ConfigMenu\ConfigMenuViewModel.cs" />
     <Compile Include="Classes\RealayCommand.cs" />
     <Compile Include="Classes\ViewModelBase.cs" />
-    <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxFileModel2.cs" />
     <Compile Include="UserControls\CustomUI\LinuxFileTree\LinuxTreeView.cs" />
     <Compile Include="UserControls\CustomUI\ServerMenu\ServerGroupPanel.cs" />
     <Compile Include="UserControls\CustomUI\ServerMenu\ServerListBoxItem.cs" />
@@ -202,9 +196,6 @@
     <Compile Include="Windows\Window_AddDataGridInConfig.xaml.cs">
       <DependentUpon>Window_AddDataGridInConfig.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Window_AddJsonItem.xaml.cs">
-      <DependentUpon>Window_AddJsonItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Window_AddServer.xaml.cs">
       <DependentUpon>Window_AddServer.xaml</DependentUpon>
     </Compile>
@@ -214,9 +205,6 @@
     <Compile Include="Windows\Window_Config.xaml.cs">
       <DependentUpon>Window_Config.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Window_EditFile.xaml.cs">
-      <DependentUpon>Window_EditFile.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Window_EnvSetting.xaml.cs">
       <DependentUpon>Window_EnvSetting.xaml</DependentUpon>
     </Compile>
@@ -225,15 +213,6 @@
     </Compile>
     <Compile Include="Windows\Window_MainSetting.xaml.cs">
       <DependentUpon>Window_MainSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Window_ServerSetting.xaml.cs">
-      <DependentUpon>Window_ServerSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Window_ViewFile.xaml.cs">
-      <DependentUpon>Window_ViewFile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Window_ViewImage.xaml.cs">
-      <DependentUpon>Window_ViewImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Window_Waiting.xaml.cs">
       <DependentUpon>Window_Waiting.xaml</DependentUpon>
@@ -256,6 +235,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -300,10 +280,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\StringResources\StringCofile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\StringResources\StringResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -395,10 +371,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\Window_AddJsonItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\Window_AddServer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -408,10 +380,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Window_Config.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Window_EditFile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -427,27 +395,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\Window_ServerSetting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Window_ViewFile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\Window_ViewImage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\Window_Waiting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\backup\file_config_default.txt" />
-    <Resource Include="Resources\backup\sam_config_default.txt" />
-    <Resource Include="Resources\backup\tail_config_default.txt" />
     <Resource Include="Resources\directory.png" />
     <Resource Include="Resources\file.png" />
     <Resource Include="Resources\file_config_default.txt" />

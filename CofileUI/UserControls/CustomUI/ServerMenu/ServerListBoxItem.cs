@@ -21,22 +21,22 @@ namespace CofileUI.UserControls
 {
 	public class ServerListBoxItem : ListBoxItem
 	{
-		private ServerModel serverinfo;
-		public ServerModel Serverinfo {
-			get { return serverinfo; }
+		private ServerModel serverModel;
+		public ServerModel ServerModel {
+			get { return serverModel; }
 			set {
-				serverinfo = value;
+				serverModel = value;
 				icon.SetBinding(
 					PackIconModern.VisibilityProperty,
 					new Binding("SshManager.IsConnected")
 					{
-						Source = this.Serverinfo,
+						Source = this.ServerModel,
 						Converter = new BooleanToVisibilityConverter2()
 					}
 				);
 				tb.SetBinding(
 					TextBlock.TextProperty, 
-					new Binding("Name") { Source = this.Serverinfo }
+					new Binding("Name") { Source = this.ServerModel }
 				);
 			} }
 		
@@ -44,7 +44,7 @@ namespace CofileUI.UserControls
 		{
 			get
 			{
-				if(Serverinfo?.SshManager?.IsConnected != true)
+				if(ServerModel?.SshManager?.IsConnected != true)
 					return false;
 				else
 					return true;

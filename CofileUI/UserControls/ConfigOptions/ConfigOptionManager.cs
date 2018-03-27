@@ -14,13 +14,6 @@ using System.Windows.Media;
 
 namespace CofileUI.UserControls.ConfigOptions
 {
-	enum ConfigType
-	{
-		file = 0,
-		sam,
-		tail
-	}
-
 	public enum GroupBodyStyle
 	{
 		Basic = 0,
@@ -28,14 +21,26 @@ namespace CofileUI.UserControls.ConfigOptions
 	}
 	static class ConfigOptionSize
 	{
-		public static int WIDTH_VALUE = 150;
+		public const int WIDTH_VALUE = 150;
+		public const int WIDTH_KEY = 450;
 	}
+	public class Group
+	{
+		public FrameworkElement Header { get; set; }
+		public int[] ArrGroupBodyOption { get; set; }
+
+		// Key UI 의 CheckBox 보다 우선순위가 높다.
+		private GroupBodyStyle bodyStyle = GroupBodyStyle.Basic;
+		public GroupBodyStyle BodyStyle { get { return bodyStyle; } set { bodyStyle = value; } }
+		public string RadioButtonGroupName { get; set; }
+	}
+
 	static class ConfigOptionManager
 	{
 		public static char StartDisableProperty = '#';
-		public static JToken Root;
-		private static JToken CurRoot;
-		private static string work_name;
+		private static JToken root;
+		private static JToken curRoot;
+		private static string workName;
 		private static string index;
 
 		private static UserControl current;
@@ -61,21 +66,13 @@ namespace CofileUI.UserControls.ConfigOptions
 				Console.WriteLine("JHLIM_DEBUG : path = " + path + " current = " + current?.GetType());
 			}
 		}
-		private static string FileName
+		private static bool isChanged = false;
+		public static bool IsChanged
 		{
-			get
-			{
-				string[] split = path.Split('\\');
-				return split[split.Length - 1];
-			}
-		}
-		private static bool _bChanged = false;
-		public static bool bChanged
-		{
-			get { return _bChanged; }
+			get { return isChanged; }
 			set
 			{
-				_bChanged = value;
+				isChanged = value;
 				//if(value)
 				//	WindowMain.current.tabItem_Config.Header = "*" + Application.Current.FindResource("MainTab.Config") as string;
 				//else
@@ -87,7 +84,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			current = null;
 
 			Path = null;
-			bChanged = false;
+			IsChanged = false;
 		}
 		private static UserControl CreateOption(string type, JToken token)
 		{
@@ -110,10 +107,10 @@ namespace CofileUI.UserControls.ConfigOptions
 				return null;
 			}
 
-			CurRoot = token;
-			CurRoot["work_group"]?.Parent.Remove();
-			CurRoot["processes"]?.Parent.Remove();
-			CurRoot["type"]?.Parent.Remove();
+			curRoot = token;
+			curRoot["work_group"]?.Parent.Remove();
+			curRoot["processes"]?.Parent.Remove();
+			curRoot["type"]?.Parent.Remove();
 			Log.PrintLog("type = " + type, "UserControls.ConfigOptions.ConfigOptionManager.CreateOption");
 			return current;
 		}
@@ -121,8 +118,8 @@ namespace CofileUI.UserControls.ConfigOptions
 		{
 			ConfigOptionManager.Clear();
 
-			Root = token;
-			work_name = _work_name;
+			root = token;
+			workName = _work_name;
 			index = _index;
 
 			JObject new_root = token.DeepClone() as JObject;
@@ -139,10 +136,10 @@ namespace CofileUI.UserControls.ConfigOptions
 						foreach(var prop in (v.Value as JObject)?.Properties())
 						{
 							jobj_cur[prop.Name] = prop.Value;
-							if(prop.Name[0] == '#')
+							if(prop.Name[0] == ConfigOptionManager.StartDisableProperty)
 								jobj_cur[prop.Name.Substring(1)]?.Parent?.Remove();
 							else
-								jobj_cur['#' + prop.Name]?.Parent?.Remove();
+								jobj_cur[ConfigOptionManager.StartDisableProperty + prop.Name]?.Parent?.Remove();
 						}
 					}
 					else
@@ -156,10 +153,10 @@ namespace CofileUI.UserControls.ConfigOptions
 							foreach(var prop in (jobj as JObject)?.Properties())
 							{
 								jarr_cur[idx][prop.Name] = prop.Value;
-								if(prop.Name[0] == '#')
+								if(prop.Name[0] == ConfigOptionManager.StartDisableProperty)
 									jarr_cur[idx][prop.Name.Substring(1)]?.Parent?.Remove();
 								else
-									jarr_cur[idx]['#' + prop.Name]?.Parent?.Remove();
+									jarr_cur[idx][ConfigOptionManager.StartDisableProperty + prop.Name]?.Parent?.Remove();
 							}
 							idx++;
 						}
@@ -179,10 +176,10 @@ namespace CofileUI.UserControls.ConfigOptions
 						foreach(var prop in (v.Value as JObject)?.Properties())
 						{
 							jobj_cur[prop.Name] = prop.Value;
-							if(prop.Name[0] == '#')
+							if(prop.Name[0] == ConfigOptionManager.StartDisableProperty)
 								jobj_cur[prop.Name.Substring(1)]?.Parent?.Remove();
 							else
-								jobj_cur['#' + prop.Name]?.Parent?.Remove();
+								jobj_cur[ConfigOptionManager.StartDisableProperty + prop.Name]?.Parent?.Remove();
 						}
 					}
 					else
@@ -196,10 +193,10 @@ namespace CofileUI.UserControls.ConfigOptions
 							foreach(var prop in (jobj as JObject)?.Properties())
 							{
 								jarr_cur[idx][prop.Name] = prop.Value;
-								if(prop.Name[0] == '#')
+								if(prop.Name[0] == ConfigOptionManager.StartDisableProperty)
 									jarr_cur[idx][prop.Name.Substring(1)]?.Parent?.Remove();
 								else
-									jarr_cur[idx]['#' + prop.Name]?.Parent?.Remove();
+									jarr_cur[idx][ConfigOptionManager.StartDisableProperty + prop.Name]?.Parent?.Remove();
 							}
 							idx++;
 						}
@@ -210,6 +207,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			current = CreateOption(token["type"]?.ToString(), new_root);
 			return current;
 		}
+
 		private static string _GetOption(JObject root, string type, string option_name)
 		{
 			if(root == null || type == null || option_name == null)
@@ -240,28 +238,27 @@ namespace CofileUI.UserControls.ConfigOptions
 
 			return ret_val;
 		}
-
-		static string[] arr_json_keyword = { "comm_option", "enc_option", "dec_option", "col_var", "col_fix", "enc_inform", "work_group", "processes" };
+		static string[] arrJsonKeyword = { "comm_option", "enc_option", "dec_option", "col_var", "col_fix", "enc_inform", "work_group", "processes" };
 		public static int SaveOption(JObject root = null)
 		{
 			if(root == null)
 			{
-				if(Root == null
-					|| CurRoot == null)
+				if(ConfigOptionManager.root == null
+					|| curRoot == null)
 					return -1;
 				JObject jobj_cur_data = null;
 				JObject jobj_par_data = null;
 
-				if(work_name != null && index == null)
+				if(workName != null && index == null)
 				{
-					jobj_cur_data = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
-					jobj_par_data = Root.DeepClone() as JObject;
+					jobj_cur_data = ((ConfigOptionManager.root as JObject)?.GetValue("work_group") as JObject)?.GetValue(workName) as JObject;
+					jobj_par_data = ConfigOptionManager.root.DeepClone() as JObject;
 				}
-				else if(work_name != null && index != null)
+				else if(workName != null && index != null)
 				{
-					jobj_cur_data = ((((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject)?.GetValue("processes") as JArray)?[Int32.Parse(index)] as JObject;
-					jobj_par_data = Root.DeepClone() as JObject;
-					JObject jobj_work = ((Root as JObject)?.GetValue("work_group") as JObject)?.GetValue(work_name) as JObject;
+					jobj_cur_data = ((((ConfigOptionManager.root as JObject)?.GetValue("work_group") as JObject)?.GetValue(workName) as JObject)?.GetValue("processes") as JArray)?[int.Parse(index)] as JObject;
+					jobj_par_data = ConfigOptionManager.root.DeepClone() as JObject;
+					JObject jobj_work = ((ConfigOptionManager.root as JObject)?.GetValue("work_group") as JObject)?.GetValue(workName) as JObject;
 					foreach(var v in jobj_work.Properties())
 					{
 						if(v.Value as JArray == null)
@@ -304,23 +301,23 @@ namespace CofileUI.UserControls.ConfigOptions
 						}
 					}
 				}
-				else if(work_name == null && index == null)
+				else if(workName == null && index == null)
 				{
-					jobj_cur_data = Root as JObject;
+					jobj_cur_data = ConfigOptionManager.root as JObject;
 				}
 
 				if(jobj_cur_data == null)
 					return -1;
 
-				foreach(var jprop_section in (CurRoot as JObject)?.Properties())
+				foreach(var jprop_section in (curRoot as JObject)?.Properties())
 				{
 					int idx_keyword;
-					for(idx_keyword = 0; idx_keyword < arr_json_keyword.Length; idx_keyword++)
+					for(idx_keyword = 0; idx_keyword < arrJsonKeyword.Length; idx_keyword++)
 					{
-						if(arr_json_keyword[idx_keyword] == jprop_section.Name)
+						if(arrJsonKeyword[idx_keyword] == jprop_section.Name)
 							break;
 					}
-					if(idx_keyword == arr_json_keyword.Length)
+					if(idx_keyword == arrJsonKeyword.Length)
 						continue;
 
 					if(jprop_section.Value as JArray == null)
@@ -332,10 +329,10 @@ namespace CofileUI.UserControls.ConfigOptions
 								&& (jobj_par_data[jprop_section.Name]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
 							{
 								jobj_cur_data[jprop_section.Name]?[jprop_changed.Name]?.Parent.Remove();
-								if(jprop_changed.Name[0] == '#')
+								if(jprop_changed.Name[0] == ConfigOptionManager.StartDisableProperty)
 									jobj_cur_data[jprop_section.Name]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
 								else
-									jobj_cur_data[jprop_section.Name]?['#' + jprop_changed.Name]?.Parent?.Remove();
+									jobj_cur_data[jprop_section.Name]?[ConfigOptionManager.StartDisableProperty + jprop_changed.Name]?.Parent?.Remove();
 
 								if(jobj_cur_data[jprop_section.Name]?.LongCount() == 0)
 									jobj_cur_data[jprop_section.Name]?.Parent.Remove();
@@ -351,10 +348,10 @@ namespace CofileUI.UserControls.ConfigOptions
 							else if(jobj_cur_data[jprop_section.Name][jprop_changed.Name] == null)
 							{
 								(jobj_cur_data[jprop_section.Name] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-								if(jprop_changed.Name[0] == '#')
+								if(jprop_changed.Name[0] == ConfigOptionManager.StartDisableProperty)
 									jobj_cur_data[jprop_section.Name][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
 								else
-									jobj_cur_data[jprop_section.Name]['#' + jprop_changed.Name]?.Parent?.Remove();
+									jobj_cur_data[jprop_section.Name][ConfigOptionManager.StartDisableProperty + jprop_changed.Name]?.Parent?.Remove();
 							}
 							else
 								jobj_cur_data[jprop_section.Name][jprop_changed.Name] = jprop_changed.Value;
@@ -372,10 +369,10 @@ namespace CofileUI.UserControls.ConfigOptions
 									&& (jobj_par_data[jprop_section.Name]?[idx]?[jprop_changed.Name] as JValue)?.Value.Equals((jprop_changed.Value as JValue)?.Value) == true)
 								{
 									jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name]?.Parent.Remove();
-									if(jprop_changed.Name[0] == '#')
+									if(jprop_changed.Name[0] == ConfigOptionManager.StartDisableProperty)
 										jobj_cur_data[jprop_section.Name]?[idx]?[jprop_changed.Name.Substring(1)]?.Parent?.Remove();
 									else
-										jobj_cur_data[jprop_section.Name]?[idx]?['#' + jprop_changed.Name]?.Parent?.Remove();
+										jobj_cur_data[jprop_section.Name]?[idx]?[ConfigOptionManager.StartDisableProperty + jprop_changed.Name]?.Parent?.Remove();
 									int i;
 									if(jobj_cur_data[jprop_section.Name]?.LongCount() != null)
 									{
@@ -407,10 +404,10 @@ namespace CofileUI.UserControls.ConfigOptions
 								else if(jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] == null)
 								{
 									(jobj_cur_data[jprop_section.Name]?[idx] as JObject)?.Add(jprop_changed.Name, jprop_changed.Value);
-									if(jprop_changed.Name[0] == '#')
+									if(jprop_changed.Name[0] == ConfigOptionManager.StartDisableProperty)
 										jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name.Substring(1)]?.Parent?.Remove();
 									else
-										jobj_cur_data[jprop_section.Name][idx]['#' + jprop_changed.Name]?.Parent?.Remove();
+										jobj_cur_data[jprop_section.Name][idx][ConfigOptionManager.StartDisableProperty + jprop_changed.Name]?.Parent?.Remove();
 								}
 								else
 									jobj_cur_data[jprop_section.Name][idx][jprop_changed.Name] = jprop_changed.Value;
@@ -426,7 +423,7 @@ namespace CofileUI.UserControls.ConfigOptions
 
 				string local_dir = MainSettings.Path.PathDirConfigFile + WindowMain.current.EnableConnect.Name  + "\\" + WindowMain.current.EnableConnect.Id;
 
-				FileContoller.Write(local_dir + "\\" + Root["type"].ToString() + ".json", Root.ToString());
+				FileContoller.Write(local_dir + "\\" + ConfigOptionManager.root["type"].ToString() + ".json", ConfigOptionManager.root.ToString());
 				if(WindowMain.current?.EnableConnect?.SshManager?.SetConfig(local_dir) != 0)
 					return -5;
 			}
@@ -452,31 +449,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			return 0;
 		}
 
-		public class Group
-		{
-			public FrameworkElement Header { get; set; }
-			public int[] Arr { get; set; }
-
-			// Key UI 의 CheckBox 보다 우선순위가 높다.
-			private GroupBodyStyle bodyStyle = GroupBodyStyle.Basic;
-			public GroupBodyStyle BodyStyle { get { return bodyStyle; } set { bodyStyle = value; } }
-			public string RadioButtonGroupName { get; set; }
-		}
-
-		private static T Find<T>(FrameworkElement ui) where T : FrameworkElement
-		{
-			T retval = ui as T;
-			if(retval == null)
-			{
-				var list = ui.FindChildren<T>();
-				foreach(var v in list)
-				{
-					retval = v;
-					break;
-				}
-			}
-			return retval;
-		}
+		#region Config 옵션 UI 를 만들 때 사용되는 함수들
 		public static void CheckedKey(ref JProperty jprop)
 		{
 			try
@@ -489,7 +462,7 @@ namespace CofileUI.UserControls.ConfigOptions
 				JProperty newJprop = new JProperty(jprop.Name.TrimStart(ConfigOptionManager.StartDisableProperty), jprop.Value);
 				jprop.Replace(newJprop);
 				Log.PrintLog(jprop + " -> " + newJprop, "UserControls.ConfigOptions.ConfigOptionManager.CheckedKey");
-				// delegate 에 지역변수를 사용하면 지역변수를 메모리에서 계속 잡고있는다. (전역변수 화 (어디 소속으로 전역변수 인지 모르겠다.))
+
 				jprop = newJprop;
 
 			}
@@ -497,7 +470,7 @@ namespace CofileUI.UserControls.ConfigOptions
 			{
 				Log.PrintError(ex.Message, "UserControls.ConfigOptions.ConfigOptionManager.CheckedKey");
 			}
-			ConfigOptionManager.bChanged = true;
+			ConfigOptionManager.IsChanged = true;
 		}
 		public static void UncheckedKey(ref JProperty jprop)
 		{
@@ -511,19 +484,18 @@ namespace CofileUI.UserControls.ConfigOptions
 				JProperty newJprop = new JProperty(ConfigOptionManager.StartDisableProperty + jprop.Name, jprop.Value);
 				jprop.Replace(newJprop);
 				Log.PrintLog(jprop + " -> " + newJprop, "UserControls.ConfigOptions.ConfigOptionManager.UncheckedKey");
-				// delegate 에 지역변수를 사용하면 지역변수를 메모리에서 계속 잡고있는다. (전역변수 화 (어디 소속으로 전역변수 인지 모르겠다.))
+
 				jprop = newJprop;
 			}
 			catch(Exception ex)
 			{
 				Log.PrintError(ex.Message, "UserControls.ConfigOptions.ConfigOptionManager.UncheckedKey");
 			}
-			ConfigOptionManager.bChanged = true;
+			ConfigOptionManager.IsChanged = true;
 		}
 
 		public delegate FrameworkElement GetUI(int opt, JObject root);
-		const int WIDTH_KEY = 450;
-		public static void MakeUI(Grid grid, JObject root, string[] detailOptions, Group[] groups,
+		public static void MakeUI(Grid grid, JObject root, Group[] groups,
 			GetUI GetUIOptionKey, GetUI GetUIOptionValue)
 		{
 			for(int i = 0; i < groups.Length; i++)
@@ -539,7 +511,7 @@ namespace CofileUI.UserControls.ConfigOptions
 				Grid.SetRow(bd, grid.RowDefinitions.Count - 1);
 
 				Grid grid_group_body = new Grid();
-				grid_group_body.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(WIDTH_KEY) });
+				grid_group_body.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ConfigOptionSize.WIDTH_KEY) });
 				grid_group_body.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 				grid_group_body.Margin = new Thickness(15, 0, 0, 0);
 				if(groups[i].Header != null)
@@ -551,14 +523,14 @@ namespace CofileUI.UserControls.ConfigOptions
 				grid_group.Children.Add(grid_group_body);
 				Grid.SetRow(grid_group_body, 1);
 
-				for(int j = 0; j < groups[i].Arr.Length; j++)
+				for(int j = 0; j < groups[i].ArrGroupBodyOption.Length; j++)
 				{
 					try
 					{
 						Grid grid_key = new Grid();
 						Grid grid_value = new Grid();
 
-						FrameworkElement ui_key = GetUIOptionKey(groups[i].Arr[j], root);
+						FrameworkElement ui_key = GetUIOptionKey(groups[i].ArrGroupBodyOption[j], root);
 						if(ui_key == null)
 							break;
 						StackPanel sp = ui_key as StackPanel;
@@ -595,7 +567,7 @@ namespace CofileUI.UserControls.ConfigOptions
 
 						grid_key.Children.Add(ui_key);
 
-						FrameworkElement ui_value = GetUIOptionValue(groups[i].Arr[j], root);
+						FrameworkElement ui_value = GetUIOptionValue(groups[i].ArrGroupBodyOption[j], root);
 						if(ui_value == null)
 							break;
 
@@ -604,7 +576,7 @@ namespace CofileUI.UserControls.ConfigOptions
 						if(groups[i].Header == null)
 						{
 							Grid grid_group_header = new Grid();
-							grid_group_header.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(WIDTH_KEY) });
+							grid_group_header.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ConfigOptionSize.WIDTH_KEY) });
 							grid_group_header.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 							grid_group.Children.Add(grid_group_header);
 							Grid.SetRow(grid_group_header, 0);
@@ -634,7 +606,7 @@ namespace CofileUI.UserControls.ConfigOptions
 									Source = cb,
 									Mode = BindingMode.OneWay,
 									Converter = new Int32ToBooleanConverter(),
-									ConverterParameter = Root
+									ConverterParameter = ConfigOptionManager.root
 								};
 								grid_group_body.SetBinding(Grid.IsEnabledProperty, _bd);
 							}
@@ -661,7 +633,7 @@ namespace CofileUI.UserControls.ConfigOptions
 				}
 			}
 		}
-
+		#endregion
 	}
 
 	#region Converter

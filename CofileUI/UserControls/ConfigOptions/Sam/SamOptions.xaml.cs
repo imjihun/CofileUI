@@ -30,7 +30,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 		{
 			current = this;
 			InitializeComponent();
-			ConfigOptionManager.bChanged = false;
+			ConfigOptionManager.IsChanged = false;
 			this.Loaded += delegate
 			{
 				if(!bInit)
@@ -94,7 +94,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 			if(root[disableKey] != null)
 			{
 				root[disableKey].Parent.Replace(new JProperty(ConfigOptionManager.StartDisableProperty + disableKey, root[disableKey]));
-				ConfigOptionManager.bChanged = true;
+				ConfigOptionManager.IsChanged = true;
 			}
 			if(root[enableKey] == null)
 			{
@@ -102,7 +102,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 					root[ConfigOptionManager.StartDisableProperty + enableKey].Parent.Replace(new JProperty(enableKey, root[ConfigOptionManager.StartDisableProperty + enableKey]));
 				else
 					root.Add(new JProperty(enableKey, new JArray()));
-				ConfigOptionManager.bChanged = true;
+				ConfigOptionManager.IsChanged = true;
 			}
 		}
 		private void TitleMouseDown(object sender, MouseButtonEventArgs e)

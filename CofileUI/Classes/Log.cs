@@ -17,18 +17,7 @@ namespace CofileUI.Classes
 	{
 		const string ADD_LOG_DIR = @"system\log\";
 		const string ADD_ERR_DIR = @"system\err\";
-
-		//// time, namespace, class, function, message
-		//public static void PrintLogFile(string namesp, string cla, string func, string message, string action)
-		//{
-		//	DateTime dt = DateTime.Now;
-		//	string filename = dt.ToString("yyyy.MM.dd.hh") + ".log";
-		//	string log = dt.ToString("[yyyy.MM.dd.hh.mm.ss]");
-		//	log += "[" + namesp + "." + cla + "." + func + "]";
-		//	log += "[" + action + "]";
-		//	log += " " + message + "\r\n";
-		//	FileContoller.Write(AppDomain.CurrentDomain.BaseDirectory + ADD_LOG_DIR + filename, log);
-		//}
+		
 		private static bool Write(string path, string str)
 		{
 			if(path == null || str == null)
@@ -172,39 +161,6 @@ namespace CofileUI.Classes
 				}
 			}
 			PrintLog("[" + caption + "]" + message, "Classes.Log.ViewMessage");
-		}
-
-		public static void ViewUndefine(string message, string caption, TextBoxBase output_ui)
-		{
-			//string str = System.Environment.NewLine;
-			string str = "";
-
-			if(caption != null)
-				str += "[" + caption + "] ";
-
-			str += message;
-
-			//_print(str);
-			CheckNewLine(ref str);
-			//str += System.Environment.NewLine;
-
-			if(output_ui != null)
-			{
-				TextBox tb = output_ui as TextBox;
-				if(tb != null)
-					tb.Text += str;
-
-
-				RichTextBox rtb = output_ui as RichTextBox;
-				if(rtb != null)
-				{
-					TextRange rangeOfWord = new TextRange(rtb.Document.ContentEnd, rtb.Document.ContentEnd);
-					rangeOfWord.Text = str;
-					rangeOfWord.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.LightGray);
-					//rtb.AppendText(str);
-					//rtb.Document.Blocks.Add(new Paragraph(new Inline()))
-				}
-			}
 		}
 		public static void ErrorIntoUI(string message, string caption, TextBoxBase output_ui)
 		{

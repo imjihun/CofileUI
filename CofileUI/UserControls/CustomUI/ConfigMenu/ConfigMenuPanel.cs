@@ -50,7 +50,6 @@ namespace CofileUI.UserControls
 					continue;
 
 				ConfigMenuTreeViewItem ui_config_group = new ConfigMenuTreeViewItem() {
-					TreeRoot = this.DetailView,
 					ConfigIdx = new ConfigMenuModel(this.Root) { WorkName = work.Name }
 				};
 				ui_config_group.IsExpanded = true;
@@ -71,7 +70,6 @@ namespace CofileUI.UserControls
 					else
 						dir = (jobj_process_info["comm_option"] as JObject)?["input_dir"]?.ToString();
 					ui_config_group.Items.Add(new ConfigMenuTreeViewItem() {
-						TreeRoot = this.DetailView,
 						ConfigIdx = new ConfigMenuModel(this.Root) { WorkName = work.Name, ProcessIndex = i.ToString(), }
 					});
 
@@ -107,7 +105,6 @@ namespace CofileUI.UserControls
 
 					ConfigMenuTreeViewItem ui_config_group = new ConfigMenuTreeViewItem()
 					{
-						TreeRoot = this.DetailView,
 						ConfigIdx = new ConfigMenuModel(this.Root) { WorkName = work_group_name }
 					};
 					ui_config_group.IsExpanded = true;

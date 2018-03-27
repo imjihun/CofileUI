@@ -24,10 +24,9 @@ namespace CofileUI.UserControls
 {
 	public class ServerModel : ModelBase
 	{
-		public static string PATH = MainSettings.Path.PathDirServerInfo + MainSettings.Path.FileNameServerInfo;
-		private JProperty jobjRoot;
+		private JProperty jpropData;
 		public JProperty JpropData {
-			get { return jobjRoot; }
+			get { return jpropData; }
 		}
 
 		private SSHManager sshManager = null;
@@ -61,7 +60,7 @@ namespace CofileUI.UserControls
 			DecFileTree = new LinuxTreeView();
 
 			sshManager = new SSHManager(this);
-			this.jobjRoot = _data;
+			this.jpropData = _data;
 		}
 	}
 }

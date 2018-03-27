@@ -34,43 +34,21 @@ namespace CofileUI.UserControls
 		}
 		public static string[] IGNORE_FILENAME = new string[] {".", ".."};
 
-		private List<LinuxTreeViewItem> selected_list = new List<LinuxTreeViewItem>();
-		public List<LinuxTreeViewItem> Selected_list { get { return selected_list; } }
+		private List<LinuxTreeViewItem> selectedList = new List<LinuxTreeViewItem>();
+		public List<LinuxTreeViewItem> SelectedList { get { return selectedList; } }
 
-		public LinuxTreeViewItem last_refresh = null;
-		public LinuxTreeViewItem Last_refresh { get { return last_refresh; } set { last_refresh = value; } }
-
-		bool bool_show_hidden = true;
-		public bool Bool_show_hidden
-		{
-			get { return bool_show_hidden; }
-			set
-			{
-				bool_show_hidden = value;
-				//LinuxTreeViewItem.Filter(tv_linux, Filter_string, bool_show_hidden);
-			}
-		}
-		string filter_string = "";
-		public string Filter_string
-		{
-			get { return filter_string; }
-			set
-			{
-				filter_string = value;
-
-				//LinuxTreeViewItem.Filter(tv_linux, filter_string, Bool_show_hidden);
-			}
-		}
-
+		public LinuxTreeViewItem lastRefreshItem = null;
+		public LinuxTreeViewItem LastRefreshItem { get { return lastRefreshItem; } set { lastRefreshItem = value; } }
+		
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			//Log.Print(linked_jtoken);
 			base.OnMouseMove(e);
 			if(e.LeftButton == MouseButtonState.Pressed
-				&& Selected_list.Count > 0)
+				&& SelectedList.Count > 0)
 			{
 				DataObject data = new DataObject();
-				data.SetData("Object", Selected_list);
+				data.SetData("Object", SelectedList);
 				DragDrop.DoDragDrop(this, data, DragDropEffects.Copy);
 			}
 
@@ -154,7 +132,7 @@ namespace CofileUI.UserControls
 			return 0;
 		}
 
-		public int SetConfigInfo()
+		public int LoadDaemonInfo()
 		{
 			if(WindowMain.current?.EnableConnect?.SshManager?.GetDaemonInfo(MainSettings.Path.PathDirConfigFile) == 0)
 			{
@@ -230,7 +208,7 @@ namespace CofileUI.UserControls
 			this.IsVisibleChanged += (sender, e) => {
 				if(this.IsVisible)
 				{
-					if(this.Last_refresh == null)
+					if(this.LastRefreshItem == null)
 					{
 						string working_dir = WindowMain.current?.EnableConnect?.SshManager?.WorkingDirectory;
 						if(working_dir == null)
@@ -239,16 +217,16 @@ namespace CofileUI.UserControls
 						this.Refresh(working_dir);
 					}
 					else
-						this.Last_refresh?.ReLoadChild();
+						this.LastRefreshItem?.ReLoadChild();
 				}
 			};
 		}
 
 		public void Clear()
 		{
-			this.Selected_list.Clear();
+			this.SelectedList.Clear();
 			this.Items.Clear();
-			this.Last_refresh = null;
+			this.LastRefreshItem = null;
 		}
 	}
 }

@@ -78,6 +78,7 @@ namespace CofileUI.Windows
 		{
 			if(this.enableConnect?.SshManager?.LastAccessTime != null)
 				this.enableConnect.SshManager.LastAccessTime = DateTime.Now;
+			
 		}
 
 		public static bool bCtrl = false;

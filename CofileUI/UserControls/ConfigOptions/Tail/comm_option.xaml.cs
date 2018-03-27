@@ -36,7 +36,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 
 			Root = root;
 			DataContext = root;
-			ConfigOptionManager.MakeUI(grid, root, detailOptions, groups, GetUIOptionKey, GetUIOptionValue);
+			ConfigOptionManager.MakeUI(grid, root, groups, GetUIOptionKey, GetUIOptionValue);
 		}
 		
 		public enum Options
@@ -93,7 +93,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 		{
 			new Group()
 			{
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.tail_type
 					,(int)Options.no_inform
@@ -102,7 +102,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 			new Group()
 			{
 				Header = new Label() {Content = "Basic" },
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.sid
 					,(int)Options.input_dir
@@ -118,7 +118,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 			},
 			new Group()
 			{
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.dir_recursive_yn
 					,(int)Options.dir_recursive_max_depth
@@ -128,7 +128,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 			{
 				Header = new Label() {Content = "암/복호화 대상 규칙" },
 				RadioButtonGroupName = "Input",
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.input_ext
 					,(int)Options.input_filter
@@ -136,7 +136,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 			},
 			new Group()
 			{
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.daemon_yn
 					,(int)Options.interval
@@ -348,7 +348,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 
 							cb.SelectionChanged += delegate {
 								//((JValue)optionValue).Value = dic[cb.SelectedItem.ToString()];
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 								TailOptions.current.ChangeSecondGrid();
 							};
 							ret = cb;
@@ -380,7 +380,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 							tb.TextChanged += delegate
 							{
 								//((JValue)optionValue).Value = tb.Text;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -414,12 +414,12 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 							ts.Checked += delegate
 							{
 								//((JValue)optionValue).Value = ts.IsChecked;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 							ts.Unchecked += delegate
 							{
 								//((JValue)optionValue).Value = ts.IsChecked;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -487,7 +487,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 							tb_integer.ValueChanged += delegate
 							{
 								//((JValue)optionValue).Value = (System.Int64)tb_integer.Value;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 
 						}
@@ -509,7 +509,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 
 			if(ret != null)
 			{
-				ret.Width = 150;
+				ret.Width = ConfigOptionSize.WIDTH_VALUE;
 				ret.Margin = new Thickness(10, 3, 10, 3);
 				ret.VerticalAlignment = VerticalAlignment.Center;
 				ret.HorizontalAlignment = HorizontalAlignment.Left;

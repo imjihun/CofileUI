@@ -1,0 +1,20 @@
+﻿CofileUI
+
+
+exe
+C#
+.cs
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\CofileUI\CofileUI\obj\Debug\
+CofileUI
+none
+false
+DEBUG;TRACE
+C:\Users\Administrator\Documents\Visual Studio 2015\Projects\CofileUI\CofileUI\App.xaml
+31-1334146007
+
+56-303049672
+271882941028
+Resources\ConfigOptionResources.xaml;Resources\StringResources\StringCofile.xaml;UserControls\EncryptTab.xaml;UserControls\ConfigOptions\File\comm_option.xaml;UserControls\ConfigOptions\File\dec_option.xaml;UserControls\ConfigOptions\File\enc_option.xaml;UserControls\ConfigOptions\File\FileOptions.xaml;UserControls\ConfigOptions\Sam\col_fix.xaml;UserControls\ConfigOptions\Sam\col_var.xaml;UserControls\ConfigOptions\Sam\comm_option.xaml;UserControls\ConfigOptions\Sam\SamOptions.xaml;UserControls\ConfigOptions\Tail\comm_option.xaml;UserControls\ConfigOptions\Tail\enc_inform.xaml;UserControls\ConfigOptions\Tail\enc_inform_line.xaml;UserControls\ConfigOptions\Tail\enc_inform_reg.xaml;UserControls\ConfigOptions\Tail\TailOptions.xaml;UserControls\DecryptTab.xaml;UserControls\ServerMenu.xaml;UserControls\Sqlite_LogTable.xaml;UserControls\Sqlite_StatusTable.xaml;UserControls\Status.xaml;Windows\WindowMain.xaml;Windows\Window_AddConfigWorkGroup.xaml;Windows\Window_AddDataGridInConfig.xaml;Windows\Window_AddServer.xaml;Windows\Window_AddServerMenu.xaml;Windows\Window_Config.xaml;Windows\Window_EnvSetting.xaml;Windows\Window_LogIn.xaml;Windows\Window_MainSetting.xaml;Windows\Window_Waiting.xaml;
+
+False
+

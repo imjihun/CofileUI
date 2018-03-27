@@ -42,6 +42,7 @@ namespace CofileUI.UserControls
 				isDirectory = value;
 				if(value)
 				{
+					// Expander Icon 을 활성화 하기 위한 dummy child
 					Label dummy = new Label();
 					this.Items.Add(dummy);
 					if(tbName == null)
@@ -52,6 +53,7 @@ namespace CofileUI.UserControls
 				}
 				else
 				{
+					tbName.Foreground = LinuxTreeView._Color.File_foreground_unselected;
 				}
 			}
 		}
@@ -63,7 +65,7 @@ namespace CofileUI.UserControls
 		#region header
 		// Casting ( Object To Grid_Header )
 		public new DockPanel Header { get { return base.Header as DockPanel; } }
-		private ContextMenu enableContextMenu = null;
+		private ContextMenu myContextMenu = null;
 		private TextBlock tbName;
 		private TextBlock tbConfigPath;
 		private Image img;
@@ -82,11 +84,10 @@ namespace CofileUI.UserControls
 				else
 				{
 					this.OriginBackground = Brushes.LightGreen;
-					this.ContextMenu = enableContextMenu;
+					this.ContextMenu = myContextMenu;
 				}
 			}
 		}
-		public Brush HaederBackGround { set { tbName.Background = value; } }
 		void InitHeader(string header, bool _isDirectory)
 		{
 			base.Header = new DockPanel();
@@ -128,6 +129,7 @@ namespace CofileUI.UserControls
 			InitHeader(header, _isDirectory);
 			this.Cursor = Cursors.Hand;
 			this.Path = _path;
+			this.Background = LinuxTreeView._Color.Background_unselected;
 
 			FileInfo = _file;
 
@@ -140,7 +142,7 @@ namespace CofileUI.UserControls
 				this.Header.Opacity = .5;
 			}
 
-			enableContextMenu = new ContextMenu();
+			myContextMenu = new ContextMenu();
 			MenuItem item = new MenuItem();
 			item.Header = "Kill";
 			//item.Icon = new PackIconFontAwesome()
@@ -153,7 +155,7 @@ namespace CofileUI.UserControls
 			{
 				Console.WriteLine("JHLIM_DEBUG : Kill??");
 			};
-			enableContextMenu.Items.Add(item);
+			myContextMenu.Items.Add(item);
 		}
 
 		#region Multi Select From Mouse Handle
@@ -171,21 +173,21 @@ namespace CofileUI.UserControls
 				// 색 변경
 				if(value)
 				{
-					root_view.Selected_list.Add(this);
+					root_view.SelectedList.Add(this);
 					OriginBackground = this.Background;
 					this.Background = LinuxTreeView._Color.Background_selected;
 					if(!this.IsDirectory)
 					{
-						this.Foreground = LinuxTreeView._Color.File_foreground_selected;
+						tbName.Foreground = LinuxTreeView._Color.File_foreground_selected;
 					}
 				}
 				else
 				{
-					root_view.Selected_list.Remove(this);
+					root_view.SelectedList.Remove(this);
 					this.Background = OriginBackground;
 					if(!this.IsDirectory)
 					{
-						this.Foreground = LinuxTreeView._Color.File_foreground_unselected;
+						tbName.Foreground = LinuxTreeView._Color.File_foreground_unselected;
 					}
 				}
 			}
@@ -193,9 +195,9 @@ namespace CofileUI.UserControls
 		public new void Focus()
 		{
 			// 다른 선택 해제
-			while(root_view.Selected_list.Count > 0)
+			while(root_view.SelectedList.Count > 0)
 			{
-				root_view.Selected_list[0].MySelected = false;
+				root_view.SelectedList[0].MySelected = false;
 			}
 			MySelected = true;
 
@@ -217,19 +219,19 @@ namespace CofileUI.UserControls
 
 			if(WindowMain.bCtrl)
 				MySelected = !MySelected;
-			else if(WindowMain.bShift && root_view.Selected_list.Count > 0)
+			else if(WindowMain.bShift && root_view.SelectedList.Count > 0)
 			{
 				ItemCollection Items = (this.Parent as ItemsControl)?.Items;
 				if(Items != null)
 				{
-					int idx_start = Items.IndexOf(root_view.Selected_list[0]);
+					int idx_start = Items.IndexOf(root_view.SelectedList[0]);
 					int idx_end = Items.IndexOf(this);
 
 					if(idx_start >= 0 && idx_end >= 0)
 					{
 						// 선택 초기화
-						while(root_view.Selected_list.Count > 0)
-							root_view.Selected_list[0].MySelected = false;
+						while(root_view.SelectedList.Count > 0)
+							root_view.SelectedList[0].MySelected = false;
 
 						// 선택
 						int add_i = idx_start < idx_end ? 1 : -1;
@@ -266,7 +268,7 @@ namespace CofileUI.UserControls
 		}
 		protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
 		{
-			if(root_view.Selected_list.IndexOf(this) < 0)
+			if(root_view.SelectedList.IndexOf(this) < 0)
 				this.Focus();
 			base.OnMouseRightButtonDown(e);
 			e.Handled = true;
@@ -282,15 +284,6 @@ namespace CofileUI.UserControls
 			this._ReLoadChild();
 
 			this.BringIntoView();
-		}
-		//private bool flag_expanded_via_screen = true; 
-		public new bool IsExpanded { get { return base.IsExpanded; }
-			set
-			{
-				//flag_expanded_via_screen = false;
-				base.IsExpanded = value;
-				//flag_expanded_via_screen = true;
-			}
 		}
 		// remind_path = '/' 부터 시작
 		private void _ReLoadChild()
@@ -331,9 +324,9 @@ namespace CofileUI.UserControls
 					this.Items.Add(ltvi);
 				}
 			}
-			root_view.Last_refresh = this;
+			root_view.LastRefreshItem = this;
 
-			root_view.SetConfigInfo();
+			root_view.LoadDaemonInfo();
 
 		}
 		public void ReLoadChild()

@@ -31,7 +31,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 		{
 			current = this;
 			InitializeComponent();
-			ConfigOptionManager.bChanged = false;
+			ConfigOptionManager.IsChanged = false;
 			this.Loaded += delegate
 			{
 				if(!bInit)
@@ -147,7 +147,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 									jobj[((enc_inform.OriginalOption)i).ToString()].Parent.Replace(
 										new JProperty(ConfigOptionManager.StartDisableProperty + ((enc_inform.OriginalOption)i).ToString(), jobj[((enc_inform.OriginalOption)i).ToString()])
 										);
-									ConfigOptionManager.bChanged = true;
+									ConfigOptionManager.IsChanged = true;
 								}
 							}
 							else if(jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform.OriginalOption)i).ToString()] != null)
@@ -157,7 +157,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 									jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform.OriginalOption)i).ToString()].Parent.Replace(
 										new JProperty(((enc_inform.OriginalOption)i).ToString(), jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform.OriginalOption)i).ToString()])
 										);
-									ConfigOptionManager.bChanged = true;
+									ConfigOptionManager.IsChanged = true;
 								}
 								else
 								{
@@ -196,7 +196,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 									jobj[((enc_inform_reg.OriginalOption)i).ToString()].Parent.Replace(
 										new JProperty(ConfigOptionManager.StartDisableProperty + ((enc_inform_reg.OriginalOption)i).ToString(), jobj[((enc_inform_reg.OriginalOption)i).ToString()])
 										);
-									ConfigOptionManager.bChanged = true;
+									ConfigOptionManager.IsChanged = true;
 								}
 							}
 							else if(jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform_reg.OriginalOption)i).ToString()] != null)
@@ -206,7 +206,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 									jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform_reg.OriginalOption)i).ToString()].Parent.Replace(
 										new JProperty(((enc_inform_reg.OriginalOption)i).ToString(), jobj[ConfigOptionManager.StartDisableProperty + ((enc_inform_reg.OriginalOption)i).ToString()])
 										);
-									ConfigOptionManager.bChanged = true;
+									ConfigOptionManager.IsChanged = true;
 								}
 								else
 								{

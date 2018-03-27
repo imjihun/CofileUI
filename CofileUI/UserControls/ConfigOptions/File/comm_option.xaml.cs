@@ -37,7 +37,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 
 			Root = root;
 			DataContext = root;
-			ConfigOptionManager.MakeUI(grid, root, detailOptions, groups, GetUIOptionKey, GetUIOptionValue);
+			ConfigOptionManager.MakeUI(grid, root, groups, GetUIOptionKey, GetUIOptionValue);
 		}
 
 		public enum Option
@@ -84,7 +84,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 			new Group()
 			{
 				Header = new Label() {Content = "Basic" },
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Option.sid
 					, (int)Option.item
@@ -99,7 +99,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 			},
 			new Group()
 			{
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Option.dir_recursive_yn
 					, (int)Option.dir_recursive_max_depth
@@ -108,7 +108,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 			new Group()
 			{
 				RadioButtonGroupName = "Monitoring",
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Option.dir_monitoring_yn
 					, (int)Option.dir_monitoring_term
@@ -313,7 +313,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 
 							cb.SelectionChanged += delegate
 							{
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 							ret = cb;
 						}
@@ -340,7 +340,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 							tb.TextChanged += delegate
 							{
 								//((JValue)optionValue).Value = tb.Text;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -377,12 +377,12 @@ namespace CofileUI.UserControls.ConfigOptions.File
 							ts.Checked += delegate
 							{
 								//((JValue)optionValue).Value = ts.IsChecked;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 							ts.Unchecked += delegate
 							{
 								//((JValue)optionValue).Value = ts.IsChecked;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -409,7 +409,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 							tb_integer.ValueChanged += delegate
 							{
 								//((JValue)optionValue).Value = (System.Int64)tb_integer.Value;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 
 						}
@@ -432,7 +432,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 
 			if(ret != null)
 			{
-				ret.Width = 150;
+				ret.Width = ConfigOptionSize.WIDTH_VALUE;
 				ret.Margin = new Thickness(10, 3, 10, 3);
 				ret.VerticalAlignment = VerticalAlignment.Center;
 				ret.HorizontalAlignment = HorizontalAlignment.Left;

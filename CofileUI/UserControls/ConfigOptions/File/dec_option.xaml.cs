@@ -35,7 +35,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 
 			Root = root;
 			DataContext = root;
-			ConfigOptionManager.MakeUI(grid, root, detailOptions, groups, GetUIOptionKey, GetUIOptionValue);
+			ConfigOptionManager.MakeUI(grid, root, groups, GetUIOptionKey, GetUIOptionValue);
 		}
 
 		public enum Option
@@ -69,7 +69,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 			new Group()
 			{
 				Header = new Label() {Content = "Basic" },
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Option.input_dir,
 					(int)Option.output_dir,
@@ -83,7 +83,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 			{
 				Header = new Label() {Content = "복호화 대상 규칙" },
 				RadioButtonGroupName = "Input",
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Option.input_extension,
 					(int)Option.input_filter
@@ -271,7 +271,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 							tb.TextChanged += delegate
 							{
 								//((JValue)optionValue).Value = tb.Text;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -293,7 +293,7 @@ namespace CofileUI.UserControls.ConfigOptions.File
 
 			if(ret != null)
 			{
-				ret.Width = 150;
+				ret.Width = ConfigOptionSize.WIDTH_VALUE;
 				ret.Margin = new Thickness(10, 3, 10, 3);
 				ret.VerticalAlignment = VerticalAlignment.Center;
 				ret.HorizontalAlignment = HorizontalAlignment.Left;

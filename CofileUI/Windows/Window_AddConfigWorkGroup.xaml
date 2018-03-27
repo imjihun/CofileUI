@@ -7,7 +7,7 @@
         xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" 
         mc:Ignorable="d"
         AllowsTransparency="True"  Height="120" Width="200"
-		Title="Window_AddServerMenu"
+		Title="Window_AddConfigMenu"
         WindowStyle="None" Background="Transparent"  ResizeMode="NoResize">
 	<Grid>
 		<Border Margin="10">
@@ -19,15 +19,12 @@
 			</Border.Effect>
 			<Grid Background="White" >
 				<Grid Height="30" VerticalAlignment="Top">
-					<Label Content="Add Server Menu" FontSize="15"
+					<Label Content="Add Config Menu" FontSize="15"
 						   HorizontalAlignment="Center"/>
 				</Grid>
 				<Grid Height="35" VerticalAlignment="Center">
-					<!--<TextBlock Text="Input Server Menu Name"
-							   Margin="5,5,5,5" VerticalAlignment="Center"
-							   Foreground="LightSteelBlue" Visibility="{Binding ElementName=textBox_name, Path=Text.IsEmpty, Converter={StaticResource MyBoolToVisibilityConverter}}" FontStyle="Italic" TextDecorations="{x:Null}"/>-->
 					<TextBox x:Name="textBox_name" Background="{x:Null}"
-							 Margin="5,5,5,5" VerticalAlignment="Center" Custom:TextBoxHelper.Watermark="Input Server Menu Name"/>
+							 Margin="5,4,5,5" VerticalAlignment="Center" Custom:TextBoxHelper.Watermark="Input Config Menu Name"/>
 				</Grid>
 				<Grid Height="35" VerticalAlignment="Bottom">
 					<Button Content="ok" Background="White"

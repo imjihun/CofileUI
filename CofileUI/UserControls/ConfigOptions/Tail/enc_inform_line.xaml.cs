@@ -36,7 +36,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 
 			Root = root;
 			DataContext = root;
-			ConfigOptionManager.MakeUI(grid, root, detailOptions, groups, GetUIOptionKey, GetUIOptionValue);
+			ConfigOptionManager.MakeUI(grid, root, groups, GetUIOptionKey, GetUIOptionValue);
 		}
 
 		public enum Options
@@ -53,7 +53,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 			new Group()
 			{
 				Header = new Label() {Content = "Basic" },
-				Arr = new int[]
+				ArrGroupBodyOption = new int[]
 				{
 					(int)Options.item,
 					(int)Options.delimiter
@@ -179,7 +179,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 							tb.TextChanged += delegate
 							{
 								//((JValue)optionValue).Value = tb.Text;
-								ConfigOptionManager.bChanged = true;
+								ConfigOptionManager.IsChanged = true;
 							};
 						}
 						break;
@@ -200,7 +200,7 @@ namespace CofileUI.UserControls.ConfigOptions.Tail
 
 			if(ret != null)
 			{
-				ret.Width = 150;
+				ret.Width = ConfigOptionSize.WIDTH_VALUE;
 				ret.Margin = new Thickness(10, 3, 10, 3);
 				ret.VerticalAlignment = VerticalAlignment.Center;
 				ret.HorizontalAlignment = HorizontalAlignment.Left;

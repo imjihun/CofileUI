@@ -66,7 +66,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 					jobj.Add(new JProperty(((Option)i).ToString(), wa.Value[i]));
 				jarr.Add(jobj);
 
-				ConfigOptionManager.bChanged = true;
+				ConfigOptionManager.IsChanged = true;
 			}
 			catch(Exception ex)
 			{
@@ -89,7 +89,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 
 				jarr.Remove(jobj);
 
-				ConfigOptionManager.bChanged = true;
+				ConfigOptionManager.IsChanged = true;
 			}
 			catch(Exception ex)
 			{
@@ -152,7 +152,7 @@ namespace CofileUI.UserControls.ConfigOptions.Sam
 				DataContext = null;
 				DataContext = jprop;
 
-				ConfigOptionManager.bChanged = true;
+				ConfigOptionManager.IsChanged = true;
 			}
 			catch(Exception ex)
 			{
