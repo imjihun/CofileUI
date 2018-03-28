@@ -14,8 +14,7 @@ namespace CofileUI.UserControls
 {
 	public class ConfigMenuButton : ToggleButton
 	{
-		JObject root;
-		public JObject Root { get { return root; } set { root = value; } }
+		public JObject Root { get { return (this.Parent as ConfigMenuPanel)?.Root; } }
 
 		public const double HEIGHT = 30;
 		public const double FONTSIZE = 13;

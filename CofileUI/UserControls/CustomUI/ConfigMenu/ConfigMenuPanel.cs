@@ -30,7 +30,6 @@ namespace CofileUI.UserControls
 			set
 			{
 				root = value;
-				button.Root = value;
 				RefreshChild();
 			}
 		}
